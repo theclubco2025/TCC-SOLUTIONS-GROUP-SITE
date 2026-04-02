@@ -1,1862 +1,662 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TCC Solutions Group | Revenue-Generating AI Systems</title>
-  <meta name="description" content="We install revenue-generating systems inside businesses. Custom software, AI integration, and automation that increases your bottom line.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <meta
+    name="description"
+    content="TCC installs revenue-generating systems inside businesses using custom software, automation, and AI."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet"
+  />
   <style>
     :root {
-      --bg: #0a0a0a;
-      --bg-elevated: #111111;
-      --bg-card: #161616;
-      --accent: #00d4ff;
-      --accent-glow: rgba(0, 212, 255, 0.15);
-      --accent-2: #7c3aed;
-      --text: #ffffff;
-      --text-muted: #a1a1aa;
-      --text-subtle: #71717a;
-      --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.15);
-      --gradient-1: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-      --gradient-2: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
-      --shadow-glow: 0 0 60px rgba(0, 212, 255, 0.15);
-      --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 20px;
-      --radius-xl: 28px;
-      --max-width: 1280px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --bg: #090b0f;
+      --panel: #10131a;
+      --panel-soft: #141925;
+      --text: #f4f7ff;
+      --muted: #a5adc0;
+      --line: rgba(255, 255, 255, 0.1);
+      --line-soft: rgba(255, 255, 255, 0.06);
+      --accent: #9ad7ff;
+      --accent-strong: #5eb8ff;
+      --radius: 22px;
+      --max: 1160px;
+      --shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
+      margin: 0;
+      font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
       color: var(--text);
-      line-height: 1.6;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(94, 184, 255, 0.16), transparent 52%),
+        radial-gradient(900px 500px at -10% 100%, rgba(154, 215, 255, 0.12), transparent 58%),
+        var(--bg);
+      line-height: 1.5;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .bg-gradient {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .bg-gradient::before {
-      content: '';
-      position: absolute;
-      width: 150%;
-      height: 150%;
-      top: -25%;
-      left: -25%;
-      background: 
-        radial-gradient(ellipse 80% 80% at 50% -20%, rgba(0, 212, 255, 0.15), transparent),
-        radial-gradient(ellipse 60% 60% at 80% 50%, rgba(124, 58, 237, 0.1), transparent),
-        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(236, 72, 153, 0.08), transparent);
-      animation: bgShift 20s ease-in-out infinite;
-    }
-
-    @keyframes bgShift {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(2%, 2%) rotate(1deg); }
-      66% { transform: translate(-1%, 1%) rotate(-1deg); }
-    }
-
-    .noise {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      opacity: 0.03;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    }
-
-    h1, h2, h3, h4, .serif {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 600;
-      letter-spacing: -0.02em;
     }
 
     .container {
-      width: min(var(--max-width), calc(100% - 48px));
+      width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
     }
 
-    .navbar {
-      position: fixed;
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-family: "DM Serif Display", Georgia, serif;
+      font-weight: 400;
+    }
+
+    p { margin: 0; color: var(--muted); }
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      padding: 16px 0;
-      transition: var(--transition);
+      z-index: 30;
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(0px);
+      transition: 0.25s ease;
     }
 
-    .navbar.scrolled {
-      background: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid var(--border);
+    .topbar.scrolled {
+      border-bottom-color: var(--line-soft);
+      background: rgba(9, 11, 15, 0.72);
+      backdrop-filter: blur(12px);
     }
 
-    .nav-inner {
+    .nav {
+      min-height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 18px;
     }
 
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-decoration: none;
+    .logo-wrap img {
+      height: 54px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      filter: brightness(1.03);
     }
 
     .nav-links {
       display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
+      gap: 22px;
+      color: #c6cede;
       font-size: 0.95rem;
-      font-weight: 500;
-      transition: var(--transition);
-      position: relative;
+      font-weight: 600;
     }
 
-    .nav-links a:hover { color: var(--text); }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--gradient-1);
-      transition: var(--transition);
-    }
-
-    .nav-links a:hover::after { width: 100%; }
-
-    .nav-cta { display: flex; gap: 12px; }
+    .nav-links a:hover { color: #fff; }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 14px 28px;
+      min-height: 48px;
+      padding: 0 22px;
       border-radius: 999px;
-      font-weight: 600;
+      border: 1px solid transparent;
+      font-weight: 700;
       font-size: 0.95rem;
-      text-decoration: none;
-      border: none;
+      transition: 0.2s ease;
       cursor: pointer;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
     }
 
     .btn-primary {
-      background: var(--gradient-1);
-      color: #000;
-      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+      background: linear-gradient(180deg, #b5e4ff 0%, #76c7ff 100%);
+      color: #06111f;
+      box-shadow: 0 8px 22px rgba(94, 184, 255, 0.35);
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(94, 184, 255, 0.42);
     }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-      opacity: 0;
-      transition: var(--transition);
-    }
-
-    .btn-primary:hover::before { opacity: 1; }
 
     .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border-hover);
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      color: #f2f6ff;
     }
 
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--accent);
-    }
-
-    .btn-lg {
-      padding: 18px 36px;
-      font-size: 1.05rem;
-    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.24); }
 
     .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 120px 0 80px;
-      position: relative;
+      padding: 46px 0 68px;
     }
 
-    .hero-content {
+    .hero-shell {
+      border: 1px solid var(--line-soft);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius: calc(var(--radius) + 6px);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 60px;
-      align-items: center;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 28px;
+      align-items: stretch;
     }
 
-    .hero-badge {
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 18px;
+      border: 1px solid rgba(154, 215, 255, 0.35);
+      color: #d4eeff;
+      background: rgba(94, 184, 255, 0.09);
       border-radius: 999px;
-      background: rgba(0, 212, 255, 0.1);
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      margin-bottom: 24px;
-      animation: fadeInUp 0.8s ease forwards;
+      padding: 8px 14px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    .hero-badge .pulse {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.5); }
-      50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(0, 212, 255, 0); }
-    }
-
-    .hero-badge span {
-      font-size: 0.9rem;
-      color: var(--accent);
-      font-weight: 500;
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #96d6ff;
+      box-shadow: 0 0 0 8px rgba(154, 215, 255, 0.14);
     }
 
     .hero h1 {
-      font-size: clamp(3rem, 6vw, 4.5rem);
-      line-height: 1.05;
+      font-size: clamp(2.25rem, 5.5vw, 4.6rem);
+      max-width: 11ch;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero .lead {
+      font-size: 1.08rem;
+      max-width: 56ch;
       margin-bottom: 24px;
-      animation: fadeInUp 0.8s 0.1s ease forwards;
-      opacity: 0;
     }
 
-    .hero h1 .highlight {
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-lead {
-      font-size: 1.25rem;
-      color: var(--text-muted);
-      max-width: 540px;
-      margin-bottom: 36px;
-      animation: fadeInUp 0.8s 0.2s ease forwards;
-      opacity: 0;
-    }
-
-    .hero-ctas {
+    .btn-row {
       display: flex;
-      gap: 16px;
       flex-wrap: wrap;
-      animation: fadeInUp 0.8s 0.3s ease forwards;
-      opacity: 0;
+      gap: 12px;
+      margin-bottom: 26px;
     }
 
-    .hero-stats {
-      display: flex;
-      gap: 40px;
-      margin-top: 48px;
-      padding-top: 32px;
-      border-top: 1px solid var(--border);
-      animation: fadeInUp 0.8s 0.4s ease forwards;
-      opacity: 0;
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
     }
 
-    .hero-stat { text-align: left; }
+    .kpi {
+      border-radius: 16px;
+      border: 1px solid var(--line-soft);
+      background: var(--panel);
+      padding: 14px;
+    }
 
-    .hero-stat strong {
+    .kpi strong {
       display: block;
-      font-size: 2.5rem;
-      font-family: 'Playfair Display', serif;
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 1.6rem;
       line-height: 1;
+      color: #e8f5ff;
+      margin-bottom: 6px;
     }
 
-    .hero-stat span {
-      font-size: 0.9rem;
-      color: var(--text-subtle);
+    .kpi span {
+      font-size: 0.86rem;
+      color: var(--muted);
     }
 
-    .hero-visual {
-      position: relative;
-      animation: fadeInRight 1s 0.3s ease forwards;
-      opacity: 0;
+    .hero-panel {
+      border: 1px solid var(--line-soft);
+      border-radius: 20px;
+      background: linear-gradient(180deg, #121927, #0c111b);
+      padding: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .stamp-wrap {
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stamp-wrap img {
+      width: min(100%, 260px);
+      height: auto;
+      display: block;
     }
 
     .hero-card {
-      position: relative;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 32px;
-      box-shadow: var(--shadow-glow);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      padding: 16px;
     }
 
-    .hero-card::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: var(--radius-xl);
-      padding: 1px;
-      background: var(--gradient-1);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.3;
+    .hero-card h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
-    .card-header {
+    section { padding: 68px 0; }
+
+    .head {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
       margin-bottom: 24px;
     }
 
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: var(--gradient-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
+    .head h2 {
+      font-size: clamp(1.9rem, 4vw, 3.4rem);
+      max-width: 13ch;
     }
 
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
+    .head p { max-width: 58ch; }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
 
-    .card-subtitle {
-      font-size: 0.85rem;
-      color: var(--text-subtle);
+    .card {
+      border: 1px solid var(--line-soft);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 22px;
     }
 
-    .revenue-display {
-      text-align: center;
-      padding: 32px 0;
-      margin-bottom: 24px;
-      border-radius: var(--radius-lg);
-      background: rgba(0, 212, 255, 0.05);
-      border: 1px solid rgba(0, 212, 255, 0.1);
-    }
-
-    .revenue-label {
-      font-size: 0.85rem;
-      color: var(--text-subtle);
-      text-transform: uppercase;
+    .card .label {
+      display: inline-block;
+      font-size: 0.75rem;
       letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #b6cbe1;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .card h3 {
+      font-family: "Manrope", sans-serif;
+      font-weight: 800;
+      font-size: 1.18rem;
       margin-bottom: 8px;
     }
 
-    .revenue-amount {
-      font-size: 3rem;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .revenue-change {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 8px;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: rgba(34, 197, 94, 0.15);
-      color: #22c55e;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .metric-item {
-      padding: 16px;
-      border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-    }
-
-    .metric-item strong {
-      display: block;
-      font-size: 1.5rem;
-      font-family: 'Playfair Display', serif;
-      margin-bottom: 4px;
-    }
-
-    .metric-item span {
-      font-size: 0.85rem;
-      color: var(--text-subtle);
-    }
-
-    .floating-badge {
-      position: absolute;
-      padding: 12px 18px;
-      border-radius: var(--radius-md);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-lg);
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .floating-badge.top-right {
-      top: -20px;
-      right: -30px;
-      animation-delay: -1s;
-    }
-
-    .floating-badge.bottom-left {
-      bottom: 40px;
-      left: -40px;
-      animation-delay: -3s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInRight {
-      from { opacity: 0; transform: translateX(30px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    .problem-section {
-      padding: 100px 0;
-      position: relative;
-    }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: rgba(236, 72, 153, 0.1);
-      border: 1px solid rgba(236, 72, 153, 0.2);
-      color: #ec4899;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 24px;
-    }
-
-    .section-title {
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
-      line-height: 1.1;
-      margin-bottom: 20px;
-      max-width: 800px;
-    }
-
-    .section-subtitle {
-      font-size: 1.15rem;
-      color: var(--text-muted);
-      max-width: 600px;
-      margin-bottom: 48px;
-    }
-
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .problem-card {
-      padding: 32px;
-      border-radius: var(--radius-xl);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      transition: var(--transition);
-    }
-
-    .problem-card:hover {
-      border-color: rgba(236, 72, 153, 0.3);
-      transform: translateY(-4px);
-    }
-
-    .problem-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gradient-2);
-      opacity: 0;
-      transition: var(--transition);
-    }
-
-    .problem-card:hover::before { opacity: 1; }
-
-    .problem-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: rgba(236, 72, 153, 0.1);
-      border: 1px solid rgba(236, 72, 153, 0.2);
+    .services .card {
+      min-height: 230px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .problem-card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 12px;
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-    }
-
-    .problem-card p {
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    .problem-stat {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 8px 14px;
-      border-radius: var(--radius-sm);
-      background: rgba(236, 72, 153, 0.1);
-      color: #ec4899;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .solution-section {
-      padding: 100px 0;
-      position: relative;
-    }
-
-    .solution-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1px;
-      height: 100px;
-      background: linear-gradient(to bottom, transparent, var(--accent));
-    }
-
-    .solution-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .solution-header .section-label {
-      background: rgba(0, 212, 255, 0.1);
-      border-color: rgba(0, 212, 255, 0.2);
-      color: var(--accent);
-    }
-
-    .solution-header .section-title {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .solution-header .section-subtitle {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .solution-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-
-    .solution-card {
-      padding: 40px;
-      border-radius: var(--radius-xl);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      transition: var(--transition);
-    }
-
-    .solution-card:hover { border-color: rgba(0, 212, 255, 0.3); }
-
-    .solution-card.featured {
-      grid-column: span 2;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(124, 58, 237, 0.08));
-      border-color: rgba(0, 212, 255, 0.2);
-    }
-
-    .solution-card.featured .solution-content {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 48px;
-      align-items: center;
-    }
-
-    .solution-number {
-      font-size: 4rem;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      opacity: 0.3;
-      position: absolute;
-      top: 20px;
-      right: 30px;
-    }
-
-    .solution-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: var(--gradient-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      margin-bottom: 24px;
-    }
-
-    .solution-card h3 {
-      font-size: 1.6rem;
-      margin-bottom: 12px;
-    }
-
-    .solution-card p {
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      line-height: 1.7;
-    }
-
-    .solution-features {
+    .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
+      margin-top: 14px;
     }
 
-    .feature-tag {
-      padding: 8px 14px;
+    .tag {
       border-radius: 999px;
-      background: rgba(0, 212, 255, 0.1);
-      border: 1px solid rgba(0, 212, 255, 0.15);
-      font-size: 0.85rem;
-      color: var(--accent);
+      border: 1px solid rgba(154,215,255,0.25);
+      background: rgba(154,215,255,0.09);
+      color: #d5edff;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      font-weight: 600;
     }
 
-    .process-section {
-      padding: 100px 0;
-      background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.02), transparent);
+    .process-band {
+      border: 1px solid rgba(154,215,255,0.24);
+      background: linear-gradient(180deg, rgba(154,215,255,0.09), rgba(154,215,255,0.03));
+      border-radius: calc(var(--radius) + 2px);
+      padding: 24px;
     }
 
-    .process-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .process-timeline {
+    .steps {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      position: relative;
+      gap: 12px;
     }
 
-    .process-timeline::before {
-      content: '';
-      position: absolute;
-      top: 80px;
-      left: 16.66%;
-      right: 16.66%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2), #ec4899);
-      opacity: 0.3;
+    .step {
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(8, 12, 19, 0.55);
+      padding: 16px;
     }
 
-    .process-step {
-      text-align: center;
-      position: relative;
-    }
-
-    .step-number {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      font-size: 1.8rem;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      color: var(--accent);
-      position: relative;
-      z-index: 1;
-      box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-    }
-
-    .process-step h3 {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-    }
-
-    .process-step p {
-      color: var(--text-muted);
-      max-width: 280px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-
-    .results-section { padding: 100px 0; }
-
-    .results-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: center;
-    }
-
-    .results-content h2 {
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      margin-bottom: 24px;
-      line-height: 1.15;
-    }
-
-    .results-content p {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      margin-bottom: 32px;
-      line-height: 1.7;
-    }
-
-    .results-list {
-      display: grid;
-      gap: 16px;
-    }
-
-    .result-item {
-      display: flex;
-      gap: 16px;
-      padding: 20px;
-      border-radius: var(--radius-lg);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      transition: var(--transition);
-    }
-
-    .result-item:hover {
-      border-color: var(--accent);
-      transform: translateX(8px);
-    }
-
-    .result-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: var(--gradient-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 1.2rem;
-    }
-
-    .result-item h4 {
-      font-size: 1.1rem;
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .result-item p {
-      font-size: 0.95rem;
-      color: var(--text-subtle);
-      margin: 0;
-    }
-
-    .results-visual { position: relative; }
-
-    .results-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 32px;
-      box-shadow: var(--shadow-glow);
-    }
-
-    .graph-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .graph-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .graph-badge {
-      padding: 6px 12px;
+    .step-num {
+      width: 34px;
+      height: 34px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.15);
-      color: #22c55e;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .graph-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 12px;
-      height: 200px;
-      padding: 20px 0;
-    }
-
-    .graph-bar {
-      flex: 1;
-      border-radius: 8px 8px 0 0;
-      background: var(--gradient-1);
-      position: relative;
-      animation: growBar 1s ease forwards;
-      transform-origin: bottom;
-    }
-
-    @keyframes growBar {
-      from { transform: scaleY(0); }
-      to { transform: scaleY(1); }
-    }
-
-    .graph-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
-    .graph-bar:nth-child(2) { height: 55%; animation-delay: 0.2s; }
-    .graph-bar:nth-child(3) { height: 45%; animation-delay: 0.3s; }
-    .graph-bar:nth-child(4) { height: 70%; animation-delay: 0.4s; }
-    .graph-bar:nth-child(5) { height: 65%; animation-delay: 0.5s; }
-    .graph-bar:nth-child(6) { height: 85%; animation-delay: 0.6s; }
-    .graph-bar:nth-child(7) { height: 100%; animation-delay: 0.7s; }
-
-    .graph-labels {
-      display: flex;
-      justify-content: space-between;
-      color: var(--text-subtle);
-      font-size: 0.8rem;
-      margin-top: 12px;
-    }
-
-    .cta-section { padding: 100px 0; }
-
-    .cta-container {
-      position: relative;
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-    }
-
-    .cta-bg {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
-      z-index: 0;
-    }
-
-    .cta-bg::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: 
-        radial-gradient(ellipse 100% 100% at 20% 0%, rgba(0, 212, 255, 0.15), transparent 50%),
-        radial-gradient(ellipse 80% 80% at 80% 100%, rgba(124, 58, 237, 0.15), transparent 50%);
-    }
-
-    .cta-content {
-      position: relative;
-      z-index: 1;
-      padding: 80px;
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 60px;
-      align-items: center;
+      place-items: center;
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #072035;
+      background: linear-gradient(180deg, #c2e8ff, #7ccaff);
+      margin-bottom: 10px;
     }
 
-    .cta-text h2 {
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
-      line-height: 1.1;
-      margin-bottom: 20px;
+    .step h3 {
+      font-family: "Manrope", sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
-    .cta-text p {
-      font-size: 1.15rem;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-      max-width: 500px;
+    .cta {
+      border: 1px solid var(--line-soft);
+      border-radius: calc(var(--radius) + 4px);
+      padding: 28px;
+      background:
+        radial-gradient(700px 300px at 90% 10%, rgba(154, 215, 255, 0.22), transparent 56%),
+        var(--panel-soft);
     }
 
-    .cta-features {
+    .cta-grid {
       display: grid;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .cta-feature {
-      display: flex;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
       align-items: center;
-      gap: 12px;
     }
 
-    .cta-feature .check {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--gradient-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      flex-shrink: 0;
+    .cta h2 {
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      margin-bottom: 10px;
     }
 
-    .cta-feature span { color: var(--text-muted); }
-
-    .cta-form {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 40px;
-    }
-
-    .cta-form h3 {
-      font-size: 1.5rem;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .cta-form .subtitle {
-      color: var(--text-muted);
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .cta-form .btn {
-      width: 100%;
-      font-size: 1.1rem;
-      padding: 18px;
-    }
-
-    .cta-form .disclaimer {
-      text-align: center;
-      color: var(--text-subtle);
-      font-size: 0.85rem;
+    .cta .bullets {
+      display: grid;
+      gap: 10px;
       margin-top: 16px;
+    }
+
+    .cta .bullets div {
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.02);
+      color: #d7deea;
+      font-size: 0.92rem;
+    }
+
+    .cta-action {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+
+    .cta-action h3 {
+      font-family: "Manrope", sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
     }
 
     footer {
-      padding: 60px 0 40px;
-      border-top: 1px solid var(--border);
+      padding: 36px 0 46px;
+      border-top: 1px solid var(--line-soft);
+      margin-top: 58px;
     }
 
-    .footer-content {
+    .foot {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 14px;
       flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .footer-text {
-      color: var(--text-subtle);
+      color: var(--muted);
       font-size: 0.9rem;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: var(--transition);
-    }
-
-    .footer-links a:hover { color: var(--accent); }
-
-    .popup-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .popup-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .popup-modal {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 48px;
-      max-width: 500px;
-      width: calc(100% - 48px);
-      position: relative;
-      transform: scale(0.9) translateY(20px);
-      transition: all 0.3s ease;
-    }
-
-    .popup-overlay.active .popup-modal {
-      transform: scale(1) translateY(0);
-    }
-
-    .popup-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .popup-close:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text);
-    }
-
-    .popup-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: var(--gradient-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 24px;
-      box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
-    }
-
-    .popup-modal h3 {
-      font-size: 1.8rem;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .popup-modal p {
-      color: var(--text-muted);
-      text-align: center;
-      margin-bottom: 28px;
-      line-height: 1.7;
-    }
-
-    .popup-modal .btn { width: 100%; }
-
-    .toast {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: var(--shadow-lg);
-      z-index: 9998;
-      transform: translateX(120%);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .toast.active { transform: translateX(0); }
-
-    .toast-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--gradient-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .toast-content strong {
+    .foot img {
+      height: 42px;
+      width: auto;
       display: block;
-      margin-bottom: 4px;
     }
 
-    .toast-content span {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .toast-close {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 4px;
-      transition: var(--transition);
-    }
-
-    .toast-close:hover { color: var(--text); }
-
-    .mobile-menu-btn {
-      display: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .mobile-menu {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 100%;
-      max-width: 400px;
-      height: 100vh;
-      background: var(--bg-elevated);
-      border-left: 1px solid var(--border);
-      z-index: 10000;
-      padding: 32px;
-      transform: translateX(100%);
-      transition: all 0.3s ease;
-    }
-
-    .mobile-menu.active { transform: translateX(0); }
-
-    .mobile-menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 48px;
-    }
-
-    .mobile-menu-links {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .mobile-menu-links a {
-      font-size: 1.5rem;
-      font-family: 'Playfair Display', serif;
-      color: var(--text);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .mobile-menu-links a:hover { color: var(--accent); }
-
-    .mobile-menu-cta { margin-top: 48px; }
-    .mobile-menu-cta .btn { width: 100%; }
-
-    .mobile-menu-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 9999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .mobile-menu-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    @media (max-width: 1024px) {
-      .hero-content {
+    @media (max-width: 1020px) {
+      .hero-grid,
+      .cta-grid,
+      .grid-3,
+      .steps {
         grid-template-columns: 1fr;
-        gap: 48px;
       }
-      .hero-visual {
-        max-width: 500px;
-        margin: 0 auto;
-      }
-      .problem-grid, .process-timeline {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-      .process-timeline::before { display: none; }
-      .solution-grid { grid-template-columns: 1fr; }
-      .solution-card.featured { grid-column: span 1; }
-      .solution-card.featured .solution-content {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-      .results-grid {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-      .cta-content {
-        grid-template-columns: 1fr;
-        padding: 48px 32px;
-      }
+      .head { align-items: flex-start; flex-direction: column; }
     }
 
-    @media (max-width: 768px) {
-      .container { width: calc(100% - 32px); }
-      .nav-links, .nav-cta { display: none; }
-      .mobile-menu-btn { display: flex; }
-      .hero { padding: 100px 0 60px; }
-      .hero h1 { font-size: 2.5rem; }
-      .hero-stats {
-        flex-direction: column;
-        gap: 24px;
-      }
-      .hero-ctas { flex-direction: column; }
-      .hero-ctas .btn { width: 100%; }
-      .section-title { font-size: 2rem; }
-      .floating-badge { display: none; }
-      .cta-form { padding: 32px 24px; }
-      .footer-content {
-        flex-direction: column;
-        text-align: center;
-      }
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .logo-wrap img { height: 46px; }
+      .hero-shell { padding: 20px; }
+      .kpi-row { grid-template-columns: 1fr; }
     }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .counter { display: inline-block; }
   </style>
 </head>
 <body>
-  <div class="bg-gradient"></div>
-  <div class="noise"></div>
-
-  <header class="navbar" id="navbar">
-    <div class="container">
-      <nav class="nav-inner">
-        <a href="#" class="nav-logo">TCC Solutions</a>
-        <div class="nav-links">
-          <a href="#problem">The Problem</a>
-          <a href="#solutions">Solutions</a>
-          <a href="#process">Process</a>
-          <a href="#results">Results</a>
-        </div>
-        <div class="nav-cta">
-          <a href="#cta" class="btn btn-secondary">Learn More</a>
-          <a href="https://calendly.com/tccsolutions2025/30min" target="_blank" class="btn btn-primary">Book a Call</a>
-        </div>
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
+  <header class="topbar" id="topbar">
+    <div class="container nav">
+      <a class="logo-wrap" href="#top" aria-label="TCC Solutions Group home">
+        <img src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group logo" />
+      </a>
+      <nav class="nav-links">
+        <a href="#problem">Problem</a>
+        <a href="#services">Solutions</a>
+        <a href="#process">Process</a>
       </nav>
+      <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a 10-minute walkthrough</a>
     </div>
   </header>
 
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <div class="mobile-menu-header">
-      <span class="nav-logo">TCC Solutions</span>
-      <button class="popup-close" onclick="toggleMobileMenu()">&#215;</button>
-    </div>
-    <div class="mobile-menu-links">
-      <a href="#problem" onclick="toggleMobileMenu()">The Problem</a>
-      <a href="#solutions" onclick="toggleMobileMenu()">Solutions</a>
-      <a href="#process" onclick="toggleMobileMenu()">Process</a>
-      <a href="#results" onclick="toggleMobileMenu()">Results</a>
-    </div>
-    <div class="mobile-menu-cta">
-      <a href="https://calendly.com/tccsolutions2025/30min" target="_blank" class="btn btn-primary btn-lg">Book Your Call</a>
-    </div>
-  </div>
-
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-text">
-          <div class="hero-badge">
-            <span class="pulse"></span>
-            <span>Revenue-Generating AI Systems</span>
-          </div>
-          <h1>You're Losing Money <span class="highlight">Every Day</span> You Wait</h1>
-          <p class="hero-lead">The world is advancing faster than ever. Businesses that don't adapt will fall behind. We install revenue-generating AI and automation systems that help you capture more customers, reduce wasted time, and operate like the future is already here.</p>
-          <div class="hero-ctas">
-            <a href="https://calendly.com/tccsolutions2025/30min" target="_blank" class="btn btn-primary btn-lg">
-              Book a Free Strategy Call
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <a href="#solutions" class="btn btn-secondary btn-lg">See How It Works</a>
-          </div>
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <strong class="counter" data-target="47">0</strong><strong>%</strong>
-              <span>Average efficiency gain</span>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-shell">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-dot"></span> Revenue systems for modern operators</div>
+            <h1>You are losing revenue in <span>slow systems.</span></h1>
+            <p class="lead">
+              The market is moving fast. TCC installs revenue-generating systems inside businesses with custom software,
+              AI integration, and automation so you can operate smarter, move faster, and convert more.
+            </p>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a 10-minute walkthrough</a>
+              <a class="btn btn-secondary" href="#services">See what we build</a>
             </div>
-            <div class="hero-stat">
-              <strong>$<span class="counter" data-target="23">0</span>K+</strong>
-              <span>Saved per year in labor</span>
-            </div>
-            <div class="hero-stat">
-              <strong><span class="counter" data-target="3">0</span>x</strong>
-              <span>Faster lead response</span>
+            <div class="kpi-row">
+              <div class="kpi"><strong>Faster</strong><span>Lead response and follow-up</span></div>
+              <div class="kpi"><strong>Cleaner</strong><span>Operations and internal workflows</span></div>
+              <div class="kpi"><strong>Higher</strong><span>Revenue per customer journey</span></div>
             </div>
           </div>
-        </div>
-        <div class="hero-visual">
-          <div class="hero-card">
-            <div class="card-header">
-              <div class="card-icon">&#9889;</div>
-              <div>
-                <div class="card-title">Revenue Dashboard</div>
-                <div class="card-subtitle">Real-time business metrics</div>
-              </div>
+          <aside class="hero-panel">
+            <div class="stamp-wrap">
+              <img src="./assets/tcc-logo-stacked.png" alt="TCC stacked mark" />
             </div>
-            <div class="revenue-display">
-              <div class="revenue-label">Monthly Revenue Impact</div>
-              <div class="revenue-amount">+$12,450</div>
-              <div class="revenue-change">&#8593; 34% vs. last month</div>
+            <div class="hero-card">
+              <h3>Built for service businesses and SMB operators</h3>
+              <p>Local service teams, restaurants, contractors, and growth-stage businesses from $250K to $5M.</p>
             </div>
-            <div class="metric-grid">
-              <div class="metric-item">
-                <strong>847</strong>
-                <span>Leads captured</span>
-              </div>
-              <div class="metric-item">
-                <strong>92%</strong>
-                <span>Response rate</span>
-              </div>
-              <div class="metric-item">
-                <strong>4.2hr</strong>
-                <span>Time saved daily</span>
-              </div>
-              <div class="metric-item">
-                <strong>$287</strong>
-                <span>Avg. order value</span>
-              </div>
+            <div class="hero-card">
+              <h3>Outcome first, always</h3>
+              <p>Every engagement is tied to one objective: make more money, reduce wasted time, and operate with better control.</p>
             </div>
-          </div>
-          <div class="floating-badge top-right">
-            <strong style="color: #22c55e;">&#9679; Live</strong>
-            <span style="color: var(--text-muted); font-size: 0.85rem;"> AI Assistant Active</span>
-          </div>
-          <div class="floating-badge bottom-left">
-            <span style="font-size: 1.5rem;">&#129302;</span>
-            <span style="color: var(--text-muted); font-size: 0.9rem;"> Automation running</span>
-          </div>
+          </aside>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="problem-section" id="problem">
-    <div class="container">
-      <div class="section-label">&#9888;&#65039; The Reality</div>
-      <h2 class="section-title reveal">Your competitors are already moving. Are you?</h2>
-      <p class="section-subtitle reveal">Most businesses are bleeding money every day from inefficiencies they don't even see. Here's what's costing you:</p>
-      
-      <div class="problem-grid">
-        <div class="problem-card reveal">
-          <div class="problem-icon">&#128184;</div>
-          <h3>Lost Revenue</h3>
-          <p>Slow follow-ups, missed leads, and poor customer flow are quietly draining thousands from your business every month.</p>
-          <span class="problem-stat">Avg. loss: $8K/month</span>
+    <section id="problem">
+      <div class="container">
+        <div class="head">
+          <h2>The hidden drag on your business is expensive.</h2>
+          <p>
+            Most teams are not short on effort. They are short on systems. That gap quietly kills speed, consistency, and revenue.
+          </p>
         </div>
-        <div class="problem-card reveal">
-          <div class="problem-icon">&#9200;</div>
-          <h3>Wasted Time</h3>
-          <p>Your team is doing repetitive tasks that AI could handle in seconds. That's expensive labor spent on low-value work.</p>
-          <span class="problem-stat">15+ hours/week wasted</span>
-        </div>
-        <div class="problem-card reveal">
-          <div class="problem-icon">&#128200;</div>
-          <h3>Falling Behind</h3>
-          <p>Businesses adopting AI are moving 3x faster than those who wait. Every month you delay, the gap widens.</p>
-          <span class="problem-stat">67% of competitors adapting</span>
+        <div class="grid-3">
+          <article class="card">
+            <span class="label">Leak 01</span>
+            <h3>Missed opportunities</h3>
+            <p>Slow follow-up and weak lead handling let qualified buyers slip away before your team can act.</p>
+          </article>
+          <article class="card">
+            <span class="label">Leak 02</span>
+            <h3>Manual busy work</h3>
+            <p>Staff spend high-value hours on repetitive tasks that automation and AI should handle automatically.</p>
+          </article>
+          <article class="card">
+            <span class="label">Leak 03</span>
+            <h3>No operating insight</h3>
+            <p>Without clear visibility, decisions become guesses and growth gets capped by operational friction.</p>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="solution-section" id="solutions">
-    <div class="container">
-      <div class="solution-header">
-        <div class="section-label">&#128161; The Solution</div>
-        <h2 class="section-title reveal">We install revenue-generating systems inside your business</h2>
-        <p class="section-subtitle reveal">Not just websites. Not just software. Complete systems that capture more customers, automate operations, and increase your bottom line.</p>
-      </div>
-
-      <div class="solution-grid">
-        <div class="solution-card featured reveal">
-          <div class="solution-content">
+    <section id="services" class="services">
+      <div class="container">
+        <div class="head">
+          <h2>Systems designed to increase profit, not just polish.</h2>
+          <p>
+            We do not sell disconnected services. We install integrated systems that turn demand into revenue and reduce operational drag.
+          </p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
             <div>
-              <div class="solution-icon">&#129302;</div>
-              <h3>AI-Powered Customer Systems</h3>
-              <p>Turn your website into a 24/7 sales machine. AI chatbots that answer questions, capture leads, and book appointments while you sleep. Increase conversions by up to 40%.</p>
-              <div class="solution-features">
-                <span class="feature-tag">AI Chat Assistant</span>
-                <span class="feature-tag">Lead Capture</span>
-                <span class="feature-tag">Auto-Booking</span>
-                <span class="feature-tag">Smart Follow-up</span>
-              </div>
+              <span class="label">A</span>
+              <h3>Custom software systems</h3>
+              <p>Web apps, internal dashboards, and tools tailored to how your business actually works.</p>
             </div>
-            <div style="text-align: center;">
-              <div style="font-size: 4rem; margin-bottom: 12px;">&#128640;</div>
-              <div style="font-size: 2.5rem; font-family: 'Playfair Display', serif; font-weight: 700; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">+40%</div>
-              <div style="color: var(--text-muted);">Average conversion lift</div>
+            <div class="tags">
+              <span class="tag">Web apps</span>
+              <span class="tag">Dashboards</span>
+              <span class="tag">Internal tools</span>
             </div>
-          </div>
-          <span class="solution-number">01</span>
-        </div>
-
-        <div class="solution-card reveal">
-          <span class="solution-number">02</span>
-          <div class="solution-icon">&#9881;&#65039;</div>
-          <h3>Business Automation</h3>
-          <p>Replace manual tasks with intelligent automation. From lead follow-up to appointment reminders to invoice processing—free your team for high-value work.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Workflow Automation</span>
-            <span class="feature-tag">Lead Nurturing</span>
-            <span class="feature-tag">Task Management</span>
-          </div>
-        </div>
-
-        <div class="solution-card reveal">
-          <span class="solution-number">03</span>
-          <div class="solution-icon">&#128202;</div>
-          <h3>Custom Software</h3>
-          <p>Web apps, dashboards, and internal tools built exactly for how YOUR business operates. No compromises, no workarounds, just perfect fit.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Custom Dashboards</span>
-            <span class="feature-tag">Client Portals</span>
-            <span class="feature-tag">Internal Tools</span>
-          </div>
-        </div>
-
-        <div class="solution-card reveal">
-          <span class="solution-number">04</span>
-          <div class="solution-icon">&#127919;</div>
-          <h3>Conversion Websites</h3>
-          <p>Not just beautiful—profitable. Websites engineered to convert visitors into paying customers with smart funnels and booking systems.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Conversion Design</span>
-            <span class="feature-tag">Booking System</span>
-            <span class="feature-tag">Lead Funnels</span>
-          </div>
-        </div>
-
-        <div class="solution-card reveal">
-          <span class="solution-number">05</span>
-          <div class="solution-icon">&#128200;</div>
-          <h3>Ongoing AI Advisory</h3>
-          <p>Weekly strategy sessions to continuously optimize your systems, implement new AI tools, and stay ahead of competitors. Your unfair advantage.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Weekly Sessions</span>
-            <span class="feature-tag">Performance Review</span>
-            <span class="feature-tag">New Implementations</span>
-          </div>
+          </article>
+          <article class="card">
+            <div>
+              <span class="label">B</span>
+              <h3>AI integration</h3>
+              <p>Customer-facing AI, workflow automation, and decision support that increases revenue per interaction.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">AI assistants</span>
+              <span class="tag">Automations</span>
+              <span class="tag">Agent workflows</span>
+            </div>
+          </article>
+          <article class="card">
+            <div>
+              <span class="label">C</span>
+              <h3>Website systems</h3>
+              <p>Conversion-first websites with booking logic and lead funnels that turn traffic into paying customers.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">Conversion pages</span>
+              <span class="tag">Booking flow</span>
+              <span class="tag">Lead funnel</span>
+            </div>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="process-section" id="process">
-    <div class="container">
-      <div class="process-header">
-        <div class="section-label">&#128260; The Process</div>
-        <h2 class="section-title reveal">From chaos to clarity in 3 steps</h2>
-        <p class="section-subtitle reveal">We make modernizing your business simple. No massive overhauls, no complicated transformations—just strategic moves that create immediate impact.</p>
-      </div>
-
-      <div class="process-timeline">
-        <div class="process-step reveal">
-          <div class="step-number">1</div>
-          <h3>Audit &amp; Discover</h3>
-          <p>We analyze your business to find revenue leaks, inefficiencies, and opportunities where AI and automation can create the biggest impact.</p>
+    <section id="process">
+      <div class="container process-band">
+        <div class="head">
+          <h2>Simple execution. High leverage.</h2>
+          <p>Clear first move, fast deployment, then ongoing optimization so the system keeps compounding.</p>
         </div>
-        <div class="process-step reveal">
-          <div class="step-number">2</div>
-          <h3>Design &amp; Build</h3>
-          <p>We create a custom system—whether it's AI chat, automation workflows, or software—tailored exactly to your business needs.</p>
-        </div>
-        <div class="process-step reveal">
-          <div class="step-number">3</div>
-          <h3>Launch &amp; Optimize</h3>
-          <p>We deploy your system, train your team, and continuously optimize for maximum revenue impact. You see results, not just deliverables.</p>
+        <div class="steps">
+          <article class="step">
+            <div class="step-num">01</div>
+            <h3>Analyze</h3>
+            <p>We map where money and time are leaking across customer flow and operations.</p>
+          </article>
+          <article class="step">
+            <div class="step-num">02</div>
+            <h3>Build</h3>
+            <p>We implement the highest-leverage system first, then connect it to your existing workflow.</p>
+          </article>
+          <article class="step">
+            <div class="step-num">03</div>
+            <h3>Optimize</h3>
+            <p>Weekly or biweekly optimization turns your system into a long-term growth asset.</p>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="results-section" id="results">
-    <div class="container">
-      <div class="results-grid">
-        <div class="results-content reveal">
-          <div class="section-label">&#128200; The Results</div>
-          <h2>Better systems create better businesses</h2>
-          <p>Strong systems improve how the business feels to customers, how quickly your team can move, and how reliably opportunities turn into revenue.</p>
-          
-          <div class="results-list">
-            <div class="result-item">
-              <div class="result-icon">&#128176;</div>
-              <div>
-                <h4>More Revenue</h4>
-                <p>Better conversion paths, smarter follow-up, increased average order value.</p>
-              </div>
-            </div>
-            <div class="result-item">
-              <div class="result-icon">&#9889;</div>
-              <div>
-                <h4>Less Wasted Time</h4>
-                <p>Automate repetitive tasks, eliminate manual data entry, streamline operations.</p>
-              </div>
-            </div>
-            <div class="result-item">
-              <div class="result-icon">&#127919;</div>
-              <div>
-                <h4>Better Decisions</h4>
-                <p>Real-time dashboards and insights show exactly where to focus for growth.</p>
-              </div>
+    <section id="offer">
+      <div class="container cta">
+        <div class="cta-grid">
+          <div>
+            <h2>Book a 10-minute walkthrough.</h2>
+            <p>
+              We will identify your biggest revenue leak, show the fastest system to fix it, and give you a practical next step.
+            </p>
+            <div class="bullets">
+              <div>Focused AI and systems audit (free)</div>
+              <div>Live walkthrough of your best first move</div>
+              <div>Clear build path for long-term leverage</div>
             </div>
           </div>
-        </div>
-
-        <div class="results-visual reveal">
-          <div class="results-card">
-            <div class="graph-header">
-              <span class="graph-title">Revenue Growth</span>
-              <span class="graph-badge">+127% YoY</span>
-            </div>
-            <div class="graph-bars">
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-            </div>
-            <div class="graph-labels">
-              <span>Jan</span>
-              <span>Feb</span>
-              <span>Mar</span>
-              <span>Apr</span>
-              <span>May</span>
-              <span>Jun</span>
-              <span>Jul</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta-section" id="cta">
-    <div class="container">
-      <div class="cta-container">
-        <div class="cta-bg"></div>
-        <div class="cta-content">
-          <div class="cta-text reveal">
-            <h2>Don't wait until your market passes you by</h2>
-            <p>Businesses that adopt smart systems early will move faster, learn faster, and compete better. The gap between early adopters and laggards is widening every day.</p>
-            
-            <div class="cta-features">
-              <div class="cta-feature">
-                <span class="check">&#10003;</span>
-                <span>Free AI &amp; automation audit for your business</span>
-              </div>
-              <div class="cta-feature">
-                <span class="check">&#10003;</span>
-                <span>Custom roadmap for revenue growth</span>
-              </div>
-              <div class="cta-feature">
-                <span class="check">&#10003;</span>
-                <span>See exactly what AI can do for YOU</span>
-              </div>
-              <div class="cta-feature">
-                <span class="check">&#10003;</span>
-                <span>No obligation, no pressure</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="cta-form reveal">
-            <h3>Book Your Free Call</h3>
-            <p class="subtitle">30 minutes that could change your business</p>
-            <a href="https://calendly.com/tccsolutions2025/30min" target="_blank" class="btn btn-primary">
-              Schedule Now
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
+          <aside class="cta-action">
+            <h3>Early adopters build distance.</h3>
+            <p style="margin-bottom:14px;">Modern systems are becoming table stakes. Getting ahead now is cheaper than catching up later.</p>
+            <a class="btn btn-primary" style="width:100%;" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">
+              Book your call now
             </a>
-            <p class="disclaimer">Spots are limited. Serious inquiries only.</p>
-          </div>
+          </aside>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div>
-          <div class="footer-logo">TCC Solutions Group</div>
-          <p class="footer-text">Revenue-focused AI &amp; software systems for growing businesses.</p>
-        </div>
-        <div class="footer-links">
-          <a href="#solutions">Solutions</a>
-          <a href="#process">Process</a>
-          <a href="mailto:hello@tccsolutionsgroup.com">Contact</a>
-        </div>
-        <p class="footer-text">&copy; 2026 TCC Solutions Group. Built to move businesses forward.</p>
-      </div>
+    <div class="container foot">
+      <img src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group logo" />
+      <span>&copy; 2026 TCC Solutions Group. Revenue-focused systems for modern businesses.</span>
     </div>
   </footer>
 
-  <div class="popup-overlay" id="exitPopup">
-    <div class="popup-modal">
-      <button class="popup-close" onclick="closePopup()">&#215;</button>
-      <div class="popup-icon">&#127873;</div>
-      <h3>Wait! Before You Go...</h3>
-      <p>Get a free AI audit report showing exactly where your business is losing money—and how to fix it. Takes 2 minutes to request.</p>
-      <a href="https://calendly.com/tccsolutions2025/30min" target="_blank" class="btn btn-primary btn-lg" onclick="closePopup()">
-        Get My Free Audit
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-
-  <div class="toast" id="toast">
-    <div class="toast-icon">&#128293;</div>
-    <div class="toast-content">
-      <strong>Someone just booked a call!</strong>
-      <span>New York, NY - 2 minutes ago</span>
-    </div>
-    <button class="toast-close" onclick="closeToast()">&#215;</button>
-  </div>
-
   <script>
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-
-    const revealElements = document.querySelectorAll('.reveal');
-    const revealOnScroll = () => {
-      revealElements.forEach(el => {
-        const elementTop = el.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        if (elementTop < windowHeight - 100) {
-          el.classList.add('active');
-        }
-      });
-    };
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll();
-
-    const counters = document.querySelectorAll('.counter');
-    const animateCounters = () => {
-      counters.forEach(counter => {
-        const target = parseInt(counter.getAttribute('data-target'));
-        const current = parseInt(counter.innerText);
-        const increment = target / 50;
-        
-        if (current < target) {
-          counter.innerText = Math.ceil(current + increment);
-          setTimeout(() => animateCounters(), 40);
-        } else {
-          counter.innerText = target;
-        }
-      });
-    };
-
-    const heroObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounters();
-          heroObserver.disconnect();
-        }
-      });
-    }, { threshold: 0.5 });
-
-    const heroSection = document.querySelector('.hero');
-    if (heroSection) heroObserver.observe(heroSection);
-
-    let popupShown = false;
-    document.addEventListener('mouseout', (e) => {
-      if (!popupShown && e.clientY < 10 && e.relatedTarget === null) {
-        document.getElementById('exitPopup').classList.add('active');
-        popupShown = true;
-      }
-    });
-
-    function closePopup() {
-      document.getElementById('exitPopup').classList.remove('active');
-    }
-
-    document.getElementById('exitPopup').addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) {
-        closePopup();
-      }
-    });
-
-    function showToast() {
-      const toast = document.getElementById('toast');
-      toast.classList.add('active');
-      setTimeout(() => {
-        toast.classList.remove('active');
-      }, 5000);
-    }
-
-    function closeToast() {
-      document.getElementById('toast').classList.remove('active');
-    }
-
-    setTimeout(showToast, 8000);
-
-    setInterval(() => {
-      const locations = ['New York, NY', 'Los Angeles, CA', 'Chicago, IL', 'Houston, TX', 'Phoenix, AZ', 'Miami, FL'];
-      const times = ['1 minute ago', '2 minutes ago', '3 minutes ago', '5 minutes ago'];
-      const toast = document.getElementById('toast');
-      const content = toast.querySelector('.toast-content span');
-      content.textContent = locations[Math.floor(Math.random() * locations.length)] + ' - ' + times[Math.floor(Math.random() * times.length)];
-      showToast();
-    }, 45000);
-
-    function toggleMobileMenu() {
-      document.getElementById('mobileMenu').classList.toggle('active');
-      document.getElementById('mobileMenuOverlay').classList.toggle('active');
-      document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('active') ? 'hidden' : '';
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closePopup();
-        if (document.getElementById('mobileMenu').classList.contains('active')) {
-          toggleMobileMenu();
-        }
-      }
+    const topbar = document.getElementById("topbar");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 8) topbar.classList.add("scrolled");
+      else topbar.classList.remove("scrolled");
     });
   </script>
 </body>
