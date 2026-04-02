@@ -9,148 +9,114 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#000;--text:#fff;--muted:#999;--dim:#666;--line:rgba(255,255,255,.1);--faint:rgba(255,255,255,.05);--max:1080px}
+:root{--bg:#000;--text:#fff;--muted:#999;--dim:#555;--line:rgba(255,255,255,.08);--faint:rgba(255,255,255,.04);--max:1060px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font:400 16.5px/1.65 "DM Sans","Avenir Next",system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
-h1,h2,h3,h4{font-family:"Sora","Neue Haas Grotesk Display","Helvetica Neue",sans-serif;letter-spacing:-.035em;line-height:1.08;font-weight:700;color:#fff}
+body{background:var(--bg);color:var(--text);font:400 17px/1.7 "DM Sans","Avenir Next",system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h1,h2,h3,h4{font-family:"Sora","Neue Haas Grotesk Display","Helvetica Neue",sans-serif;letter-spacing:-.04em;line-height:1.06;font-weight:700;color:#fff}
 p{color:var(--muted)}a{color:inherit;text-decoration:none}
 .w{width:min(var(--max),calc(100% - 48px));margin:0 auto}
 
-.topbar{position:fixed;top:0;left:0;right:0;z-index:50;transition:.25s ease;border-bottom:1px solid transparent}
-.topbar.scrolled{background:rgba(0,0,0,.88);backdrop-filter:blur(14px);border-bottom-color:var(--faint)}
-.topbar .inner{display:flex;align-items:center;justify-content:space-between;height:76px}
-.topbar .brand img{height:46px;display:block}
-.nav-links{display:flex;gap:28px;font-size:.88rem;font-weight:600;color:var(--muted)}.nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
-.cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 28px;border-radius:999px;background:#fff;color:#000;font-family:"Sora",sans-serif;font-weight:700;font-size:.88rem;letter-spacing:-.01em;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s}
-.cta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(255,255,255,.1)}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;transition:.3s ease;border-bottom:1px solid transparent}
+.topbar.scrolled{background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom-color:var(--line)}
+.topbar .inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+.topbar .brand img{height:40px;display:block}
+.nav-links{display:flex;gap:32px;font-size:.86rem;font-weight:500;color:var(--dim);letter-spacing:.01em}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
 
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.cta-btn{display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 30px;border-radius:999px;background:#fff;color:#000;font-family:"Sora",sans-serif;font-weight:700;font-size:.86rem;letter-spacing:-.01em;border:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,255,255,.08)}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
-.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+.reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.22s}.reveal.d3{transition-delay:.32s}
 
-.hero{position:relative;padding:140px 0 80px;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(255,255,255,.035),transparent 60%),linear-gradient(180deg,transparent,rgba(0,0,0,.55));pointer-events:none}
-.hero-bg-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:560px;opacity:.035;pointer-events:none;user-select:none}
-.hero .w{position:relative;z-index:1}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;border:1px solid var(--line);margin-bottom:24px}
-.hero-badge .pulse{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,255,255,.4)}50%{opacity:.6;box-shadow:0 0 0 8px rgba(255,255,255,0)}}
-.hero-badge span{font-size:.88rem;color:var(--muted);font-weight:500}
-.hero h1{font-size:clamp(2.6rem,5.5vw,4.2rem);font-weight:800;line-height:1.08;margin-bottom:22px}
-.hero-lead{font-size:1.1rem;color:var(--muted);max-width:540px;margin-bottom:8px;line-height:1.7}
-.hero-stats{display:flex;gap:40px;margin-top:36px;padding-top:28px;border-top:1px solid var(--line)}
-.hero-stat strong{display:block;font-size:2.2rem;font-family:"Sora",sans-serif;color:#fff;line-height:1}.hero-stat span{font-size:.88rem;color:var(--dim)}
+.hero{position:relative;padding:160px 0 100px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,255,255,.03),transparent 65%);pointer-events:none}
+.hero-bg-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:480px;opacity:.03;pointer-events:none;user-select:none}
+.hero .w{position:relative;z-index:1;max-width:740px}
+.hero .eyebrow{font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:28px}
+.hero h1{font-size:clamp(2.8rem,5.8vw,4.4rem);font-weight:800;margin-bottom:24px}
+.hero .lead{font-size:1.12rem;line-height:1.75;max-width:580px;color:var(--muted)}
 
-.hero-visual{position:relative}
-.hero-card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:20px;padding:28px}
-.card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.card-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:1.4rem}
-.card-title{font-size:1rem;font-weight:600}.card-subtitle{font-size:.82rem;color:var(--dim)}
-.revenue-display{text-align:center;padding:28px 0;margin-bottom:20px;border-radius:14px;background:var(--faint);border:1px solid var(--faint)}
-.revenue-label{font-size:.82rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-.revenue-amount{font-size:2.6rem;font-family:"Sora",sans-serif;font-weight:800;color:#fff}
-.revenue-change{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:#ccc;font-size:.85rem;font-weight:600}
-.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric-item{padding:14px;border-radius:12px;background:var(--faint);border:1px solid var(--faint)}
-.metric-item strong{display:block;font-size:1.4rem;font-family:"Sora",sans-serif;margin-bottom:2px}.metric-item span{font-size:.82rem;color:var(--dim)}
-.floating-badge{position:absolute;padding:10px 16px;border-radius:12px;background:rgba(0,0,0,.9);border:1px solid var(--line);box-shadow:0 12px 32px rgba(0,0,0,.5)}
-.floating-badge.top-right{top:-16px;right:-24px}.floating-badge.bottom-left{bottom:36px;left:-32px}
-
-.sep{display:flex;align-items:center;justify-content:center;padding:36px 24px}
+.sep{display:flex;align-items:center;justify-content:center;padding:44px 24px}
 .sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
-.sep img{width:48px;height:auto;margin:0 22px;opacity:.45;filter:invert(1)}
+.sep img{width:40px;height:auto;margin:0 24px;opacity:.35;filter:invert(1)}
 
-section{padding:90px 0}
-.section-label{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:var(--faint);border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:22px}
-.section-title{font-size:clamp(2.2rem,4.5vw,3.2rem);line-height:1.1;margin-bottom:18px;max-width:800px}
-.section-subtitle{font-size:1.08rem;color:var(--muted);max-width:600px;margin-bottom:44px;line-height:1.7}
+section{padding:100px 0}
+.section-eyebrow{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
+.section-title{font-size:clamp(2rem,4.2vw,3rem);margin-bottom:16px;max-width:700px}
+.section-desc{font-size:1.04rem;color:var(--muted);max-width:560px;margin-bottom:48px;line-height:1.75}
 
-.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.problem-card{padding:28px;border-radius:18px;background:rgba(255,255,255,.02);border:1px solid var(--line);transition:border-color .25s,transform .25s}
-.problem-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-3px)}
-.problem-icon{width:52px;height:52px;border-radius:14px;background:var(--faint);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:18px}
-.problem-card h3{font-size:1.3rem;margin-bottom:10px;font-weight:700}.problem-card p{line-height:1.7}
-.problem-stat{display:inline-block;margin-top:14px;padding:7px 13px;border-radius:8px;background:var(--faint);color:#bbb;font-size:.85rem;font-weight:600}
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{padding:32px 28px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line);transition:border-color .3s}
+.card:hover{border-color:rgba(255,255,255,.15)}
+.card h3{font-size:1.2rem;margin-bottom:10px;letter-spacing:-.02em}.card p{line-height:1.7;font-size:.96rem}
 
-.solution-header{text-align:center;margin-bottom:52px}
-.solution-header .section-title,.solution-header .section-subtitle{margin-left:auto;margin-right:auto}
-.solution-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.solution-card{padding:32px;border-radius:18px;background:rgba(255,255,255,.02);border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .25s}
-.solution-card:hover{border-color:rgba(255,255,255,.2)}
-.solution-card.featured{grid-column:span 2;background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.12)}
-.solution-card.featured .solution-content{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
-.solution-number{font-size:3.5rem;font-family:"Sora",sans-serif;font-weight:800;color:rgba(255,255,255,.06);position:absolute;top:16px;right:24px;line-height:1}
-.solution-icon{width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px}
-.solution-card h3{font-size:1.5rem;margin-bottom:10px}.solution-card p{margin-bottom:18px;line-height:1.7}
-.solution-features{display:flex;flex-wrap:wrap;gap:8px}
-.feature-tag{padding:7px 13px;border-radius:999px;background:var(--faint);border:1px solid var(--faint);font-size:.82rem;color:#bbb}
+.solution-header{text-align:center;margin-bottom:56px}
+.solution-header .section-title,.solution-header .section-desc{margin-left:auto;margin-right:auto}
+.card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.sol-card{padding:36px 30px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .3s}
+.sol-card:hover{border-color:rgba(255,255,255,.15)}
+.sol-card.featured{grid-column:span 2;background:rgba(255,255,255,.025);border-color:rgba(255,255,255,.1)}
+.sol-num{position:absolute;top:18px;right:24px;font-size:3rem;font-family:"Sora",sans-serif;font-weight:800;color:rgba(255,255,255,.04);line-height:1}
+.sol-card h3{font-size:1.4rem;margin-bottom:10px;letter-spacing:-.025em}.sol-card p{margin-bottom:16px;line-height:1.7;font-size:.96rem}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{padding:6px 13px;border-radius:999px;background:var(--faint);border:1px solid var(--line);font-size:.78rem;color:var(--muted)}
 
 .process-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.process-header{text-align:center;margin-bottom:52px}
-.process-header .section-title,.process-header .section-subtitle{margin-left:auto;margin-right:auto}
-.process-timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative}
-.process-timeline::before{content:"";position:absolute;top:46px;left:16.66%;right:16.66%;height:1px;background:var(--line)}
-.process-step{text-align:center;position:relative}
-.step-number{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.03);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.4rem;font-family:"Sora",sans-serif;font-weight:700;color:#fff;position:relative;z-index:1}
-.process-step h3{font-size:1.3rem;margin-bottom:10px}.process-step p{color:var(--muted);max-width:280px;margin:0 auto;line-height:1.7}
+.process-header{text-align:center;margin-bottom:56px}
+.process-header .section-title,.process-header .section-desc{margin-left:auto;margin-right:auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative}
+.steps::before{content:"";position:absolute;top:32px;left:16.66%;right:16.66%;height:1px;background:var(--line)}
+.step{text-align:center;position:relative}
+.step-n{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.03);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.2rem;font-family:"Sora",sans-serif;font-weight:700;color:#fff;position:relative;z-index:1}
+.step h3{font-size:1.2rem;margin-bottom:8px;letter-spacing:-.02em}.step p{color:var(--muted);max-width:280px;margin:0 auto;line-height:1.7;font-size:.94rem}
 
-.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-.results-content h2{font-size:clamp(1.8rem,3.5vw,2.6rem);margin-bottom:20px;line-height:1.15}
-.results-content>p{font-size:1.05rem;margin-bottom:28px;line-height:1.7}
-.results-list{display:grid;gap:14px}
-.result-item{display:flex;gap:14px;padding:18px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);transition:border-color .25s}
-.result-item:hover{border-color:rgba(255,255,255,.2)}
-.result-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem}
-.result-item h4{font-size:1.05rem;font-family:"Sora",sans-serif;font-weight:700;margin-bottom:3px}
-.result-item p{font-size:.9rem;color:var(--dim);margin:0}
-.results-card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:18px;padding:28px}
-.graph-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.graph-title{font-size:1rem;font-weight:600}.graph-badge{padding:5px 11px;border-radius:999px;background:var(--faint);color:#bbb;font-size:.82rem;font-weight:600}
-.graph-bars{display:flex;align-items:flex-end;gap:10px;height:180px;padding:16px 0}
-.graph-bar{flex:1;border-radius:6px 6px 0 0;background:rgba(255,255,255,.15)}
-.graph-bar:nth-child(1){height:40%}.graph-bar:nth-child(2){height:55%}.graph-bar:nth-child(3){height:45%}.graph-bar:nth-child(4){height:70%}.graph-bar:nth-child(5){height:65%}.graph-bar:nth-child(6){height:85%}
-.graph-bar:nth-child(7){height:100%;background:#fff}
-.graph-labels{display:flex;justify-content:space-between;color:var(--dim);font-size:.78rem;margin-top:10px}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+.results-content h2{font-size:clamp(1.8rem,3.4vw,2.4rem);margin-bottom:18px;line-height:1.12}
+.results-content>p{font-size:1.02rem;margin-bottom:28px;line-height:1.75}
+.r-list{display:grid;gap:12px}
+.r-item{display:flex;gap:14px;padding:18px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);transition:border-color .3s}
+.r-item:hover{border-color:rgba(255,255,255,.15)}
+.r-item h4{font-size:1rem;font-family:"Sora",sans-serif;font-weight:700;margin-bottom:2px;letter-spacing:-.02em}
+.r-item p{font-size:.88rem;color:var(--dim);margin:0}
 
-.cta-section{padding:90px 0}
-.cta-container{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:rgba(255,255,255,.02)}
-.cta-content{padding:60px;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
-.cta-text h2{font-size:clamp(2rem,4vw,2.8rem);line-height:1.1;margin-bottom:16px}
-.cta-text>p{font-size:1.05rem;margin-bottom:28px;max-width:500px;line-height:1.7}
-.cta-features{display:grid;gap:14px}
-.cta-feature{display:flex;align-items:center;gap:12px}
-.cta-feature .check{width:22px;height:22px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;font-weight:700}
-.cta-feature span{color:var(--muted)}
-.cta-form{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:36px;text-align:center}
-.cta-form h3{font-size:1.4rem;margin-bottom:8px}.cta-form .subtitle{color:var(--muted);margin-bottom:22px}
-.cta-form .cta-btn{width:100%;height:52px;font-size:.95rem}.cta-form .disclaimer{color:var(--dim);font-size:.82rem;margin-top:14px}
+.cta-section{padding:100px 0}
+.cta-box{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.02);padding:64px;display:grid;grid-template-columns:1.2fr .8fr;gap:52px;align-items:center}
+.cta-box h2{font-size:clamp(1.9rem,3.6vw,2.6rem);line-height:1.08;margin-bottom:16px}
+.cta-box>div>p{font-size:1.02rem;margin-bottom:24px;max-width:480px;line-height:1.75}
+.cta-checks{display:grid;gap:12px}
+.cta-check{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.95rem}
+.cta-check::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0}
+.cta-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:40px;text-align:center}
+.cta-card h3{font-size:1.3rem;margin-bottom:6px;letter-spacing:-.02em}
+.cta-card .sub{color:var(--muted);margin-bottom:24px;font-size:.95rem}
+.cta-card .cta-btn{width:100%;height:52px;font-size:.94rem}
+.cta-card .fine{color:var(--dim);font-size:.8rem;margin-top:14px}
 
-footer{border-top:1px solid var(--line);padding:52px 0 40px;text-align:center}
-.footer-stamp{display:block;width:90px;margin:0 auto 16px;opacity:.55;filter:invert(1)}
-.footer-logo{display:block;width:min(100%,380px);margin:0 auto 14px;filter:invert(1);opacity:.75}
-.footer-desc{color:var(--muted);font-size:.9rem;margin-bottom:12px}
-.footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:12px}
-.footer-links a{color:var(--muted);font-size:.88rem;transition:color .2s}.footer-links a:hover{color:#fff}
-.footer-fine{color:var(--dim);font-size:.82rem}
+footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
+.f-stamp{display:block;width:80px;margin:0 auto 16px;opacity:.45;filter:invert(1)}
+.f-logo{display:block;width:min(100%,340px);margin:0 auto 14px;filter:invert(1);opacity:.65}
+.f-desc{color:var(--dim);font-size:.88rem;margin-bottom:14px}
+.f-links{display:flex;justify-content:center;gap:28px;margin-bottom:14px}
+.f-links a{color:var(--dim);font-size:.86rem;transition:color .2s}.f-links a:hover{color:#fff}
+.f-copy{color:var(--dim);font-size:.78rem}
 
-@media(max-width:1024px){.hero-grid,.results-grid,.cta-content{grid-template-columns:1fr}.hero-visual{max-width:480px;margin:0 auto}.problem-grid,.process-timeline{grid-template-columns:1fr}.process-timeline::before{display:none}.solution-grid{grid-template-columns:1fr}.solution-card.featured{grid-column:span 1}.solution-card.featured .solution-content{grid-template-columns:1fr}.cta-content{padding:40px 28px}}
-@media(max-width:768px){.nav-links{display:none}.topbar .brand img{height:38px}.hero{padding:110px 0 56px}.hero h1{font-size:2.2rem}.hero-stats{flex-direction:column;gap:20px}.section-title{font-size:2rem}.floating-badge{display:none}.cta-form{padding:28px 20px}.cta-btn{width:100%;justify-content:center}}
+@media(max-width:1024px){.card-grid-3,.steps{grid-template-columns:1fr}.steps::before{display:none}.card-grid-2{grid-template-columns:1fr}.sol-card.featured{grid-column:span 1}.results-grid,.cta-box{grid-template-columns:1fr}.cta-box{padding:40px 28px}}
+@media(max-width:768px){.nav-links{display:none}.topbar .brand img{height:34px}.hero{padding:120px 0 64px}.hero h1{font-size:2.2rem}.section-title{font-size:1.9rem}.cta-card{padding:28px}.cta-btn{width:100%;justify-content:center}}
 </style>
-</head>
-<body>
+</head><body>
 
 <header class="topbar" id="topbar">
   <div class="w inner">
-    <a class="brand" href="#top"><img src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group" /></a>
+    <a class="brand" href="#top"><img src="./assets/tcc-logo-header.png" alt="TCC Solutions Group" /></a>
     <nav class="nav-links">
       <a href="#problem">The Problem</a>
       <a href="#solutions">Solutions</a>
       <a href="#process">Process</a>
       <a href="#results">Results</a>
     </nav>
-    <a class="cta-btn" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
   </div>
 </header>
 
@@ -159,59 +125,10 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;text-align:center}
   <section class="hero">
     <img class="hero-bg-stamp" src="./assets/tcc-logo-stacked.png" alt="" aria-hidden="true" />
     <div class="w">
-      <div class="hero-grid">
-        <div class="hero-text reveal">
-          <div class="hero-badge">
-            <span class="pulse"></span>
-            <span>Revenue-Generating AI Systems</span>
-          </div>
-          <h1>You're Losing Money <span>Every Day</span> You Wait</h1>
-          <p class="hero-lead">The world is advancing faster than ever. Businesses that don't adapt will fall behind. We install revenue-generating AI and automation systems that help you capture more customers, reduce wasted time, and operate like the future is already here.</p>
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <strong>47%</strong>
-              <span>Average efficiency gain</span>
-            </div>
-            <div class="hero-stat">
-              <strong>$23K+</strong>
-              <span>Saved per year in labor</span>
-            </div>
-            <div class="hero-stat">
-              <strong>3x</strong>
-              <span>Faster lead response</span>
-            </div>
-          </div>
-        </div>
-        <div class="hero-visual reveal d1">
-          <div class="hero-card">
-            <div class="card-header">
-              <div class="card-icon">&#9889;</div>
-              <div>
-                <div class="card-title">Revenue Dashboard</div>
-                <div class="card-subtitle">Real-time business metrics</div>
-              </div>
-            </div>
-            <div class="revenue-display">
-              <div class="revenue-label">Monthly Revenue Impact</div>
-              <div class="revenue-amount">+$12,450</div>
-              <div class="revenue-change">&#8593; 34% vs. last month</div>
-            </div>
-            <div class="metric-grid">
-              <div class="metric-item"><strong>847</strong><span>Leads captured</span></div>
-              <div class="metric-item"><strong>92%</strong><span>Response rate</span></div>
-              <div class="metric-item"><strong>4.2hr</strong><span>Time saved daily</span></div>
-              <div class="metric-item"><strong>$287</strong><span>Avg. order value</span></div>
-            </div>
-          </div>
-          <div class="floating-badge top-right">
-            <strong style="color:#fff;">&#9679; Live</strong>
-            <span style="color:var(--muted);font-size:.85rem;"> AI Assistant Active</span>
-          </div>
-          <div class="floating-badge bottom-left">
-            <span style="font-size:1.5rem;">&#129302;</span>
-            <span style="color:var(--muted);font-size:.9rem;"> Automation running</span>
-          </div>
-        </div>
+      <div class="reveal">
+        <p class="eyebrow">Revenue-Generating AI Systems</p>
+        <h1>You're Losing Money Every Day You Wait</h1>
+        <p class="lead">The world is advancing faster than ever. Businesses that don't adapt will fall behind. We install revenue-generating AI and automation systems that help you capture more customers, reduce wasted time, and operate like the future is already here.</p>
       </div>
     </div>
   </section>
@@ -220,27 +137,21 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;text-align:center}
 
   <section id="problem">
     <div class="w">
-      <div class="section-label reveal">&#9888;&#65039; The Reality</div>
+      <p class="section-eyebrow reveal">The Reality</p>
       <h2 class="section-title reveal">Your competitors are already moving. Are you?</h2>
-      <p class="section-subtitle reveal">Most businesses are bleeding money every day from inefficiencies they don't even see. Here's what's costing you:</p>
-      <div class="problem-grid">
-        <div class="problem-card reveal d1">
-          <div class="problem-icon">&#128184;</div>
+      <p class="section-desc reveal">Most businesses are bleeding money every day from inefficiencies they don't even see. Here's what's costing you:</p>
+      <div class="card-grid-3">
+        <div class="card reveal d1">
           <h3>Lost Revenue</h3>
           <p>Slow follow-ups, missed leads, and poor customer flow are quietly draining thousands from your business every month.</p>
-          <span class="problem-stat">Avg. loss: $8K/month</span>
         </div>
-        <div class="problem-card reveal d2">
-          <div class="problem-icon">&#9200;</div>
+        <div class="card reveal d2">
           <h3>Wasted Time</h3>
           <p>Your team is doing repetitive tasks that AI could handle in seconds. That's expensive labor spent on low-value work.</p>
-          <span class="problem-stat">15+ hours/week wasted</span>
         </div>
-        <div class="problem-card reveal d3">
-          <div class="problem-icon">&#128200;</div>
+        <div class="card reveal d3">
           <h3>Falling Behind</h3>
-          <p>Businesses adopting AI are moving 3x faster than those who wait. Every month you delay, the gap widens.</p>
-          <span class="problem-stat">67% of competitors adapting</span>
+          <p>Businesses adopting AI are moving faster than those who wait. Every month you delay, the gap widens.</p>
         </div>
       </div>
     </div>
@@ -251,74 +162,60 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;text-align:center}
   <section id="solutions">
     <div class="w">
       <div class="solution-header">
-        <div class="section-label reveal">&#128161; The Solution</div>
+        <p class="section-eyebrow reveal">The Solution</p>
         <h2 class="section-title reveal">We install revenue-generating systems inside your business</h2>
-        <p class="section-subtitle reveal">Not just websites. Not just software. Complete systems that capture more customers, automate operations, and increase your bottom line.</p>
+        <p class="section-desc reveal">Not just websites. Not just software. Complete systems that capture more customers, automate operations, and increase your bottom line.</p>
       </div>
-      <div class="solution-grid">
-        <div class="solution-card featured reveal">
-          <div class="solution-content">
-            <div>
-              <div class="solution-icon">&#129302;</div>
-              <h3>AI-Powered Customer Systems</h3>
-              <p>Turn your website into a 24/7 sales machine. AI chatbots that answer questions, capture leads, and book appointments while you sleep. Increase conversions by up to 40%.</p>
-              <div class="solution-features">
-                <span class="feature-tag">AI Chat Assistant</span>
-                <span class="feature-tag">Lead Capture</span>
-                <span class="feature-tag">Auto-Booking</span>
-                <span class="feature-tag">Smart Follow-up</span>
-              </div>
-            </div>
-            <div style="text-align:center;">
-              <div style="font-size:4rem;margin-bottom:12px;">&#128640;</div>
-              <div style="font-size:2.5rem;font-family:'Sora',sans-serif;font-weight:800;color:#fff;">+40%</div>
-              <div style="color:var(--muted);">Average conversion lift</div>
-            </div>
+      <div class="card-grid-2">
+        <div class="sol-card featured reveal">
+          <span class="sol-num">01</span>
+          <h3>AI-Powered Customer Systems</h3>
+          <p>Turn your website into a 24/7 sales machine. AI chatbots that answer questions, capture leads, and book appointments while you sleep. Increase conversions by up to 40%.</p>
+          <div class="tags">
+            <span class="tag">AI Chat Assistant</span>
+            <span class="tag">Lead Capture</span>
+            <span class="tag">Auto-Booking</span>
+            <span class="tag">Smart Follow-up</span>
           </div>
-          <span class="solution-number">01</span>
         </div>
-        <div class="solution-card reveal">
-          <span class="solution-number">02</span>
-          <div class="solution-icon">&#9881;&#65039;</div>
+        <div class="sol-card reveal">
+          <span class="sol-num">02</span>
           <h3>Business Automation</h3>
           <p>Replace manual tasks with intelligent automation. From lead follow-up to appointment reminders to invoice processing&#8212;free your team for high-value work.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Workflow Automation</span>
-            <span class="feature-tag">Lead Nurturing</span>
-            <span class="feature-tag">Task Management</span>
+          <div class="tags">
+            <span class="tag">Workflow Automation</span>
+            <span class="tag">Lead Nurturing</span>
+            <span class="tag">Task Management</span>
           </div>
         </div>
-        <div class="solution-card reveal">
-          <span class="solution-number">03</span>
-          <div class="solution-icon">&#128202;</div>
+        <div class="sol-card reveal">
+          <span class="sol-num">03</span>
           <h3>Custom Software</h3>
           <p>Web apps, dashboards, and internal tools built exactly for how YOUR business operates. No compromises, no workarounds, just perfect fit.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Custom Dashboards</span>
-            <span class="feature-tag">Client Portals</span>
-            <span class="feature-tag">Internal Tools</span>
+          <div class="tags">
+            <span class="tag">Custom Dashboards</span>
+            <span class="tag">Client Portals</span>
+            <span class="tag">Internal Tools</span>
           </div>
         </div>
-        <div class="solution-card reveal">
-          <span class="solution-number">04</span>
-          <div class="solution-icon">&#127919;</div>
+        <div class="sol-card reveal">
+          <span class="sol-num">04</span>
           <h3>Conversion Websites</h3>
           <p>Not just beautiful&#8212;profitable. Websites engineered to convert visitors into paying customers with smart funnels and booking systems.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Conversion Design</span>
-            <span class="feature-tag">Booking System</span>
-            <span class="feature-tag">Lead Funnels</span>
+          <div class="tags">
+            <span class="tag">Conversion Design</span>
+            <span class="tag">Booking System</span>
+            <span class="tag">Lead Funnels</span>
           </div>
         </div>
-        <div class="solution-card reveal">
-          <span class="solution-number">05</span>
-          <div class="solution-icon">&#128200;</div>
+        <div class="sol-card reveal">
+          <span class="sol-num">05</span>
           <h3>Ongoing AI Advisory</h3>
           <p>Weekly strategy sessions to continuously optimize your systems, implement new AI tools, and stay ahead of competitors. Your unfair advantage.</p>
-          <div class="solution-features">
-            <span class="feature-tag">Weekly Sessions</span>
-            <span class="feature-tag">Performance Review</span>
-            <span class="feature-tag">New Implementations</span>
+          <div class="tags">
+            <span class="tag">Weekly Sessions</span>
+            <span class="tag">Performance Review</span>
+            <span class="tag">New Implementations</span>
           </div>
         </div>
       </div>
@@ -330,71 +227,47 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;text-align:center}
   <section id="process" class="process-section">
     <div class="w">
       <div class="process-header">
-        <div class="section-label reveal">&#128260; The Process</div>
+        <p class="section-eyebrow reveal">The Process</p>
         <h2 class="section-title reveal">From chaos to clarity in 3 steps</h2>
-        <p class="section-subtitle reveal">We make modernizing your business simple. No massive overhauls, no complicated transformations&#8212;just strategic moves that create immediate impact.</p>
+        <p class="section-desc reveal">We make modernizing your business simple. No massive overhauls, no complicated transformations&#8212;just strategic moves that create immediate impact.</p>
       </div>
-      <div class="process-timeline">
-        <div class="process-step reveal d1">
-          <div class="step-number">1</div>
+      <div class="steps">
+        <div class="step reveal d1">
+          <div class="step-n">1</div>
           <h3>Audit &amp; Discover</h3>
           <p>We analyze your business to find revenue leaks, inefficiencies, and opportunities where AI and automation can create the biggest impact.</p>
         </div>
-        <div class="process-step reveal d2">
-          <div class="step-number">2</div>
+        <div class="step reveal d2">
+          <div class="step-n">2</div>
           <h3>Design &amp; Build</h3>
           <p>We create a custom system&#8212;whether it's AI chat, automation workflows, or software&#8212;tailored exactly to your business needs.</p>
         </div>
-        <div class="process-step reveal d3">
-          <div class="step-number">3</div>
+        <div class="step reveal d3">
+          <div class="step-n">3</div>
           <h3>Launch &amp; Optimize</h3>
           <p>We deploy your system, train your team, and continuously optimize for maximum revenue impact. You see results, not just deliverables.</p>
         </div>
       </div>
     </div>
   </section>
-
   <div class="sep" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
 
   <section id="results">
     <div class="w">
       <div class="results-grid">
         <div class="results-content reveal">
-          <div class="section-label">&#128200; The Results</div>
+          <p class="section-eyebrow">The Results</p>
           <h2>Better systems create better businesses</h2>
           <p>Strong systems improve how the business feels to customers, how quickly your team can move, and how reliably opportunities turn into revenue.</p>
-          <div class="results-list">
-            <div class="result-item">
-              <div class="result-icon">&#128176;</div>
+          <div class="r-list">
+            <div class="r-item">
               <div><h4>More Revenue</h4><p>Better conversion paths, smarter follow-up, increased average order value.</p></div>
             </div>
-            <div class="result-item">
-              <div class="result-icon">&#9889;</div>
+            <div class="r-item">
               <div><h4>Less Wasted Time</h4><p>Automate repetitive tasks, eliminate manual data entry, streamline operations.</p></div>
             </div>
-            <div class="result-item">
-              <div class="result-icon">&#127919;</div>
+            <div class="r-item">
               <div><h4>Better Decisions</h4><p>Real-time dashboards and insights show exactly where to focus for growth.</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="results-visual reveal d1">
-          <div class="results-card">
-            <div class="graph-header">
-              <span class="graph-title">Revenue Growth</span>
-              <span class="graph-badge">+127% YoY</span>
-            </div>
-            <div class="graph-bars">
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-              <div class="graph-bar"></div>
-            </div>
-            <div class="graph-labels">
-              <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
             </div>
           </div>
         </div>
@@ -404,24 +277,22 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;text-align:center}
 
   <section class="cta-section" id="cta">
     <div class="w">
-      <div class="cta-container">
-        <div class="cta-content">
-          <div class="cta-text reveal">
-            <h2>Don't wait until your market passes you by</h2>
-            <p>Businesses that adopt smart systems early will move faster, learn faster, and compete better. The gap between early adopters and laggards is widening every day.</p>
-            <div class="cta-features">
-              <div class="cta-feature"><span class="check">&#10003;</span><span>Free AI &amp; automation audit for your business</span></div>
-              <div class="cta-feature"><span class="check">&#10003;</span><span>Custom roadmap for revenue growth</span></div>
-              <div class="cta-feature"><span class="check">&#10003;</span><span>See exactly what AI can do for YOU</span></div>
-              <div class="cta-feature"><span class="check">&#10003;</span><span>No obligation, no pressure</span></div>
-            </div>
+      <div class="cta-box">
+        <div class="reveal">
+          <h2>Don't wait until your market passes you by</h2>
+          <p>Businesses that adopt smart systems early will move faster, learn faster, and compete better. The gap between early adopters and laggards is widening every day.</p>
+          <div class="cta-checks">
+            <div class="cta-check">Free AI &amp; automation audit for your business</div>
+            <div class="cta-check">Custom roadmap for revenue growth</div>
+            <div class="cta-check">See exactly what AI can do for YOU</div>
+            <div class="cta-check">No obligation, no pressure</div>
           </div>
-          <div class="cta-form reveal d1">
-            <h3>Book Your Free Call</h3>
-            <p class="subtitle">30 minutes that could change your business</p>
-            <a class="cta-btn" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
-            <p class="disclaimer">Spots are limited. Serious inquiries only.</p>
-          </div>
+        </div>
+        <div class="cta-card reveal d1">
+          <h3>Book Your Free Call</h3>
+          <p class="sub">30 minutes that could change your business</p>
+          <a class="cta-btn" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
+          <p class="fine">Spots are limited. Serious inquiries only.</p>
         </div>
       </div>
     </div>
@@ -431,15 +302,15 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;text-align:center}
 
 <footer>
   <div class="w">
-    <img class="footer-stamp" src="./assets/tcc-logo-stacked.png" alt="" aria-hidden="true" />
-    <img class="footer-logo" src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group" />
-    <p class="footer-desc">Revenue-focused AI &amp; software systems for growing businesses.</p>
-    <div class="footer-links">
+    <img class="f-stamp" src="./assets/tcc-logo-stacked.png" alt="" aria-hidden="true" />
+    <img class="f-logo" src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group" />
+    <p class="f-desc">Revenue-focused AI &amp; software systems for growing businesses.</p>
+    <div class="f-links">
       <a href="#solutions">Solutions</a>
       <a href="#process">Process</a>
       <a href="mailto:hello@tccsolutionsgroup.com">Contact</a>
     </div>
-    <p class="footer-fine">&copy; 2026 TCC Solutions Group. Built to move businesses forward.</p>
+    <p class="f-copy">&copy; 2026 TCC Solutions Group. Built to move businesses forward.</p>
   </div>
 </footer>
 
