@@ -1,663 +1,138 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TCC Solutions Group | Revenue-Generating AI Systems</title>
-  <meta
-    name="description"
-    content="TCC installs revenue-generating systems inside businesses using custom software, automation, and AI."
-  />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    :root {
-      --bg: #090b0f;
-      --panel: #10131a;
-      --panel-soft: #141925;
-      --text: #f4f7ff;
-      --muted: #a5adc0;
-      --line: rgba(255, 255, 255, 0.1);
-      --line-soft: rgba(255, 255, 255, 0.06);
-      --accent: #9ad7ff;
-      --accent-strong: #5eb8ff;
-      --radius: 22px;
-      --max: 1160px;
-      --shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(1200px 600px at 80% -10%, rgba(94, 184, 255, 0.16), transparent 52%),
-        radial-gradient(900px 500px at -10% 100%, rgba(154, 215, 255, 0.12), transparent 58%),
-        var(--bg);
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-
-    .container {
-      width: min(var(--max), calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    h1, h2, h3 {
-      margin: 0;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      font-family: "DM Serif Display", Georgia, serif;
-      font-weight: 400;
-    }
-
-    p { margin: 0; color: var(--muted); }
-    a { color: inherit; text-decoration: none; }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      border-bottom: 1px solid transparent;
-      backdrop-filter: blur(0px);
-      transition: 0.25s ease;
-    }
-
-    .topbar.scrolled {
-      border-bottom-color: var(--line-soft);
-      background: rgba(9, 11, 15, 0.72);
-      backdrop-filter: blur(12px);
-    }
-
-    .nav {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .logo-wrap img {
-      height: 54px;
-      width: auto;
-      display: block;
-      object-fit: contain;
-      filter: brightness(1.03);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      color: #c6cede;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .nav-links a:hover { color: #fff; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 22px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-weight: 700;
-      font-size: 0.95rem;
-      transition: 0.2s ease;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: linear-gradient(180deg, #b5e4ff 0%, #76c7ff 100%);
-      color: #06111f;
-      box-shadow: 0 8px 22px rgba(94, 184, 255, 0.35);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 28px rgba(94, 184, 255, 0.42);
-    }
-
-    .btn-secondary {
-      border-color: var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      color: #f2f6ff;
-    }
-
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.24); }
-
-    .hero {
-      padding: 46px 0 68px;
-    }
-
-    .hero-shell {
-      border: 1px solid var(--line-soft);
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border-radius: calc(var(--radius) + 6px);
-      padding: 30px;
-      box-shadow: var(--shadow);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.02fr 0.98fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      border: 1px solid rgba(154, 215, 255, 0.35);
-      color: #d4eeff;
-      background: rgba(94, 184, 255, 0.09);
-      border-radius: 999px;
-      padding: 8px 14px;
-      margin-bottom: 18px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .eyebrow-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #96d6ff;
-      box-shadow: 0 0 0 8px rgba(154, 215, 255, 0.14);
-    }
-
-    .hero h1 {
-      font-size: clamp(2.25rem, 5.5vw, 4.6rem);
-      max-width: 11ch;
-      margin-bottom: 16px;
-    }
-
-    .hero h1 span { color: var(--accent); }
-
-    .hero .lead {
-      font-size: 1.08rem;
-      max-width: 56ch;
-      margin-bottom: 24px;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 26px;
-    }
-
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .kpi {
-      border-radius: 16px;
-      border: 1px solid var(--line-soft);
-      background: var(--panel);
-      padding: 14px;
-    }
-
-    .kpi strong {
-      display: block;
-      font-size: 1.6rem;
-      line-height: 1;
-      color: #e8f5ff;
-      margin-bottom: 6px;
-    }
-
-    .kpi span {
-      font-size: 0.86rem;
-      color: var(--muted);
-    }
-
-    .hero-panel {
-      border: 1px solid var(--line-soft);
-      border-radius: 20px;
-      background: linear-gradient(180deg, #121927, #0c111b);
-      padding: 24px;
-      display: grid;
-      gap: 16px;
-    }
-
-    .stamp-wrap {
-      display: grid;
-      place-items: center;
-      padding: 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .stamp-wrap img {
-      width: min(100%, 260px);
-      height: auto;
-      display: block;
-    }
-
-    .hero-card {
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      padding: 16px;
-    }
-
-    .hero-card h3 {
-      font-family: "Manrope", sans-serif;
-      font-size: 1.02rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    section { padding: 68px 0; }
-
-    .head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 20px;
-      margin-bottom: 24px;
-    }
-
-    .head h2 {
-      font-size: clamp(1.9rem, 4vw, 3.4rem);
-      max-width: 13ch;
-    }
-
-    .head p { max-width: 58ch; }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .card {
-      border: 1px solid var(--line-soft);
-      background: var(--panel);
-      border-radius: var(--radius);
-      padding: 22px;
-    }
-
-    .card .label {
-      display: inline-block;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #b6cbe1;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .card h3 {
-      font-family: "Manrope", sans-serif;
-      font-weight: 800;
-      font-size: 1.18rem;
-      margin-bottom: 8px;
-    }
-
-    .services .card {
-      min-height: 230px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .tag {
-      border-radius: 999px;
-      border: 1px solid rgba(154,215,255,0.25);
-      background: rgba(154,215,255,0.09);
-      color: #d5edff;
-      font-size: 0.78rem;
-      padding: 6px 10px;
-      font-weight: 600;
-    }
-
-    .process-band {
-      border: 1px solid rgba(154,215,255,0.24);
-      background: linear-gradient(180deg, rgba(154,215,255,0.09), rgba(154,215,255,0.03));
-      border-radius: calc(var(--radius) + 2px);
-      padding: 24px;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .step {
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: rgba(8, 12, 19, 0.55);
-      padding: 16px;
-    }
-
-    .step-num {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-size: 0.86rem;
-      font-weight: 800;
-      color: #072035;
-      background: linear-gradient(180deg, #c2e8ff, #7ccaff);
-      margin-bottom: 10px;
-    }
-
-    .step h3 {
-      font-family: "Manrope", sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .cta {
-      border: 1px solid var(--line-soft);
-      border-radius: calc(var(--radius) + 4px);
-      padding: 28px;
-      background:
-        radial-gradient(700px 300px at 90% 10%, rgba(154, 215, 255, 0.22), transparent 56%),
-        var(--panel-soft);
-    }
-
-    .cta-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .cta h2 {
-      font-size: clamp(2rem, 3.8vw, 3.2rem);
-      margin-bottom: 10px;
-    }
-
-    .cta .bullets {
-      display: grid;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .cta .bullets div {
-      border: 1px solid var(--line-soft);
-      border-radius: 12px;
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.02);
-      color: #d7deea;
-      font-size: 0.92rem;
-    }
-
-    .cta-action {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(0,0,0,0.2);
-      padding: 20px;
-    }
-
-    .cta-action h3 {
-      font-family: "Manrope", sans-serif;
-      font-weight: 800;
-      font-size: 1.15rem;
-      margin-bottom: 8px;
-    }
-
-    footer {
-      padding: 36px 0 46px;
-      border-top: 1px solid var(--line-soft);
-      margin-top: 58px;
-    }
-
-    .foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .foot img {
-      height: 42px;
-      width: auto;
-      display: block;
-    }
-
-    @media (max-width: 1020px) {
-      .hero-grid,
-      .cta-grid,
-      .grid-3,
-      .steps {
-        grid-template-columns: 1fr;
-      }
-      .head { align-items: flex-start; flex-direction: column; }
-    }
-
-    @media (max-width: 760px) {
-      .nav-links { display: none; }
-      .logo-wrap img { height: 46px; }
-      .hero-shell { padding: 20px; }
-      .kpi-row { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TCC Solutions Group | Revenue Systems for Modern Operators</title>
+<meta name="description" content="TCC installs revenue-generating infrastructure inside your business so you can move faster, operate cleaner, and convert more." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#fff;--text:#000;--muted:#595959;--line:#e8e8e8;--soft:#f6f6f6;--max:1120px;--r:20px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 "IBM Plex Sans",sans-serif}
+h1,h2,h3{margin:0;font-family:"Inter Tight",sans-serif;letter-spacing:-.03em;line-height:1.05}p{margin:0;color:var(--muted)}a{text-decoration:none;color:inherit}
+.container{width:min(var(--max),calc(100% - 40px));margin:0 auto}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid transparent}.topbar.scrolled{border-bottom-color:var(--line)}
+.nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand img{height:54px}.links{display:flex;gap:22px;font-size:.92rem;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:999px;border:1px solid #000;font-weight:700;font-size:.95rem}.btn.black{background:#000;color:#fff}
+.hero{padding:52px 0 62px;border-bottom:1px solid var(--line)}.shell{position:relative;border:1px solid var(--line);border-radius:26px;padding:34px;overflow:hidden}
+.watermark{position:absolute;right:-60px;top:-46px;width:310px;opacity:.06;pointer-events:none}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;position:relative;z-index:1}
+.eyebrow{display:inline-block;padding:8px 12px;border:1px solid #d8d8d8;border-radius:999px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:14px}
+.hero h1{font-size:clamp(2.3rem,5.4vw,4.4rem);max-width:11ch;margin-bottom:16px}.hero .lead{font-size:1.08rem;max-width:57ch;margin-bottom:22px}
+.panel{border:1px solid var(--line);border-radius:var(--r);padding:22px;background:#fff}.panel h3{font-size:1.24rem;margin-bottom:12px}
+.panel ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}.panel li{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--soft);color:#111}
+.divider{display:grid;place-items:center;margin:44px 0 20px}.divider img{width:80px;opacity:.7}
+section{padding:62px 0}.head{display:flex;justify-content:space-between;align-items:end;gap:22px;margin-bottom:24px}.head h2{font-size:clamp(2rem,4.2vw,3.3rem);max-width:13ch}.head p{max-width:58ch}
+.card{border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff}.card h3{font-size:1.28rem;margin-bottom:10px}
+.band{background:#fafafa;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.process{border:1px solid var(--line);border-radius:24px;padding:24px;background:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.step{border:1px solid var(--line);border-radius:14px;padding:14px}.num{width:30px;height:30px;border-radius:999px;background:#000;color:#fff;display:grid;place-items:center;font-size:.76rem;font-weight:700;margin-bottom:10px}
+.step h3{font-size:1rem;margin-bottom:6px}
+.cta{border:1px solid #000;border-radius:24px;padding:30px}.cta-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.cta h2{font-size:clamp(2.1rem,4vw,3.4rem);margin-bottom:12px}
+.list{margin-top:16px;display:grid;gap:10px}.list div{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--soft);color:#111}
+.side{border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;gap:12px}.side h3{font-size:1.1rem;margin-bottom:6px}
+footer{padding:46px 0 56px;border-top:1px solid var(--line);margin-top:54px;text-align:center}.foot-logo{display:grid;place-items:center;margin-bottom:14px}.foot-logo img{width:min(100%,520px);filter:grayscale(1) contrast(1.15)}.fine{color:#6a6a6a;font-size:.9rem}
+@media (max-width:1020px){.hero-grid,.cta-grid,.steps{grid-template-columns:1fr}.head{flex-direction:column;align-items:flex-start}.watermark{width:240px;right:-45px;top:-38px}}
+@media (max-width:760px){.links{display:none}.brand img{height:46px}}
+</style>
 </head>
 <body>
-  <header class="topbar" id="topbar">
-    <div class="container nav">
-      <a class="logo-wrap" href="#top" aria-label="TCC Solutions Group home">
-        <img src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group logo" />
-      </a>
-      <nav class="nav-links">
-        <a href="#problem">Problem</a>
-        <a href="#services">Solutions</a>
-        <a href="#process">Process</a>
-      </nav>
-      <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a 10-minute walkthrough</a>
+<header class="topbar" id="topbar">
+  <div class="container nav">
+    <a class="brand" href="#top" aria-label="TCC Solutions Group Home"><img src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group" /></a>
+    <nav class="links"><a href="#problem">Problem</a><a href="#process">Process</a><a href="#fit">See where you fit</a></nav>
+    <a class="btn black" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="container shell">
+      <img class="watermark" src="./assets/tcc-logo-stacked.png" alt="" aria-hidden="true" />
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Revenue systems for modern operators</span>
+          <h1>You’re not losing customers because of effort — you’re losing them because your systems can’t keep up.</h1>
+          <p class="lead">TCC installs revenue-generating infrastructure inside your business so you can move faster, operate cleaner, and convert more.</p>
+          <a class="btn black" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
+        </div>
+        <aside class="panel">
+          <h3>What we build</h3>
+          <ul>
+            <li>Faster lead response and follow-up</li>
+            <li>Cleaner operations and internal workflows</li>
+            <li>Higher revenue per customer journey</li>
+          </ul>
+        </aside>
+      </div>
     </div>
-  </header>
+  </section>
 
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-shell">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow"><span class="eyebrow-dot"></span> Revenue systems for modern operators</div>
-            <h1>You are losing revenue in <span>slow systems.</span></h1>
-            <p class="lead">
-              The market is moving fast. TCC installs revenue-generating systems inside businesses with custom software,
-              AI integration, and automation so you can operate smarter, move faster, and convert more.
-            </p>
-            <div class="btn-row">
-              <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a 10-minute walkthrough</a>
-              <a class="btn btn-secondary" href="#services">See what we build</a>
-            </div>
-            <div class="kpi-row">
-              <div class="kpi"><strong>Faster</strong><span>Lead response and follow-up</span></div>
-              <div class="kpi"><strong>Cleaner</strong><span>Operations and internal workflows</span></div>
-              <div class="kpi"><strong>Higher</strong><span>Revenue per customer journey</span></div>
-            </div>
-          </div>
-          <aside class="hero-panel">
-            <div class="stamp-wrap">
-              <img src="./assets/tcc-logo-stacked.png" alt="TCC stacked mark" />
-            </div>
-            <div class="hero-card">
-              <h3>Built for service businesses and SMB operators</h3>
-              <p>Local service teams, restaurants, contractors, and growth-stage businesses from $250K to $5M.</p>
-            </div>
-            <div class="hero-card">
-              <h3>Outcome first, always</h3>
-              <p>Every engagement is tied to one objective: make more money, reduce wasted time, and operate with better control.</p>
-            </div>
-          </aside>
-        </div>
+  <div class="divider" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
+
+  <section id="problem">
+    <div class="container">
+      <div class="head">
+        <h2>Outcome first. Always.</h2>
+        <p>Built for service businesses and SMB operators: restaurants, contractors, local service teams, and growth-stage companies from $250K–$5M.</p>
       </div>
-    </section>
+      <article class="card">
+        <h3>Most teams don’t have a talent problem — they have a systems problem.</h3>
+        <p>Slow processes, manual work, and missing visibility quietly drain speed, consistency, and revenue. We fix that with integrated systems designed to increase profit, not just polish.</p>
+      </article>
+    </div>
+  </section>
 
-    <section id="problem">
-      <div class="container">
-        <div class="head">
-          <h2>The hidden drag on your business is expensive.</h2>
-          <p>
-            Most teams are not short on effort. They are short on systems. That gap quietly kills speed, consistency, and revenue.
-          </p>
-        </div>
-        <div class="grid-3">
-          <article class="card">
-            <span class="label">Leak 01</span>
-            <h3>Missed opportunities</h3>
-            <p>Slow follow-up and weak lead handling let qualified buyers slip away before your team can act.</p>
-          </article>
-          <article class="card">
-            <span class="label">Leak 02</span>
-            <h3>Manual busy work</h3>
-            <p>Staff spend high-value hours on repetitive tasks that automation and AI should handle automatically.</p>
-          </article>
-          <article class="card">
-            <span class="label">Leak 03</span>
-            <h3>No operating insight</h3>
-            <p>Without clear visibility, decisions become guesses and growth gets capped by operational friction.</p>
-          </article>
-        </div>
+  <section id="process" class="band">
+    <div class="container">
+      <div class="head">
+        <h2>Simple execution. High leverage.</h2>
+        <p>We identify where money and time are leaking, build the highest-impact system first, and optimize it so it compounds over time.</p>
       </div>
-    </section>
-
-    <section id="services" class="services">
-      <div class="container">
-        <div class="head">
-          <h2>Systems designed to increase profit, not just polish.</h2>
-          <p>
-            We do not sell disconnected services. We install integrated systems that turn demand into revenue and reduce operational drag.
-          </p>
-        </div>
-        <div class="grid-3">
-          <article class="card">
-            <div>
-              <span class="label">A</span>
-              <h3>Custom software systems</h3>
-              <p>Web apps, internal dashboards, and tools tailored to how your business actually works.</p>
-            </div>
-            <div class="tags">
-              <span class="tag">Web apps</span>
-              <span class="tag">Dashboards</span>
-              <span class="tag">Internal tools</span>
-            </div>
-          </article>
-          <article class="card">
-            <div>
-              <span class="label">B</span>
-              <h3>AI integration</h3>
-              <p>Customer-facing AI, workflow automation, and decision support that increases revenue per interaction.</p>
-            </div>
-            <div class="tags">
-              <span class="tag">AI assistants</span>
-              <span class="tag">Automations</span>
-              <span class="tag">Agent workflows</span>
-            </div>
-          </article>
-          <article class="card">
-            <div>
-              <span class="label">C</span>
-              <h3>Website systems</h3>
-              <p>Conversion-first websites with booking logic and lead funnels that turn traffic into paying customers.</p>
-            </div>
-            <div class="tags">
-              <span class="tag">Conversion pages</span>
-              <span class="tag">Booking flow</span>
-              <span class="tag">Lead funnel</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="process">
-      <div class="container process-band">
-        <div class="head">
-          <h2>Simple execution. High leverage.</h2>
-          <p>Clear first move, fast deployment, then ongoing optimization so the system keeps compounding.</p>
-        </div>
+      <div class="process">
         <div class="steps">
-          <article class="step">
-            <div class="step-num">01</div>
-            <h3>Analyze</h3>
-            <p>We map where money and time are leaking across customer flow and operations.</p>
-          </article>
-          <article class="step">
-            <div class="step-num">02</div>
-            <h3>Build</h3>
-            <p>We implement the highest-leverage system first, then connect it to your existing workflow.</p>
-          </article>
-          <article class="step">
-            <div class="step-num">03</div>
-            <h3>Optimize</h3>
-            <p>Weekly or biweekly optimization turns your system into a long-term growth asset.</p>
-          </article>
+          <article class="step"><div class="num">01</div><h3>Identify leaks</h3><p>Find where revenue and time are being lost in your current flow.</p></article>
+          <article class="step"><div class="num">02</div><h3>Build first system</h3><p>Deploy the highest-impact infrastructure move first.</p></article>
+          <article class="step"><div class="num">03</div><h3>Optimize to compound</h3><p>Refine performance so the system keeps increasing leverage.</p></article>
         </div>
       </div>
-    </section>
-
-    <section id="offer">
-      <div class="container cta">
-        <div class="cta-grid">
-          <div>
-            <h2>Book a 10-minute walkthrough.</h2>
-            <p>
-              We will identify your biggest revenue leak, show the fastest system to fix it, and give you a practical next step.
-            </p>
-            <div class="bullets">
-              <div>Focused AI and systems audit (free)</div>
-              <div>Live walkthrough of your best first move</div>
-              <div>Clear build path for long-term leverage</div>
-            </div>
-          </div>
-          <aside class="cta-action">
-            <h3>Early adopters build distance.</h3>
-            <p style="margin-bottom:14px;">Modern systems are becoming table stakes. Getting ahead now is cheaper than catching up later.</p>
-            <a class="btn btn-primary" style="width:100%;" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">
-              Book your call now
-            </a>
-          </aside>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container foot">
-      <img src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group logo" />
-      <span>&copy; 2026 TCC Solutions Group. Revenue-focused systems for modern businesses.</span>
     </div>
-  </footer>
+  </section>
 
-  <script>
-    const topbar = document.getElementById("topbar");
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 8) topbar.classList.add("scrolled");
-      else topbar.classList.remove("scrolled");
-    });
-  </script>
+  <section id="fit">
+    <div class="container cta">
+      <div class="cta-grid">
+        <div>
+          <h2>See where you fit.</h2>
+          <p>A focused 30-minute walkthrough to show you:</p>
+          <div class="list">
+            <div>Your biggest revenue leak</div>
+            <div>The fastest system to fix it</div>
+            <div>A clear path to long-term leverage</div>
+          </div>
+        </div>
+        <aside class="side">
+          <div>
+            <h3>Clear. Practical. High impact.</h3>
+            <p>No fluff. No vague strategy deck. Just the next highest-leverage move for your business.</p>
+          </div>
+          <a class="btn black" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-logo"><img src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group" /></div>
+    <p class="fine">© 2026 TCC Solutions Group. Revenue infrastructure for modern operators.</p>
+  </div>
+</footer>
+
+<script>
+const topbar=document.getElementById('topbar');
+window.addEventListener('scroll',()=>{if(window.scrollY>6)topbar.classList.add('scrolled');else topbar.classList.remove('scrolled');});
+</script>
 </body>
 </html>
