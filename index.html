@@ -11,7 +11,7 @@
 <meta property="og:title" content="TCC Solutions Group LLC (TCCSG)" />
 <meta property="og:description" content="A California software company building custom web applications, AI integrations and automation, and the builder and operator of PlateHaven." />
 <meta property="og:url" content="https://tccsolutionsgroup.com/" />
-<meta property="og:image" content="https://tccsolutionsgroup.com/assets/tcc-logo-stacked.png" />
+<meta property="og:image" content="https://tccsolutionsgroup.com/assets/tcc-logo-header.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
@@ -26,41 +26,39 @@ p{color:var(--muted)}a{color:inherit;text-decoration:none}
 
 .topbar{position:fixed;top:0;left:0;right:0;z-index:50;transition:.3s ease;border-bottom:1px solid transparent}
 .topbar.scrolled{background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom-color:var(--line)}
-.topbar .inner{display:flex;align-items:center;justify-content:space-between;height:72px}
-.topbar .brand img{height:56px;display:block;mix-blend-mode:screen}
+.topbar .inner{display:flex;align-items:center;justify-content:space-between;height:80px}
+.topbar .brand img{height:52px;display:block}
 .nav-links{display:flex;gap:32px;font-size:.86rem;font-weight:500;color:var(--dim);letter-spacing:.01em}
 .nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
 
-.cta-btn{display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 30px;border-radius:999px;background:#fff;color:#000;font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;letter-spacing:-.01em;border:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.cta-btn{display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 22px;border-radius:999px;background:#fff;color:#000;font-family:"Playfair Display",serif;font-weight:700;font-size:.79rem;letter-spacing:-.01em;border:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
 .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,255,255,.08)}
 
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 .reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.22s}.reveal.d3{transition-delay:.32s}
 
-.hero{position:relative;padding:160px 0 100px;overflow:hidden}
+.hero{position:relative;padding:126px 0 74px;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,255,255,.03),transparent 65%);pointer-events:none}
-.hero-bg-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:480px;opacity:.03;pointer-events:none;user-select:none}
 .hero .w{position:relative;z-index:1;max-width:740px}
 .hero .eyebrow{font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:28px}
 .hero h1{font-size:clamp(2.8rem,5.8vw,4.4rem);font-weight:800;margin-bottom:24px}
 .hero .lead{font-size:1.12rem;line-height:1.75;max-width:580px;color:var(--muted)}
 
-.sep{display:flex;align-items:center;justify-content:center;padding:44px 24px}
+.sep{display:flex;align-items:center;justify-content:center;padding:26px 24px}
 .sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
-.sep img{width:40px;height:auto;margin:0 24px;opacity:.35;filter:invert(1)}
 
-section{padding:100px 0}
+section{padding:74px 0}
 .section-eyebrow{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
 .section-title{font-size:clamp(2rem,4.2vw,3rem);margin-bottom:16px;max-width:700px}
-.section-desc{font-size:1.04rem;color:var(--muted);max-width:560px;margin-bottom:48px;line-height:1.75}
+.section-desc{font-size:1.04rem;color:var(--muted);max-width:560px;margin-bottom:34px;line-height:1.75}
 
 .card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .card{padding:32px 28px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line);transition:border-color .3s}
 .card:hover{border-color:rgba(255,255,255,.15)}
 .card h3{font-size:1.2rem;margin-bottom:10px;letter-spacing:-.02em}.card p{line-height:1.7;font-size:.96rem}
 
-.solution-header{text-align:center;margin-bottom:56px}
+.solution-header{text-align:center;margin-bottom:40px}
 .solution-header .section-title,.solution-header .section-desc{margin-left:auto;margin-right:auto}
 .card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .sol-card{padding:36px 30px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .3s}
@@ -72,7 +70,7 @@ section{padding:100px 0}
 .tag{padding:6px 13px;border-radius:999px;background:var(--faint);border:1px solid var(--line);font-size:.78rem;color:var(--muted)}
 
 .process-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.process-header{text-align:center;margin-bottom:56px}
+.process-header{text-align:center;margin-bottom:40px}
 .process-header .section-title,.process-header .section-desc{margin-left:auto;margin-right:auto}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative}
 .steps::before{content:"";position:absolute;top:32px;left:16.66%;right:16.66%;height:1px;background:var(--line)}
@@ -89,22 +87,21 @@ section{padding:100px 0}
 .r-item h4{font-size:1rem;font-family:"Playfair Display",serif;font-weight:700;margin-bottom:2px;letter-spacing:-.02em}
 .r-item p{font-size:.88rem;color:var(--dim);margin:0}
 
-.cta-section{padding:100px 0}
-.cta-box{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.02);padding:64px;display:grid;grid-template-columns:1.2fr .8fr;gap:52px;align-items:center}
+.cta-section{padding:74px 0}
+.cta-box{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.02);padding:46px;display:grid;grid-template-columns:1.2fr .8fr;gap:52px;align-items:center}
 .cta-box h2{font-size:clamp(1.9rem,3.6vw,2.6rem);line-height:1.08;margin-bottom:16px}
 .cta-box>div>p{font-size:1.02rem;margin-bottom:24px;max-width:480px;line-height:1.75}
 .cta-checks{display:grid;gap:12px}
 .cta-check{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.95rem}
 .cta-check::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0}
-.cta-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:40px;text-align:center}
+.cta-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:32px;text-align:center}
 .cta-card h3{font-size:1.3rem;margin-bottom:6px;letter-spacing:-.02em}
 .cta-card .sub{color:var(--muted);margin-bottom:24px;font-size:.95rem}
-.cta-card .cta-btn{width:100%;height:52px;font-size:.94rem}
+.cta-card .cta-btn{height:44px;padding:0 30px;font-size:.84rem}
 .cta-card .fine{color:var(--dim);font-size:.8rem;margin-top:14px}
 
-footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
-.f-stamp{display:block;width:80px;margin:0 auto 16px;opacity:.45;filter:invert(1)}
-.f-logo{display:block;width:min(100%,340px);margin:0 auto 14px;filter:invert(1);opacity:.65}
+footer{border-top:1px solid var(--line);padding:44px 0 38px;text-align:center}
+.f-logo{display:block;width:min(78%,400px);margin:0 auto 16px;opacity:.95}
 .f-desc{color:var(--dim);font-size:.88rem;margin-bottom:14px}
 .f-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 28px;margin-bottom:20px}
 .f-links a{color:var(--dim);font-size:.86rem;transition:color .2s}.f-links a:hover{color:#fff}
@@ -118,14 +115,14 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
 .f-legal{color:var(--dim);font-size:.8rem;line-height:1.95}
 .f-legal strong{color:var(--muted);font-weight:500}
 
-@media(max-width:1024px){.card-grid-3,.steps{grid-template-columns:1fr}.steps::before{display:none}.card-grid-2{grid-template-columns:1fr}.sol-card.featured{grid-column:span 1}.results-grid,.cta-box{grid-template-columns:1fr}.cta-box{padding:40px 28px}}
-@media(max-width:768px){.nav-links{display:none}.topbar .brand img{height:44px}.hero{padding:120px 0 64px}.hero h1{font-size:2.2rem}.section-title{font-size:1.9rem}.cta-card{padding:28px}.cta-btn{width:100%;justify-content:center}}
+@media(max-width:1024px){.card-grid-3,.steps{grid-template-columns:1fr}.steps::before{display:none}.card-grid-2{grid-template-columns:1fr}.sol-card.featured{grid-column:span 1}.results-grid,.cta-box{grid-template-columns:1fr}.cta-box{padding:34px 24px}}
+@media(max-width:768px){.nav-links{display:none}.topbar .inner{height:64px}.topbar .brand img{height:40px}.hero{padding:98px 0 52px}.hero h1{font-size:2.2rem}section,.cta-section{padding:56px 0}.sep{padding:20px 24px}.section-title{font-size:1.9rem}.cta-card{padding:26px}.cta-btn{height:36px;padding:0 18px;font-size:.76rem}}
 </style>
 </head><body>
 
 <header class="topbar" id="topbar">
   <div class="w inner">
-    <a class="brand" href="#top"><img src="./assets/tcc-logo-header.png" alt="TCC Solutions Group LLC" /></a>
+    <a class="brand" href="#top"><img src="./assets/tcc-logo-mark.png" alt="TCC Solutions Group LLC" /></a>
     <nav class="nav-links">
       <a href="#about">About</a>
       <a href="#solutions">What We Build</a>
@@ -139,17 +136,16 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
 <main id="top">
 
   <section class="hero">
-    <img class="hero-bg-stamp" src="./assets/tcc-logo-stacked.png" alt="" aria-hidden="true" />
     <div class="w">
       <div class="reveal">
-        <p class="eyebrow">TCC Solutions Group LLC &middot; Camino, California</p>
+        <p class="eyebrow">TCC Solutions Group LLC</p>
         <h1>We build and operate software for small businesses</h1>
         <p class="lead">TCC Solutions Group LLC is a California software company. We build custom web applications, integrate AI where it does real work, and automate the manual steps that slow a business down. We also build and operate our own products, including PlateHaven.</p>
       </div>
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
+  <div class="sep" aria-hidden="true"></div>
 
   <section id="about">
     <div class="w">
@@ -173,7 +169,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
+  <div class="sep" aria-hidden="true"></div>
 
   <section id="solutions">
     <div class="w">
@@ -238,7 +234,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
+  <div class="sep" aria-hidden="true"></div>
 
   <section id="products">
     <div class="w">
@@ -264,7 +260,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
+  <div class="sep" aria-hidden="true"></div>
 
   <section id="process" class="process-section">
     <div class="w">
@@ -292,7 +288,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
       </div>
     </div>
   </section>
-  <div class="sep" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
+  <div class="sep" aria-hidden="true"></div>
 
   <section id="results">
     <div class="w">
@@ -340,7 +336,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"><img src="./assets/tcc-logo-stacked.png" alt="" /></div>
+  <div class="sep" aria-hidden="true"></div>
 
   <section id="contact">
     <div class="w">
@@ -386,8 +382,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
 
 <footer>
   <div class="w">
-    <img class="f-stamp" src="./assets/tcc-logo-stacked.png" alt="" aria-hidden="true" />
-    <img class="f-logo" src="./assets/tcc-logo-horizontal.png" alt="TCC Solutions Group LLC" />
+    <img class="f-logo" src="./assets/tcc-logo-mark.png" alt="TCC Solutions Group LLC" />
     <p class="f-desc">Custom software, AI integration and automation. Builder and operator of PlateHaven.</p>
     <div class="f-links">
       <a href="#solutions">What We Build</a>
@@ -413,7 +408,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;text-align:center}
   "legalName": "TCC Solutions Group LLC",
   "alternateName": ["TCC Solutions Group", "TCCSG"],
   "url": "https://tccsolutionsgroup.com",
-  "logo": "https://tccsolutionsgroup.com/assets/tcc-logo-stacked.png",
+  "logo": "https://tccsolutionsgroup.com/assets/tcc-logo-header.png",
   "email": "tccsolutions2025@gmail.com",
   "telephone": "+1-530-334-6503",
   "foundingDate": "2026-08-29",
