@@ -3,376 +3,365 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TCC Solutions Group LLC (TCCSG) | Custom Software, AI Integration &amp; Automation</title>
-<meta name="description" content="TCC Solutions Group LLC (TCCSG) is a California software company based in Camino, CA. We build custom web applications, AI integrations and automation for small and mid-sized businesses, and we build and operate PlateHaven." />
+<title>TCCSG | Custom Software, AI &amp; Automation — TCC Solutions Group LLC</title>
+<meta name="description" content="TCCSG (TCC Solutions Group LLC) is a California software company. We build custom software, AI and automation for small and mid-sized businesses, and operate our own products including PlateHaven." />
 <link rel="canonical" href="https://tccsolutionsgroup.com/" />
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="TCC Solutions Group LLC" />
-<meta property="og:title" content="TCC Solutions Group LLC (TCCSG)" />
-<meta property="og:description" content="A California software company building custom web applications, AI integrations and automation, and the builder and operator of PlateHaven." />
+<meta property="og:site_name" content="TCCSG" />
+<meta property="og:title" content="TCCSG — We build and operate software for small businesses" />
+<meta property="og:description" content="Custom software, AI and automation, and the systems that tie them together. TCCSG is TCC Solutions Group LLC, a software company in California." />
 <meta property="og:url" content="https://tccsolutionsgroup.com/" />
 <meta property="og:image" content="https://tccsolutionsgroup.com/assets/tcc-logo-header.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#000;--text:#fff;--muted:#999;--dim:#555;--line:rgba(255,255,255,.08);--faint:rgba(255,255,255,.04);--max:1060px}
+:root{--bg:#000;--text:#fff;--muted:#9a9a9a;--dim:#5c5c5c;--line:rgba(255,255,255,.09);--faint:rgba(255,255,255,.03);--max:1100px;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font:400 17px/1.7 "DM Sans","Avenir Next",system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
-h1,h2,h3,h4{font-family:"Playfair Display",Georgia,"Times New Roman",serif;letter-spacing:-.02em;line-height:1.1;font-weight:700;color:#fff}
+body{background:var(--bg);color:var(--text);font:400 16.5px/1.65 "DM Sans","Avenir Next",system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h1,h2{font-family:"Playfair Display",Georgia,"Times New Roman",serif;letter-spacing:-.025em;line-height:1.08;font-weight:700;color:#fff}
+h3,h4{font-family:"DM Sans","Avenir Next",system-ui,sans-serif;font-weight:600;letter-spacing:-.012em;line-height:1.32;color:#fff}
 p{color:var(--muted)}a{color:inherit;text-decoration:none}
 .w{width:min(var(--max),calc(100% - 48px));margin:0 auto}
 
+.eyebrow,.section-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:16px}
+
 .topbar{position:fixed;top:0;left:0;right:0;z-index:50;transition:.3s ease;border-bottom:1px solid transparent}
-.topbar.scrolled{background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom-color:var(--line)}
-.topbar .inner{display:flex;align-items:center;justify-content:space-between;height:80px}
-.topbar .brand img{height:52px;display:block}
-.nav-links{display:flex;gap:32px;font-size:.86rem;font-weight:500;color:var(--dim);letter-spacing:.01em}
+.topbar.scrolled{background:rgba(0,0,0,.9);backdrop-filter:blur(16px);border-bottom-color:var(--line)}
+.topbar .inner{display:flex;align-items:center;justify-content:space-between;gap:20px;height:76px}
+.topbar .brand img{height:44px;display:block}
+.nav-links{display:flex;gap:30px;font-size:.85rem;font-weight:500;color:var(--dim)}
 .nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
 
-.cta-btn{display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 22px;border-radius:999px;background:#fff;color:#000;font-family:"Playfair Display",serif;font-weight:700;font-size:.79rem;letter-spacing:-.01em;border:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
-.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,255,255,.08)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 20px;border-radius:10px;font-family:"DM Sans",system-ui,sans-serif;font-weight:600;font-size:.85rem;letter-spacing:-.005em;border:1px solid transparent;cursor:pointer;transition:background .22s,color .22s,border-color .22s;white-space:nowrap}
+.btn-primary{background:#fff;color:#000}
+.btn-primary:hover{background:#e6e6e6}
+.btn-ghost{background:transparent;color:var(--muted);border-color:var(--line)}
+.btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,.28)}
 
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
-.reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.22s}.reveal.d3{transition-delay:.32s}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
 
-.hero{position:relative;padding:126px 0 74px;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,255,255,.03),transparent 65%);pointer-events:none}
-.hero .w{position:relative;z-index:1;max-width:740px}
-.hero .eyebrow{font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:28px}
-.hero h1{font-size:clamp(2.8rem,5.8vw,4.4rem);font-weight:800;margin-bottom:24px}
-.hero .lead{font-size:1.12rem;line-height:1.75;max-width:580px;color:var(--muted)}
+.hero{position:relative;padding:150px 0 84px}
+.hero .w{max-width:780px}
+.hero h1{font-size:clamp(2.3rem,4.8vw,3.5rem);font-weight:700;margin-bottom:20px}
+.hero .lead{font-size:1.05rem;line-height:1.7;max-width:560px;color:var(--muted);margin-bottom:32px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
 
-.sep{display:flex;align-items:center;justify-content:center;padding:26px 24px}
-.sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
+section{padding:78px 0}
+.section-head{margin-bottom:38px;max-width:640px}
+.section-title{font-size:clamp(1.65rem,3vw,2.25rem);margin-bottom:12px}
+.section-desc{font-size:.98rem;color:var(--muted);line-height:1.7;max-width:560px}
 
-section{padding:74px 0}
-.section-eyebrow{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
-.section-title{font-size:clamp(2rem,4.2vw,3rem);margin-bottom:16px;max-width:700px}
-.section-desc{font-size:1.04rem;color:var(--muted);max-width:560px;margin-bottom:34px;line-height:1.75}
+.card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sol-card{padding:28px 26px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);position:relative;transition:border-color .25s,background .25s}
+.sol-card:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.032)}
+.sol-card.featured{grid-column:span 2;background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.13)}
+.sol-num{font-family:var(--mono);font-size:.7rem;color:var(--dim);letter-spacing:.04em;display:block;margin-bottom:12px}
+.sol-card h3{font-size:1.08rem;margin-bottom:8px}
+.sol-card.featured h3{font-size:1.3rem}
+.sol-card p{font-size:.92rem;line-height:1.65;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:5px 11px;border-radius:7px;background:var(--faint);border:1px solid var(--line);font-size:.74rem;color:var(--muted);letter-spacing:.005em}
 
-.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{padding:32px 28px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line);transition:border-color .3s}
-.card:hover{border-color:rgba(255,255,255,.15)}
-.card h3{font-size:1.2rem;margin-bottom:10px;letter-spacing:-.02em}.card p{line-height:1.7;font-size:.96rem}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.product-card{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);overflow:hidden;transition:border-color .25s,background .25s}
+.product-card:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04)}
+.product-visual{display:flex;align-items:center;justify-content:center;padding:34px 26px;min-height:150px;border-bottom:1px solid var(--line)}
+.product-visual img{width:min(100%,180px);height:auto;display:block}
+.product-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:7px;flex:1}
+.product-body h3{font-size:1.02rem}
+.product-body p{font-size:.89rem;line-height:1.6;flex:1;margin-bottom:4px}
+.product-link{font-size:.83rem;font-weight:600;color:#fff;display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+/* one product: full-width horizontal card. add a second and they become grid cards automatically */
+.product-card:only-child{grid-column:1/-1;flex-direction:row}
+.product-card:only-child .product-visual{flex:0 0 42%;border-bottom:none;border-right:1px solid var(--line);min-height:210px;padding:34px}
+.product-card:only-child .product-visual img{width:min(100%,230px)}
+.product-card:only-child .product-body{justify-content:center;padding:30px 34px;gap:9px}
+.product-card:only-child .product-body h3{font-size:1.25rem}
+.product-card:only-child .product-body p{font-size:.95rem;flex:0}
+.product-card:hover .product-link{gap:11px}
 
-.solution-header{text-align:center;margin-bottom:40px}
-.solution-header .section-title,.solution-header .section-desc{margin-left:auto;margin-right:auto}
-.card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.sol-card{padding:36px 30px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .3s}
-.sol-card:hover{border-color:rgba(255,255,255,.15)}
-.sol-card.featured{grid-column:span 2;background:rgba(255,255,255,.025);border-color:rgba(255,255,255,.1)}
-.sol-num{position:absolute;top:18px;right:24px;font-size:3rem;font-family:"Playfair Display",serif;font-weight:800;color:rgba(255,255,255,.04);line-height:1}
-.sol-card h3{font-size:1.4rem;margin-bottom:10px;letter-spacing:-.025em}.sol-card p{margin-bottom:16px;line-height:1.7;font-size:.96rem}
-.tags{display:flex;flex-wrap:wrap;gap:7px}
-.tag{padding:6px 13px;border-radius:999px;background:var(--faint);border:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+.out-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.out-item{background:#000;padding:24px 26px}
+.out-item h4{font-size:.97rem;margin-bottom:6px}
+.out-item p{font-size:.87rem;line-height:1.6;color:var(--dim)}
 
 .process-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.process-header{text-align:center;margin-bottom:40px}
-.process-header .section-title,.process-header .section-desc{margin-left:auto;margin-right:auto}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative}
-.steps::before{content:"";position:absolute;top:32px;left:16.66%;right:16.66%;height:1px;background:var(--line)}
-.step{text-align:center;position:relative}
-.step-n{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.03);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.2rem;font-family:"Playfair Display",serif;font-weight:700;color:#fff;position:relative;z-index:1}
-.step h3{font-size:1.2rem;margin-bottom:8px;letter-spacing:-.02em}.step p{color:var(--muted);max-width:280px;margin:0 auto;line-height:1.7;font-size:.94rem}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step{border-left:1px solid var(--line);padding:2px 0 2px 22px}
+.step-n{font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:.06em;display:block;margin-bottom:12px}
+.step h3{font-size:1.08rem;margin-bottom:7px}
+.step p{font-size:.9rem;line-height:1.65}
 
-.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
-.results-content h2{font-size:clamp(1.8rem,3.4vw,2.4rem);margin-bottom:18px;line-height:1.12}
-.results-content>p{font-size:1.02rem;margin-bottom:28px;line-height:1.75}
-.r-list{display:grid;gap:12px}
-.r-item{display:flex;gap:14px;padding:18px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);transition:border-color .3s}
-.r-item:hover{border-color:rgba(255,255,255,.15)}
-.r-item h4{font-size:1rem;font-family:"Playfair Display",serif;font-weight:700;margin-bottom:2px;letter-spacing:-.02em}
-.r-item p{font-size:.88rem;color:var(--dim);margin:0}
+.cta-box{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02);padding:44px;display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
+.cta-box h2{font-size:clamp(1.6rem,2.8vw,2.1rem);margin-bottom:12px}
+.cta-box>div>p{font-size:.98rem;margin-bottom:20px;max-width:460px;line-height:1.7}
+.cta-checks{display:grid;gap:9px}
+.cta-check{display:flex;align-items:center;gap:11px;color:var(--muted);font-size:.9rem}
+.cta-check::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--dim);flex-shrink:0}
+.cta-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:30px;text-align:center}
+.cta-card h3{font-size:1.15rem;margin-bottom:5px}
+.cta-card .sub{color:var(--muted);margin-bottom:20px;font-size:.9rem}
+.cta-card .btn{width:100%}
+.cta-card .fine{color:var(--dim);font-size:.78rem;margin-top:12px}
 
-.cta-section{padding:74px 0}
-.cta-box{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.02);padding:46px;display:grid;grid-template-columns:1.2fr .8fr;gap:52px;align-items:center}
-.cta-box h2{font-size:clamp(1.9rem,3.6vw,2.6rem);line-height:1.08;margin-bottom:16px}
-.cta-box>div>p{font-size:1.02rem;margin-bottom:24px;max-width:480px;line-height:1.75}
-.cta-checks{display:grid;gap:12px}
-.cta-check{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.95rem}
-.cta-check::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0}
-.cta-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:32px;text-align:center}
-.cta-card h3{font-size:1.3rem;margin-bottom:6px;letter-spacing:-.02em}
-.cta-card .sub{color:var(--muted);margin-bottom:24px;font-size:.95rem}
-.cta-card .cta-btn{height:44px;padding:0 30px;font-size:.84rem}
-.cta-card .fine{color:var(--dim);font-size:.8rem;margin-top:14px}
-
-footer{border-top:1px solid var(--line);padding:44px 0 38px;text-align:center}
-.f-logo{display:block;width:min(78%,400px);margin:0 auto 16px;opacity:.95}
-.f-desc{color:var(--dim);font-size:.88rem;margin-bottom:14px}
-.f-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 28px;margin-bottom:20px}
-.f-links a{color:var(--dim);font-size:.86rem;transition:color .2s}.f-links a:hover{color:#fff}
-.f-copy{color:var(--dim);font-size:.78rem}
+.company-section{border-top:1px solid var(--line)}
+.company-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
+.company-grid h2{font-size:clamp(1.5rem,2.6vw,2rem);margin-bottom:14px}
+.company-grid>div>p{font-size:.96rem;line-height:1.75;margin-bottom:14px}
+.contact-block{display:grid;gap:18px}
+.contact-row{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:start;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.contact-row:last-child{border-bottom:none;padding-bottom:0}
+.contact-label{font-family:var(--mono);font-size:.7rem;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;padding-top:3px}
+.contact-value{font-size:.94rem;line-height:1.7;color:var(--muted)}
+.legal-note{color:var(--dim);font-size:.84rem;line-height:1.75;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
+.legal-note strong{color:var(--muted);font-weight:500}
 
 .inline-link{color:var(--muted);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.25);transition:color .2s,text-decoration-color .2s}
 .inline-link:hover{color:#fff;text-decoration-color:rgba(255,255,255,.6)}
-.contact-detail{font-size:.96rem;line-height:1.85;color:var(--muted)}
-.legal-note{color:var(--dim);font-size:.9rem;line-height:1.85;max-width:680px;margin-top:32px}
-.legal-note strong{color:var(--muted);font-weight:500}
-.f-legal{color:var(--dim);font-size:.8rem;line-height:1.95}
+
+footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
+.f-logo{display:block;width:min(64%,280px);margin:0 auto 14px;opacity:.9}
+.f-desc{color:var(--dim);font-size:.85rem;margin-bottom:14px}
+.f-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;margin-bottom:18px}
+.f-links a{color:var(--dim);font-size:.84rem;transition:color .2s}.f-links a:hover{color:#fff}
+.f-legal{color:var(--dim);font-size:.79rem;line-height:1.9}
 .f-legal strong{color:var(--muted);font-weight:500}
 
-@media(max-width:1024px){.card-grid-3,.steps{grid-template-columns:1fr}.steps::before{display:none}.card-grid-2{grid-template-columns:1fr}.sol-card.featured{grid-column:span 1}.results-grid,.cta-box{grid-template-columns:1fr}.cta-box{padding:34px 24px}}
-@media(max-width:768px){.nav-links{display:none}.topbar .inner{height:64px}.topbar .brand img{height:40px}.hero{padding:98px 0 52px}.hero h1{font-size:2.2rem}section,.cta-section{padding:56px 0}.sep{padding:20px 24px}.section-title{font-size:1.9rem}.cta-card{padding:26px}.cta-btn{height:36px;padding:0 18px;font-size:.76rem}}
+@media(max-width:900px){.product-card:only-child{flex-direction:column}.product-card:only-child .product-visual{flex:none;border-right:none;border-bottom:1px solid var(--line);min-height:170px}.card-grid-2{grid-template-columns:1fr}.sol-card.featured{grid-column:span 1}.steps{grid-template-columns:1fr;gap:20px}.cta-box,.company-grid{grid-template-columns:1fr}.cta-box{gap:32px;padding:32px 26px}.company-grid{gap:34px}.out-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.nav-links{display:none}.topbar .inner{height:64px}.topbar .brand img{height:38px}.hero{padding:112px 0 58px}section{padding:56px 0}.hero .lead{margin-bottom:26px}.btn{height:38px;padding:0 17px;font-size:.82rem}.contact-row{grid-template-columns:1fr;gap:4px}.contact-row .contact-label{padding-top:0}}
 </style>
 </head><body>
 
 <header class="topbar" id="topbar">
   <div class="w inner">
-    <a class="brand" href="#top"><img src="./assets/tcc-logo-mark.png" alt="TCC Solutions Group LLC" /></a>
+    <a class="brand" href="#top"><img src="./assets/tcc-logo-mark.png" alt="TCCSG — TCC Solutions Group LLC" /></a>
     <nav class="nav-links">
-      <a href="#about">About</a>
-      <a href="#solutions">What We Build</a>
+      <a href="#build">What We Build</a>
       <a href="#products">Products</a>
+      <a href="#process">Process</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="cta-btn" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
+    <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a call</a>
   </div>
 </header>
 
 <main id="top">
 
   <section class="hero">
-    <div class="w">
-      <div class="reveal">
-        <p class="eyebrow">TCC Solutions Group LLC</p>
-        <h1>We build and operate software for small businesses</h1>
-        <p class="lead">TCC Solutions Group LLC is a California software company. We build custom web applications, integrate AI where it does real work, and automate the manual steps that slow a business down. We also build and operate our own products, including PlateHaven.</p>
+    <div class="w reveal">
+      <p class="eyebrow">TCCSG</p>
+      <h1>We build and operate software for small businesses</h1>
+      <p class="lead">Custom software, AI and automation &#8212; and the systems that tie them together. TCCSG is TCC Solutions Group LLC, a software company based in California.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a call</a>
+        <a class="btn btn-ghost" href="#build">See what we build</a>
       </div>
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"></div>
-
-  <section id="about">
+  <section id="build">
     <div class="w">
-      <p class="section-eyebrow reveal">About</p>
-      <h2 class="section-title reveal">Our mission</h2>
-      <p class="section-desc reveal">TCC Solutions Group LLC exists to take repetitive work off a small business&#8217;s plate and hand back software its people can trust. We work with owner-operated and mid-sized businesses that have outgrown spreadsheets and disconnected tools. We scope the work in plain language, build it ourselves, and stay responsible for what we ship.</p>
-      <div class="card-grid-3">
-        <div class="card reveal d1">
-          <h3>Repetitive work</h3>
-          <p>Quotes retyped into invoices, bookings copied between calendars, reminders sent by hand. This is the kind of work software is built to hold.</p>
-        </div>
-        <div class="card reveal d2">
-          <h3>Disconnected tools</h3>
-          <p>Most businesses run on several tools that were never designed to talk to each other. We connect them, or replace the gap with something purpose-built.</p>
-        </div>
-        <div class="card reveal d3">
-          <h3>Hard-to-reach information</h3>
-          <p>Numbers that live in exports and inboxes are hard to act on. We put the ones that matter somewhere they can be read at a glance.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="sep" aria-hidden="true"></div>
-
-  <section id="solutions">
-    <div class="w">
-      <div class="solution-header">
-        <p class="section-eyebrow reveal">What we build</p>
-        <h2 class="section-title reveal">Software, AI and automation, built to fit the business</h2>
-        <p class="section-desc reveal">We take on five kinds of work. Most engagements combine two or three of them.</p>
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Capabilities</p>
+        <h2 class="section-title">Built around your business</h2>
+        <p class="section-desc">Five things we build. Most projects combine a few of them.</p>
       </div>
       <div class="card-grid-2">
+
         <div class="sol-card featured reveal">
           <span class="sol-num">01</span>
-          <h3>AI-assisted customer systems</h3>
-          <p>An assistant on your site that answers common questions from your own content, collects enquiry details, and books appointments into your calendar outside business hours. It hands off to a person when it should, and every conversation is logged so you can see what customers are asking.</p>
+          <h3>Custom software</h3>
+          <p>Web applications, dashboards, internal tools, client portals, workflow systems and integrations. Software built around the way the business actually works, rather than bending the business to fit a product someone else designed.</p>
           <div class="tags">
-            <span class="tag">AI Chat Assistant</span>
-            <span class="tag">Lead Capture</span>
-            <span class="tag">Auto-Booking</span>
-            <span class="tag">Smart Follow-up</span>
+            <span class="tag">Web Apps</span>
+            <span class="tag">Dashboards</span>
+            <span class="tag">Internal Tools</span>
+            <span class="tag">Client Portals</span>
+            <span class="tag">Workflow Systems</span>
+            <span class="tag">Integrations</span>
           </div>
         </div>
+
         <div class="sol-card reveal">
           <span class="sol-num">02</span>
-          <h3>Business automation</h3>
-          <p>Replace manual steps with automated ones: lead follow-up, appointment reminders, invoice handling, and the copying of data between the tools you already pay for.</p>
+          <h3>AI &amp; automation</h3>
+          <p>AI where it makes the system better: customer assistance, lead handling, follow-up, information retrieval and the internal processes nobody wants to do by hand.</p>
           <div class="tags">
+            <span class="tag">Assistants</span>
+            <span class="tag">Lead Handling</span>
+            <span class="tag">Follow-up</span>
             <span class="tag">Workflow Automation</span>
-            <span class="tag">Lead Nurturing</span>
-            <span class="tag">Task Management</span>
           </div>
         </div>
+
         <div class="sol-card reveal">
           <span class="sol-num">03</span>
-          <h3>Custom software</h3>
-          <p>Web apps, dashboards and internal tools built around how your business actually operates, rather than bending your process to fit an off-the-shelf product.</p>
+          <h3>Business systems</h3>
+          <p>The connective layer. We join up the tools you already run so information moves between them, and build something purpose-made where the gaps are.</p>
           <div class="tags">
-            <span class="tag">Custom Dashboards</span>
-            <span class="tag">Client Portals</span>
-            <span class="tag">Internal Tools</span>
+            <span class="tag">Integrations</span>
+            <span class="tag">Reporting</span>
+            <span class="tag">Scheduling</span>
           </div>
         </div>
+
         <div class="sol-card reveal">
           <span class="sol-num">04</span>
-          <h3>Websites with a job to do</h3>
-          <p>Sites built around one clear path: understand what you do, then get in touch or book. Quick to load, straightforward to update, and wired into the systems behind them.</p>
+          <h3>Websites</h3>
+          <p>Part of the system, not just the storefront. Wired into forms, booking, lead capture and the software running behind them.</p>
           <div class="tags">
-            <span class="tag">Conversion Design</span>
-            <span class="tag">Booking System</span>
-            <span class="tag">Lead Funnels</span>
+            <span class="tag">Booking</span>
+            <span class="tag">Lead Capture</span>
+            <span class="tag">Connected</span>
           </div>
         </div>
+
         <div class="sol-card reveal">
           <span class="sol-num">05</span>
-          <h3>Ongoing advisory</h3>
-          <p>Regular working sessions after launch to review how the systems are performing, adjust them as the business changes, and decide together what is worth building next.</p>
+          <h3>Advisory</h3>
+          <p>Working sessions after launch to review what is running, adjust it as the business changes, and decide what is worth building next.</p>
           <div class="tags">
-            <span class="tag">Working Sessions</span>
-            <span class="tag">Performance Review</span>
-            <span class="tag">New Implementations</span>
+            <span class="tag">Review</span>
+            <span class="tag">Iteration</span>
+            <span class="tag">Roadmap</span>
           </div>
         </div>
+
       </div>
     </div>
   </section>
-
-  <div class="sep" aria-hidden="true"></div>
 
   <section id="products">
     <div class="w">
-      <div class="solution-header">
-        <p class="section-eyebrow reveal">Our products</p>
-        <h2 class="section-title reveal">What we build and operate ourselves</h2>
-        <p class="section-desc reveal">Alongside client work, TCC Solutions Group LLC develops and runs its own software.</p>
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Products</p>
+        <h2 class="section-title">Software we build and operate</h2>
+        <p class="section-desc">Our own products, built and run in-house.</p>
       </div>
-      <div class="card-grid-2">
-        <div class="sol-card featured reveal">
-          <h3>PlateHaven</h3>
-          <p>PlateHaven is a multi-tenant digital menu and direct-ordering platform for restaurants, caterers and food trucks. Each business gets its own hosted menu and takes orders directly from its customers, without a third-party marketplace in between.</p>
-          <p>PlateHaven is built and operated by TCC Solutions Group LLC. It is a product of the company, not a separate business entity.</p>
-          <p><a class="inline-link" href="https://platehaven.app" target="_blank" rel="noreferrer">platehaven.app</a></p>
-          <div class="tags">
-            <span class="tag">Digital Menus</span>
-            <span class="tag">Direct Ordering</span>
-            <span class="tag">Multi-Tenant</span>
-            <span class="tag">Restaurants, Caterers &amp; Food Trucks</span>
+      <div class="product-grid">
+        <a class="product-card reveal" href="https://platehaven.app" target="_blank" rel="noreferrer">
+          <div class="product-visual">
+            <img src="./assets/platehaven-logo.png" alt="PlateHaven" />
           </div>
-        </div>
+          <div class="product-body">
+            <h3>PlateHaven</h3>
+            <p>Online ordering for restaurants, caterers and food trucks.</p>
+            <span class="product-link">View product &#8594;</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"></div>
+  <section id="outcomes">
+    <div class="w">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Day to day</p>
+        <h2 class="section-title">What changes once it is running</h2>
+      </div>
+      <div class="out-grid reveal">
+        <div class="out-item">
+          <h4>Fewer repetitive tasks</h4>
+          <p>Data entry, reminders and handoffs run on their own instead of sitting on someone&#8217;s list.</p>
+        </div>
+        <div class="out-item">
+          <h4>Faster customer response</h4>
+          <p>Enquiries are captured and answered without waiting for a person to be free.</p>
+        </div>
+        <div class="out-item">
+          <h4>Systems that talk to each other</h4>
+          <p>Information moves between tools instead of being retyped from one into the next.</p>
+        </div>
+        <div class="out-item">
+          <h4>Clearer operations</h4>
+          <p>The numbers you rely on stay in one place and stay current.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="process" class="process-section">
     <div class="w">
-      <div class="process-header">
-        <p class="section-eyebrow reveal">The process</p>
-        <h2 class="section-title reveal">Three steps, scoped in plain language</h2>
-        <p class="section-desc reveal">No massive overhauls and no year-long transformations. We agree what is being built, build it, and stay involved once it is running.</p>
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Process</p>
+        <h2 class="section-title">Three steps, scoped in plain language</h2>
       </div>
       <div class="steps">
         <div class="step reveal d1">
-          <div class="step-n">1</div>
-          <h3>Audit &amp; discover</h3>
-          <p>We walk through how the business runs today and identify the manual steps, gaps in follow-up and reporting blind spots worth addressing first.</p>
+          <span class="step-n">01</span>
+          <h3>Discover</h3>
+          <p>We learn how the business runs today and where the friction actually is.</p>
         </div>
         <div class="step reveal d2">
-          <div class="step-n">2</div>
-          <h3>Design &amp; build</h3>
-          <p>We agree the scope in writing, then build it &#8212; AI assistant, automation, web app or site &#8212; around how your business actually works.</p>
+          <span class="step-n">02</span>
+          <h3>Build</h3>
+          <p>We agree the scope in writing, then design and build the right system.</p>
         </div>
         <div class="step reveal d3">
-          <div class="step-n">3</div>
-          <h3>Launch &amp; support</h3>
-          <p>We deploy the system, show your team how to run it, and stay available to adjust it as the business changes.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="sep" aria-hidden="true"></div>
-
-  <section id="results">
-    <div class="w">
-      <div class="results-grid">
-        <div class="results-content reveal">
-          <p class="section-eyebrow">Day to day</p>
-          <h2>What these systems actually do</h2>
-          <p>We describe our work by what it does, not by numbers we cannot stand behind. Here is what the systems we build are designed to handle once they are running.</p>
-          <div class="r-list">
-            <div class="r-item">
-              <div><h4>Enquiries get captured</h4><p>Details are collected, acknowledged and routed the same way every time, including outside business hours.</p></div>
-            </div>
-            <div class="r-item">
-              <div><h4>Repeat work gets automated</h4><p>Data entry, reminders and handoffs between tools run without someone having to remember them.</p></div>
-            </div>
-            <div class="r-item">
-              <div><h4>The numbers stay visible</h4><p>Dashboards pull the figures you care about into one place, updated from the systems that hold them.</p></div>
-            </div>
-          </div>
+          <span class="step-n">03</span>
+          <h3>Launch</h3>
+          <p>We deploy it, hand it over, and keep improving it as things change.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="cta-section" id="cta">
+  <section id="cta">
     <div class="w">
       <div class="cta-box">
         <div class="reveal">
-          <h2>Start with a conversation</h2>
-          <p>If you are weighing up whether custom software or automation is worth it for your business, a call is the cheapest way to find out. We will look at how you work now and tell you plainly where we could help &#8212; and where we could not.</p>
+          <h2>Let&#8217;s see what could be built</h2>
+          <p>Not sure exactly what you need yet? That is normal. A short call is the cheapest way to find out whether software would help &#8212; and where it would not.</p>
           <div class="cta-checks">
             <div class="cta-check">A no-cost, 30-minute call</div>
-            <div class="cta-check">A plain look at how your operations run today</div>
-            <div class="cta-check">Honest guidance on where software helps, and where it does not</div>
+            <div class="cta-check">A look at how you work today</div>
+            <div class="cta-check">Honest guidance on what is worth building</div>
             <div class="cta-check">No obligation</div>
           </div>
         </div>
         <div class="cta-card reveal d1">
           <h3>Book a call</h3>
           <p class="sub">30 minutes, no cost, no obligation.</p>
-          <a class="cta-btn" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">See where you fit</a>
-          <p class="fine">Prefer email or phone? Details are below.</p>
+          <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a call</a>
+          <p class="fine">Prefer email or phone? Details below.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="sep" aria-hidden="true"></div>
-
-  <section id="contact">
+  <section id="contact" class="company-section">
     <div class="w">
-      <p class="section-eyebrow reveal">Contact</p>
-      <h2 class="section-title reveal">How to reach TCC Solutions Group LLC</h2>
-      <p class="section-desc reveal">You can reach us by post, email or phone. We answer email on business days.</p>
-      <div class="card-grid-3">
-        <div class="card reveal d1">
-          <h3>Postal address</h3>
-          <p class="contact-detail">
-            TCC Solutions Group LLC<br />
-            2929 Alder Drive<br />
-            Camino, CA 95709<br />
-            United States
-          </p>
+      <div class="company-grid">
+        <div class="reveal">
+          <p class="section-eyebrow">Company</p>
+          <h2>TCC Solutions Group LLC</h2>
+          <p>TCCSG builds software for owner-operated and mid-sized businesses that have outgrown spreadsheets and disconnected tools. We scope the work in plain language, build it ourselves, and stay responsible for what we ship.</p>
         </div>
-        <div class="card reveal d2">
-          <h3>Email</h3>
-          <p class="contact-detail">
-            tccsolutions2025@gmail.com<br />
-            <a class="inline-link" href="mailto:tccsolutions2025@gmail.com">Send an email</a>
-          </p>
-        </div>
-        <div class="card reveal d3">
-          <h3>Phone</h3>
-          <p class="contact-detail">
-            +1 530 334 6503<br />
-            <a class="inline-link" href="tel:+15303346503">Call this number</a>
-          </p>
+        <div class="contact-block reveal d1">
+          <div class="contact-row">
+            <span class="contact-label">Address</span>
+            <span class="contact-value">TCC Solutions Group LLC<br />2929 Alder Drive<br />Camino, CA 95709<br />United States</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">Email</span>
+            <span class="contact-value">tccsolutions2025@gmail.com</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">Phone</span>
+            <span class="contact-value">+1 530 334 6503</span>
+          </div>
         </div>
       </div>
       <p class="legal-note reveal">
-        TCC Solutions Group LLC (TCCSG) is a limited liability company registered in the State of California,
-        United States. California Secretary of State entity number <strong>B20260395844</strong>, filed
-        29 August 2026. Registered and mailing address: 2929 Alder Drive, Camino, CA 95709, United States.
-        PlateHaven (<a class="inline-link" href="https://platehaven.app" target="_blank" rel="noreferrer">platehaven.app</a>)
+        TCCSG is the trading name of <strong>TCC Solutions Group LLC</strong>, a limited liability company
+        registered in the State of California, United States. California Secretary of State entity number
+        <strong>B20260395844</strong>, filed 29 August 2026. Registered and mailing address: 2929 Alder Drive,
+        Camino, CA 95709, United States. PlateHaven
+        (<a class="inline-link" href="https://platehaven.app" target="_blank" rel="noreferrer">platehaven.app</a>)
         is a product built and operated by TCC Solutions Group LLC.
       </p>
     </div>
@@ -382,11 +371,12 @@ footer{border-top:1px solid var(--line);padding:44px 0 38px;text-align:center}
 
 <footer>
   <div class="w">
-    <img class="f-logo" src="./assets/tcc-logo-mark.png" alt="TCC Solutions Group LLC" />
-    <p class="f-desc">Custom software, AI integration and automation. Builder and operator of PlateHaven.</p>
+    <img class="f-logo" src="./assets/tcc-logo-mark.png" alt="TCCSG — TCC Solutions Group LLC" />
+    <p class="f-desc">Custom software, AI and automation. Builder and operator of PlateHaven.</p>
     <div class="f-links">
-      <a href="#solutions">What We Build</a>
+      <a href="#build">What We Build</a>
       <a href="#products">Products</a>
+      <a href="#process">Process</a>
       <a href="#contact">Contact</a>
       <a href="./privacy.html">Privacy Policy</a>
       <a href="./terms.html">Terms of Use</a>
@@ -406,7 +396,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 38px;text-align:center}
   "@type": "Organization",
   "name": "TCC Solutions Group LLC",
   "legalName": "TCC Solutions Group LLC",
-  "alternateName": ["TCC Solutions Group", "TCCSG"],
+  "alternateName": ["TCCSG", "TCC Solutions Group"],
   "url": "https://tccsolutionsgroup.com",
   "logo": "https://tccsolutionsgroup.com/assets/tcc-logo-header.png",
   "email": "tccsolutions2025@gmail.com",
@@ -430,7 +420,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 38px;text-align:center}
     "name": "PlateHaven",
     "url": "https://platehaven.app",
     "applicationCategory": "BusinessApplication",
-    "description": "Multi-tenant digital menu and direct-ordering platform for restaurants, caterers and food trucks."
+    "description": "Online ordering platform for restaurants, caterers and food trucks."
   },
   "contactPoint": {
     "@type": "ContactPoint",
@@ -447,7 +437,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 38px;text-align:center}
 var topbar=document.getElementById("topbar");
 window.addEventListener("scroll",function(){topbar.classList.toggle("scrolled",window.scrollY>10)});
 var reveals=document.querySelectorAll(".reveal");
-var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}})},{threshold:0.12});
+var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}})},{threshold:0.1});
 reveals.forEach(function(el){observer.observe(el)});
 </script>
 </body>
