@@ -84,10 +84,11 @@ section{padding:78px 0}
 .product-card:only-child .product-body p{font-size:.95rem;flex:0}
 .product-card:hover .product-link{gap:11px}
 
-.out-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.out-item{background:#000;padding:24px 26px}
-.out-item h4{font-size:.97rem;margin-bottom:6px}
-.out-item p{font-size:.87rem;line-height:1.6;color:var(--dim)}
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.principle{background:#000;padding:28px 26px 30px}
+.principle h3{font-size:1.05rem;margin-bottom:9px}
+.principle p{font-size:.91rem;line-height:1.68}
+.note{color:var(--muted);font-size:.92rem;line-height:1.7;max-width:620px;margin-top:26px}
 
 .process-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -131,7 +132,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
 .f-legal{color:var(--dim);font-size:.79rem;line-height:1.9}
 .f-legal strong{color:var(--muted);font-weight:500}
 
-@media(max-width:900px){.product-card:only-child{flex-direction:column}.product-card:only-child .product-visual{flex:none;border-right:none;border-bottom:1px solid var(--line);min-height:170px}.card-grid-2{grid-template-columns:1fr}.sol-card.featured{grid-column:span 1}.steps{grid-template-columns:1fr;gap:20px}.cta-box,.company-grid{grid-template-columns:1fr}.cta-box{gap:32px;padding:32px 26px}.company-grid{gap:34px}.out-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.product-card:only-child{flex-direction:column}.product-card:only-child .product-visual{flex:none;border-right:none;border-bottom:1px solid var(--line);min-height:170px}.card-grid-2{grid-template-columns:1fr}.sol-card.featured{grid-column:span 1}.steps{grid-template-columns:1fr;gap:20px}.cta-box,.company-grid{grid-template-columns:1fr}.cta-box{gap:32px;padding:32px 26px}.company-grid{gap:34px}.principles{grid-template-columns:1fr}}
 @media(max-width:768px){.nav-links{display:none}.topbar .inner{height:64px}.topbar .brand img{height:38px}.hero{padding:112px 0 58px}section{padding:56px 0}.hero .lead{margin-bottom:26px}.btn{height:38px;padding:0 17px;font-size:.82rem}.contact-row{grid-template-columns:1fr;gap:4px}.contact-row .contact-label{padding-top:0}}
 </style>
 </head><body>
@@ -141,8 +142,8 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
     <a class="brand" href="#top"><img src="./assets/tcc-logo-mark.png" alt="TCCSG — TCC Solutions Group LLC" /></a>
     <nav class="nav-links">
       <a href="#build">What We Build</a>
+      <a href="#how">How We Work</a>
       <a href="#products">Products</a>
-      <a href="#process">Process</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a call</a>
@@ -155,7 +156,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
     <div class="w reveal">
       <p class="eyebrow">TCCSG</p>
       <h1>We build and operate software for small businesses</h1>
-      <p class="lead">Custom software, AI and automation &#8212; and the systems that tie them together. TCCSG is TCC Solutions Group LLC, a software company based in California.</p>
+      <p class="lead">Custom software, AI and automation &#8212; built with the people who use it.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="https://calendly.com/tccsolutions2025/30min" target="_blank" rel="noreferrer">Book a call</a>
         <a class="btn btn-ghost" href="#build">See what we build</a>
@@ -166,67 +167,64 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
   <section id="build">
     <div class="w">
       <div class="section-head reveal">
-        <p class="section-eyebrow">Capabilities</p>
+        <p class="section-eyebrow">What we build</p>
         <h2 class="section-title">Built around your business</h2>
-        <p class="section-desc">Five things we build. Most projects combine a few of them.</p>
       </div>
       <div class="card-grid-2">
 
         <div class="sol-card featured reveal">
           <span class="sol-num">01</span>
           <h3>Custom software</h3>
-          <p>Web applications, dashboards, internal tools, client portals, workflow systems and integrations. Software built around the way the business actually works, rather than bending the business to fit a product someone else designed.</p>
+          <p>Web apps, dashboards, internal tools, client portals and integrations &#8212; built for how your business actually runs.</p>
           <div class="tags">
             <span class="tag">Web Apps</span>
             <span class="tag">Dashboards</span>
             <span class="tag">Internal Tools</span>
             <span class="tag">Client Portals</span>
-            <span class="tag">Workflow Systems</span>
             <span class="tag">Integrations</span>
           </div>
         </div>
 
         <div class="sol-card reveal">
           <span class="sol-num">02</span>
-          <h3>AI &amp; automation</h3>
-          <p>AI where it makes the system better: customer assistance, lead handling, follow-up, information retrieval and the internal processes nobody wants to do by hand.</p>
+          <h3>AI &amp; customer systems</h3>
+          <p>Assistants that answer questions, capture enquiries and book work &#8212; with a person in the loop where it matters.</p>
           <div class="tags">
             <span class="tag">Assistants</span>
-            <span class="tag">Lead Handling</span>
-            <span class="tag">Follow-up</span>
-            <span class="tag">Workflow Automation</span>
+            <span class="tag">Lead Capture</span>
+            <span class="tag">Booking</span>
           </div>
         </div>
 
         <div class="sol-card reveal">
           <span class="sol-num">03</span>
-          <h3>Business systems</h3>
-          <p>The connective layer. We join up the tools you already run so information moves between them, and build something purpose-made where the gaps are.</p>
+          <h3>Business automation</h3>
+          <p>The repetitive work handled in the background: follow-ups, reminders, and data moving between the tools you already run.</p>
           <div class="tags">
+            <span class="tag">Follow-up</span>
+            <span class="tag">Reminders</span>
             <span class="tag">Integrations</span>
-            <span class="tag">Reporting</span>
-            <span class="tag">Scheduling</span>
           </div>
         </div>
 
         <div class="sol-card reveal">
           <span class="sol-num">04</span>
           <h3>Websites</h3>
-          <p>Part of the system, not just the storefront. Wired into forms, booking, lead capture and the software running behind them.</p>
+          <p>Part of the system, not just the storefront. Wired into booking, forms and the software behind them.</p>
           <div class="tags">
             <span class="tag">Booking</span>
-            <span class="tag">Lead Capture</span>
+            <span class="tag">Forms</span>
             <span class="tag">Connected</span>
           </div>
         </div>
 
         <div class="sol-card reveal">
           <span class="sol-num">05</span>
-          <h3>Advisory</h3>
-          <p>Working sessions after launch to review what is running, adjust it as the business changes, and decide what is worth building next.</p>
+          <h3>Ongoing development</h3>
+          <p>We keep building after launch, guided by how the system is actually being used.</p>
           <div class="tags">
-            <span class="tag">Review</span>
             <span class="tag">Iteration</span>
+            <span class="tag">Support</span>
             <span class="tag">Roadmap</span>
           </div>
         </div>
@@ -235,12 +233,35 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
     </div>
   </section>
 
+  <section id="how">
+    <div class="w">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">How we work</p>
+        <h2 class="section-title">Built with the people who use it</h2>
+      </div>
+      <div class="principles reveal">
+        <div class="principle">
+          <h3>Listen</h3>
+          <p>The people doing the work know where it breaks. We stay close to them, and that is what the software gets built around.</p>
+        </div>
+        <div class="principle">
+          <h3>Build</h3>
+          <p>Including things that do not exist yet. If there is no good answer already, we build one.</p>
+        </div>
+        <div class="principle">
+          <h3>Evolve</h3>
+          <p>Launch is a starting point. We watch how a system gets used and keep developing it from there.</p>
+        </div>
+      </div>
+      <p class="note reveal">When several businesses in the same industry run the same system, their feedback compounds &#8212; and it shapes where the product goes next.</p>
+    </div>
+  </section>
+
   <section id="products">
     <div class="w">
       <div class="section-head reveal">
         <p class="section-eyebrow">Products</p>
         <h2 class="section-title">Software we build and operate</h2>
-        <p class="section-desc">Our own products, built and run in-house.</p>
       </div>
       <div class="product-grid">
         <a class="product-card reveal" href="https://platehaven.app" target="_blank" rel="noreferrer">
@@ -249,37 +270,10 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
           </div>
           <div class="product-body">
             <h3>PlateHaven</h3>
-            <p>Online ordering for restaurants, caterers and food trucks.</p>
-            <span class="product-link">View product &#8594;</span>
+            <p>Digital ordering for food businesses.</p>
+            <span class="product-link">View PlateHaven &#8594;</span>
           </div>
         </a>
-      </div>
-    </div>
-  </section>
-
-  <section id="outcomes">
-    <div class="w">
-      <div class="section-head reveal">
-        <p class="section-eyebrow">Day to day</p>
-        <h2 class="section-title">What changes once it is running</h2>
-      </div>
-      <div class="out-grid reveal">
-        <div class="out-item">
-          <h4>Fewer repetitive tasks</h4>
-          <p>Data entry, reminders and handoffs run on their own instead of sitting on someone&#8217;s list.</p>
-        </div>
-        <div class="out-item">
-          <h4>Faster customer response</h4>
-          <p>Enquiries are captured and answered without waiting for a person to be free.</p>
-        </div>
-        <div class="out-item">
-          <h4>Systems that talk to each other</h4>
-          <p>Information moves between tools instead of being retyped from one into the next.</p>
-        </div>
-        <div class="out-item">
-          <h4>Clearer operations</h4>
-          <p>The numbers you rely on stay in one place and stay current.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -288,25 +282,26 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
     <div class="w">
       <div class="section-head reveal">
         <p class="section-eyebrow">Process</p>
-        <h2 class="section-title">Three steps, scoped in plain language</h2>
+        <h2 class="section-title">How a project runs</h2>
       </div>
       <div class="steps">
         <div class="step reveal d1">
           <span class="step-n">01</span>
           <h3>Discover</h3>
-          <p>We learn how the business runs today and where the friction actually is.</p>
+          <p>Understand the business and where the friction actually is.</p>
         </div>
         <div class="step reveal d2">
           <span class="step-n">02</span>
           <h3>Build</h3>
-          <p>We agree the scope in writing, then design and build the right system.</p>
+          <p>Design and build the system that solves it.</p>
         </div>
         <div class="step reveal d3">
           <span class="step-n">03</span>
           <h3>Launch</h3>
-          <p>We deploy it, hand it over, and keep improving it as things change.</p>
+          <p>Put it into the real world.</p>
         </div>
       </div>
+      <p class="note reveal">Launch is a milestone, not the end. Most of what we build keeps developing from there.</p>
     </div>
   </section>
 
@@ -315,7 +310,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
       <div class="cta-box">
         <div class="reveal">
           <h2>Let&#8217;s see what could be built</h2>
-          <p>Not sure exactly what you need yet? That is normal. A short call is the cheapest way to find out whether software would help &#8212; and where it would not.</p>
+          <p>Not sure what you need yet? That is normal. A short call is the cheapest way to find out whether software would help &#8212; and where it would not.</p>
           <div class="cta-checks">
             <div class="cta-check">A no-cost, 30-minute call</div>
             <div class="cta-check">A look at how you work today</div>
@@ -339,7 +334,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
         <div class="reveal">
           <p class="section-eyebrow">Company</p>
           <h2>TCC Solutions Group LLC</h2>
-          <p>TCCSG builds software for owner-operated and mid-sized businesses that have outgrown spreadsheets and disconnected tools. We scope the work in plain language, build it ourselves, and stay responsible for what we ship.</p>
+          <p>TCCSG builds software for owner-operated and mid-sized businesses. We scope the work in plain language, build it ourselves, and stay responsible for what we ship.</p>
         </div>
         <div class="contact-block reveal d1">
           <div class="contact-row">
@@ -372,9 +367,10 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
 <footer>
   <div class="w">
     <img class="f-logo" src="./assets/tcc-logo-mark.png" alt="TCCSG — TCC Solutions Group LLC" />
-    <p class="f-desc">Custom software, AI and automation. Builder and operator of PlateHaven.</p>
+    <p class="f-desc">Build. Listen. Evolve.</p>
     <div class="f-links">
       <a href="#build">What We Build</a>
+      <a href="#how">How We Work</a>
       <a href="#products">Products</a>
       <a href="#process">Process</a>
       <a href="#contact">Contact</a>
