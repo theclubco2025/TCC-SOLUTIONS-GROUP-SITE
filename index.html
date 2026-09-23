@@ -134,9 +134,16 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
 
 .hero .subline{font-size:1.18rem;font-weight:500;color:#fff;letter-spacing:-.015em;margin-bottom:24px}
 .hero .lead-out{font-size:1.05rem;line-height:1.7;max-width:560px;color:#fff;font-weight:500;margin-bottom:30px}
-.tech-stream{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px;max-width:620px}
-.tech-stream span{font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);padding:6px 10px;border:1px solid var(--line);border-radius:7px;transition:color .45s ease,border-color .45s ease,background .45s ease}
-.tech-stream span.on{color:#fff;border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.05)}
+.code-box{display:flex;align-items:center;gap:11px;width:min(100%,430px);min-height:54px;padding:0 16px;margin-bottom:28px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.028);font-family:var(--mono);font-size:.82rem;letter-spacing:.02em;overflow:hidden}
+.cb-prompt{color:var(--dim);flex-shrink:0;user-select:none}
+.cb-text{color:#fff;white-space:nowrap;padding:1px 2px;border-radius:2px;transition:background .18s ease,color .18s ease}
+.cb-text.sel{background:rgba(255,255,255,.9);color:#000}
+.cb-caret{width:7px;height:15px;background:#fff;flex-shrink:0;animation:cb-blink 1.05s step-end infinite}
+.code-box.static{height:auto;padding:14px 16px}
+.code-box.static .cb-text{white-space:normal;color:var(--muted)}
+.code-box.static .cb-caret{display:none}
+@keyframes cb-blink{0%,100%{opacity:1}50%{opacity:0}}
+.h1-caret{display:inline-block;width:.46em;height:.78em;background:#fff;vertical-align:-.04em;margin-left:.07em;animation:cb-blink 1.05s step-end infinite}
 
 .prose{max-width:660px}
 .prose p{font-size:1rem;line-height:1.8;margin-bottom:15px}
@@ -182,8 +189,8 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
       <p class="eyebrow">TCCSG</p>
       <h1>Technology is moving faster than your business can keep up.</h1>
       <p class="subline">And it isn&#8217;t slowing down.</p>
-      <div class="tech-stream" aria-hidden="true">
-        <span>AI</span><span>Automation</span><span>Software</span><span>Data</span><span>Integrations</span><span>Security</span><span>Customer Experience</span><span>New Tools</span><span>New Opportunities</span>
+      <div class="code-box" aria-hidden="true">
+        <span class="cb-prompt">&gt;</span><span class="cb-text">AI</span><span class="cb-caret"></span>
       </div>
       <p class="lead">Keeping up with all of it has become a job in itself. You already have one.</p>
       <p class="lead-out">TCCSG handles the technology so you can focus on the business.</p>
@@ -482,16 +489,62 @@ var reveals=document.querySelectorAll(".reveal");
 var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}})},{threshold:0.1});
 reveals.forEach(function(el){observer.observe(el)});
 
-/* hero: walk the highlight along the technology list - the point is the volume of it, not any one item */
-var stream=document.querySelectorAll(".tech-stream span");
-if(stream.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-  var i=0;
-  setInterval(function(){
-    stream.forEach(function(el){el.classList.remove("on")});
-    stream[i].classList.add("on");
-    i=(i+1)%stream.length;
-  },900);
-}
+/* hero: headline types itself in, then the code box cycles the technology list */
+(function(){
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var WORDS = ["AI","Automation","Software","Data","Integrations","Security","Customer Experience","New Tools","New Opportunities"];
+  var box = document.querySelector(".code-box");
+  var cbText = box && box.querySelector(".cb-text");
+
+  function runCodeBox(){
+    if(!cbText) return;
+    var w = 0;
+    function typeWord(){
+      var word = WORDS[w], i = 0;
+      (function typeChar(){
+        cbText.textContent = word.slice(0, i);
+        if(i++ <= word.length){ setTimeout(typeChar, 58); return; }
+        setTimeout(highlight, 780);
+      })();
+    }
+    function highlight(){
+      cbText.classList.add("sel");
+      setTimeout(function(){
+        cbText.classList.remove("sel");
+        cbText.textContent = "";
+        w = (w + 1) % WORDS.length;
+        setTimeout(typeWord, 300);
+      }, 430);
+    }
+    typeWord();
+  }
+
+  /* reduced motion: no typing anywhere, show the whole list as plain text */
+  if(reduce){
+    if(box){ box.classList.add("static"); cbText.textContent = WORDS.join("  ·  "); }
+    return;
+  }
+
+  var h1 = document.querySelector(".hero h1");
+  if(!h1){ runCodeBox(); return; }
+
+  var full = h1.textContent.trim();
+  h1.setAttribute("aria-label", full);
+  h1.style.minHeight = h1.getBoundingClientRect().height + "px";
+  h1.innerHTML = '<span class="h1-text"></span><span class="h1-caret"></span>';
+  h1.setAttribute("aria-hidden", "false");
+  var target = h1.querySelector(".h1-text"), n = 0;
+  setTimeout(function typeH1(){
+    target.textContent = full.slice(0, n);
+    if(n++ <= full.length){ setTimeout(typeH1, 32); return; }
+    setTimeout(function(){
+      var c = h1.querySelector(".h1-caret");
+      if(c) c.parentNode.removeChild(c);
+      h1.style.minHeight = "";   /* release the reservation so a resize reflows normally */
+      runCodeBox();
+    }, 420);
+  }, 260);
+})();
 </script>
 </body>
 </html>
