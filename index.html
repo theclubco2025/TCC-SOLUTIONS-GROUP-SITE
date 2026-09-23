@@ -143,7 +143,6 @@ footer{border-top:1px solid var(--line);padding:40px 0 36px;text-align:center}
 .code-box.static .cb-text{white-space:normal;color:var(--muted)}
 .code-box.static .cb-caret{display:none}
 @keyframes cb-blink{0%,100%{opacity:1}50%{opacity:0}}
-.h1-caret{display:inline-block;width:.46em;height:.78em;background:#fff;vertical-align:-.04em;margin-left:.07em;animation:cb-blink 1.05s step-end infinite}
 
 .prose{max-width:660px}
 .prose p{font-size:1rem;line-height:1.8;margin-bottom:15px}
@@ -489,61 +488,36 @@ var reveals=document.querySelectorAll(".reveal");
 var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}})},{threshold:0.1});
 reveals.forEach(function(el){observer.observe(el)});
 
-/* hero: headline types itself in, then the code box cycles the technology list */
+/* hero: the code box cycles the technology list */
 (function(){
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var WORDS = ["AI","Automation","Software","Data","Integrations","Security","Customer Experience","New Tools","New Opportunities"];
   var box = document.querySelector(".code-box");
   var cbText = box && box.querySelector(".cb-text");
+  if(!cbText) return;
 
-  function runCodeBox(){
-    if(!cbText) return;
-    var w = 0;
-    function typeWord(){
-      var word = WORDS[w], i = 0;
-      (function typeChar(){
-        cbText.textContent = word.slice(0, i);
-        if(i++ <= word.length){ setTimeout(typeChar, 58); return; }
-        setTimeout(highlight, 780);
-      })();
-    }
-    function highlight(){
-      cbText.classList.add("sel");
-      setTimeout(function(){
-        cbText.classList.remove("sel");
-        cbText.textContent = "";
-        w = (w + 1) % WORDS.length;
-        setTimeout(typeWord, 300);
-      }, 430);
-    }
-    typeWord();
+  /* reduced motion: no typing, show the whole list as plain text */
+  if(reduce){ box.classList.add("static"); cbText.textContent = WORDS.join("  ·  "); return; }
+
+  var w = 0;
+  function typeWord(){
+    var word = WORDS[w], i = 0;
+    (function typeChar(){
+      cbText.textContent = word.slice(0, i);
+      if(i++ <= word.length){ setTimeout(typeChar, 58); return; }
+      setTimeout(highlight, 780);
+    })();
   }
-
-  /* reduced motion: no typing anywhere, show the whole list as plain text */
-  if(reduce){
-    if(box){ box.classList.add("static"); cbText.textContent = WORDS.join("  ·  "); }
-    return;
-  }
-
-  var h1 = document.querySelector(".hero h1");
-  if(!h1){ runCodeBox(); return; }
-
-  var full = h1.textContent.trim();
-  h1.setAttribute("aria-label", full);
-  h1.style.minHeight = h1.getBoundingClientRect().height + "px";
-  h1.innerHTML = '<span class="h1-text"></span><span class="h1-caret"></span>';
-  h1.setAttribute("aria-hidden", "false");
-  var target = h1.querySelector(".h1-text"), n = 0;
-  setTimeout(function typeH1(){
-    target.textContent = full.slice(0, n);
-    if(n++ <= full.length){ setTimeout(typeH1, 32); return; }
+  function highlight(){
+    cbText.classList.add("sel");
     setTimeout(function(){
-      var c = h1.querySelector(".h1-caret");
-      if(c) c.parentNode.removeChild(c);
-      h1.style.minHeight = "";   /* release the reservation so a resize reflows normally */
-      runCodeBox();
-    }, 420);
-  }, 260);
+      cbText.classList.remove("sel");
+      cbText.textContent = "";
+      w = (w + 1) % WORDS.length;
+      setTimeout(typeWord, 300);
+    }, 430);
+  }
+  setTimeout(typeWord, 400);
 })();
 </script>
 </body>
