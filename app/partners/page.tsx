@@ -10,8 +10,7 @@ export const metadata: Metadata = {
 }
 
 const CALENDLY = 'https://calendly.com/tccsolutions2025/30min'
-const APPLY_MAILTO =
-  'mailto:tccsolutions2025@gmail.com?subject=TCCSG%20Partner%20Program&body=Name%3A%0ABusiness%20or%20network%3A%0APhone%3A%0AWho%20you%20work%20with%3A%0A'
+const APPLY = '/partners/apply'
 
 export default function PartnersPage() {
   const exampleLink = `${siteUrl().replace(/^https?:\/\//, '')}/your-network/analyze`
@@ -32,7 +31,7 @@ export default function PartnersPage() {
               introduction for as long as that relationship lasts.
             </p>
             <div className="actions">
-              <a className="btn btn-primary" href={APPLY_MAILTO}>
+              <a className="btn btn-primary" href={APPLY}>
                 Apply to become a partner
               </a>
               <a className="btn btn-ghost" href={CALENDLY} target="_blank" rel="noreferrer">
@@ -158,7 +157,7 @@ export default function PartnersPage() {
             </p>
             <p className="lead">No pressure, no jargon, no obligation. That applies to them and to you.</p>
             <div className="actions">
-              <a className="btn btn-primary" href={APPLY_MAILTO}>
+              <a className="btn btn-primary" href={APPLY}>
                 Apply to become a partner
               </a>
               <a className="btn btn-ghost" href={CALENDLY} target="_blank" rel="noreferrer">

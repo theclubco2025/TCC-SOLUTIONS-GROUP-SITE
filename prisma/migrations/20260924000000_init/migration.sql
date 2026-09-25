@@ -2,6 +2,9 @@
 CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateEnum
+CREATE TYPE "ApplicationStatus" AS ENUM ('NEW', 'CONTACTED', 'APPROVED', 'DECLINED');
+
+-- CreateEnum
 CREATE TYPE "Product" AS ENUM ('TCCSG', 'PLATEHAVEN', 'NAVITAP');
 
 -- CreateEnum
@@ -193,6 +196,26 @@ CREATE TABLE "activity_events" (
     CONSTRAINT "activity_events_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "partner_applications" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "organization" TEXT,
+    "email" TEXT NOT NULL,
+    "phone" TEXT,
+    "audience" TEXT,
+    "message" TEXT,
+    "status" "ApplicationStatus" NOT NULL DEFAULT 'NEW',
+    "reviewedAt" TIMESTAMP(3),
+    "partnerId" TEXT,
+    "sourcePath" TEXT,
+    "referrerUrl" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "partner_applications_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "organizations_slug_key" ON "organizations"("slug");
 
@@ -246,6 +269,9 @@ CREATE INDEX "commissions_partnerId_status_idx" ON "commissions"("partnerId", "s
 
 -- CreateIndex
 CREATE INDEX "activity_events_subjectType_subjectId_createdAt_idx" ON "activity_events"("subjectType", "subjectId", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "partner_applications_status_createdAt_idx" ON "partner_applications"("status", "createdAt");
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "organizations"("id") ON DELETE CASCADE ON UPDATE CASCADE;

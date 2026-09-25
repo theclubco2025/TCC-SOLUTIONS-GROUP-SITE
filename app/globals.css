@@ -243,6 +243,101 @@ h3 {
   line-height: 1.7;
 }
 
+/* --- forms --------------------------------------------------------------- */
+
+.w.narrow {
+  width: min(620px, calc(100% - 48px));
+}
+
+.form {
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.field .opt {
+  font-weight: 400;
+  color: var(--dim);
+  font-size: 0.76rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.028);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+  font: inherit;
+  /* 16px minimum, or iOS Safari zooms the page on focus. */
+  font-size: 16px;
+  line-height: 1.5;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--dim);
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.form .btn {
+  align-self: flex-start;
+  height: 46px;
+  padding: 0 26px;
+}
+
+.form .btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.notice {
+  border: 1px solid var(--line);
+  border-left: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.notice a {
+  color: #fff;
+}
+
+.form-done {
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 @media (max-width: 860px) {
   .grid.three,
   .grid.four {

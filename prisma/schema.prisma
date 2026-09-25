@@ -326,8 +326,47 @@ model ActivityEvent {
 }
 
 // ---------------------------------------------------------------------------
+// Recruiting
+// ---------------------------------------------------------------------------
+
+/// Someone applying to become a TCCSG partner. Deliberately not a Partner row:
+/// an application is a request, and approving one is a decision a human makes.
+model PartnerApplication {
+  id String @id @default(cuid())
+
+  name         String
+  organization String?
+  email        String
+  phone        String?
+  audience     String?
+  message      String?
+
+  status      ApplicationStatus @default(NEW)
+  reviewedAt  DateTime?
+  /// Set once an application becomes a real Partner, so the trail is kept.
+  partnerId   String?
+
+  /// How they found the form, for the same reason referral sessions record it.
+  sourcePath  String?
+  referrerUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@map("partner_applications")
+}
+
+// ---------------------------------------------------------------------------
 // Enums
 // ---------------------------------------------------------------------------
+
+enum ApplicationStatus {
+  NEW
+  CONTACTED
+  APPROVED
+  DECLINED
+}
 
 enum Product {
   TCCSG

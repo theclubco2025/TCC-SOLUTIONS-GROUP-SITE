@@ -142,7 +142,9 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
           </div>
         </section>
 
-        {isDemoMode() && touches && (
+        {/* Opt-in only. A prospect arriving on a partner's link should never see
+            a debug panel, so this needs ?attribution=1 as well as demo mode. */}
+        {isDemoMode() && touches && query.attribution === '1' && (
           <section className="sec">
             <div className="w">
               <p className="eyebrow">Attribution &mdash; demo mode</p>
