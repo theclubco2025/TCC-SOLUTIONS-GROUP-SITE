@@ -1,10 +1,14 @@
 import { NextResponse, type NextRequest } from 'next/server'
+// Relative, not the `@/` alias. Vercel's edge bundler does not resolve tsconfig
+// path aliases when tracing middleware, and rejects the deployment with
+// "The Edge Function middleware is referencing unsupported modules" — after the
+// build has already succeeded, so a green `next build` does not catch it.
 import {
   ATTRIBUTION_COOKIE,
   ATTRIBUTION_COOKIE_MAX_AGE,
   ATTRIBUTION_HEADER,
-} from '@/lib/attribution-cookie'
-import { couldBePartnerSlug } from '@/lib/partner-slug'
+} from './lib/attribution-cookie'
+import { couldBePartnerSlug } from './lib/partner-slug'
 
 /**
  * Issues the anonymous attribution id on partner referral links.
