@@ -17,7 +17,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Neon's Vercel integration sets DATABASE_URL to the POOLED connection, which
+  // is what the app should query through. Migrations cannot run over a pooler,
+  // so they use the direct connection Neon provides alongside it.
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 // ---------------------------------------------------------------------------
