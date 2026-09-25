@@ -1,0 +1,396 @@
+// TCC Solutions Group — partner / referral system.
+//
+// This schema belongs to the TCCSG layer. TCCSG is the parent organisation and
+// owns the partner relationship; PlateHaven and NaviTap are products it owns.
+// A product may one day have its own partner-facing experience, but it must
+// never own partner data — hence `product` is a scoping dimension here rather
+// than a separate application.
+//
+// Two relationships run in parallel and must never be collapsed into one:
+//   attribution — which PARTNER introduced the prospect
+//   ownership   — which TCCSG USER is responsible for selling to them
+// A lead can be reassigned between sales reps without touching attribution.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Organisation and staff
+// ---------------------------------------------------------------------------
+
+model Organization {
+  id        String @id @default(cuid())
+  slug      String @unique
+  name      String
+  legalName String?
+
+  // Which partner gets paid when several touched the same prospect. Kept as
+  // configuration so changing the payout policy is a settings change, never a
+  // migration of historical attribution.
+  attributionRule AttributionRule @default(FIRST_VERIFIED)
+
+  // Fallback commission rate (0.10 = 10%) when a partner has no rate of its own.
+  defaultCommissionRate Float @default(0.1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  partners Partner[]
+  users    User[]
+  leads    Lead[]
+  events   ActivityEvent[]
+
+  @@map("organizations")
+}
+
+/// TCCSG staff. Sales ownership lives here — never on Partner.
+model User {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  email String  @unique
+  name  String
+  role  UserRole @default(SALES_REP)
+  active Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownedLeads         Lead[]        @relation("LeadOwner")
+  ownedOpportunities Opportunity[] @relation("OpportunityOwner")
+
+  @@index([organizationId])
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Partner
+// ---------------------------------------------------------------------------
+
+model Partner {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  /// Which product this partner refers into. Every row is TCCSG today; the
+  /// column exists so a PlateHaven-specific partner is possible later without
+  /// reshaping the model.
+  product Product @default(TCCSG)
+
+  /// The public referral slug: tccsolutionsgroup.com/{slug}/analyze
+  slug String @unique
+  name String
+
+  contactName  String?
+  contactEmail String?
+  contactPhone String?
+
+  status     PartnerStatus @default(PENDING)
+  approvedAt DateTime?
+
+  /// Overrides Organization.defaultCommissionRate when set.
+  commissionRate Float?
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  referralSessions ReferralSession[]
+  referrals        Referral[]
+  commissions      Commission[]
+  firstTouchLeads  Lead[] @relation("LeadFirstTouch")
+  lastTouchLeads   Lead[] @relation("LeadLastTouch")
+
+  @@index([organizationId, status])
+  @@map("partners")
+}
+
+// ---------------------------------------------------------------------------
+// Attribution — anonymous visitor through to identified lead
+// ---------------------------------------------------------------------------
+
+/// A visit to a partner's referral link, BEFORE the visitor identifies
+/// themselves. Anonymous by design: no PII, only a first-party cookie id and
+/// hashed request metadata.
+model ReferralSession {
+  id        String  @id @default(cuid())
+  partnerId String
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  product Product @default(TCCSG)
+
+  /// The first-party attribution cookie value. One browser, one cookie id,
+  /// many sessions across partners — which is what makes first vs last touch
+  /// answerable at all.
+  cookieId String
+
+  landedAt    DateTime @default(now())
+  landingPath String
+
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
+  referrerUrl String?
+
+  userAgentHash String?
+  ipHash        String?
+
+  createdAt DateTime @default(now())
+
+  analysisSessions AnalysisSession[]
+  referrals        Referral[]
+
+  @@index([cookieId, landedAt])
+  @@index([partnerId, landedAt])
+  @@map("referral_sessions")
+}
+
+/// A run of the TCCSG Analyze experience. The questionnaire itself lands in the
+/// next iteration; the record exists now so attribution has something to hang
+/// the analysis off from the first commit.
+model AnalysisSession {
+  id String @id @default(cuid())
+
+  referralSessionId String?
+  referralSession   ReferralSession? @relation(fields: [referralSessionId], references: [id], onDelete: SetNull)
+
+  status      AnalysisStatus @default(STARTED)
+  answers     Json?
+  startedAt   DateTime       @default(now())
+  completedAt DateTime?
+
+  lead Lead?
+
+  @@index([referralSessionId])
+  @@map("analysis_sessions")
+}
+
+/// The identified prospect.
+model Lead {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  businessName String
+  contactName  String?
+  email        String?
+  phone        String?
+  website      String?
+
+  analysisSessionId String?          @unique
+  analysisSession   AnalysisSession? @relation(fields: [analysisSessionId], references: [id], onDelete: SetNull)
+
+  /// ATTRIBUTION. firstTouchPartnerId is write-once — a later partner never
+  /// erases the one who actually made the introduction.
+  firstTouchPartnerId String?
+  firstTouchPartner   Partner? @relation("LeadFirstTouch", fields: [firstTouchPartnerId], references: [id], onDelete: SetNull)
+
+  lastTouchPartnerId String?
+  lastTouchPartner   Partner? @relation("LeadLastTouch", fields: [lastTouchPartnerId], references: [id], onDelete: SetNull)
+
+  /// OWNERSHIP. A different relationship entirely: who at TCCSG works the lead.
+  ownerUserId String?
+  owner       User?   @relation("LeadOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+
+  status LeadStatus @default(NEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  referrals     Referral[]
+  opportunities Opportunity[]
+
+  @@index([organizationId, status])
+  @@index([firstTouchPartnerId])
+  @@index([ownerUserId])
+  @@map("leads")
+}
+
+/// Append-only attribution record. Rows are written, never updated or deleted:
+/// the history of who introduced whom must survive every later change.
+model Referral {
+  id String @id @default(cuid())
+
+  partnerId String
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  referralSessionId String?
+  referralSession   ReferralSession? @relation(fields: [referralSessionId], references: [id], onDelete: SetNull)
+
+  touchType  TouchType
+  occurredAt DateTime  @default(now())
+
+  /// Set once TCCSG confirms the introduction was genuine. The default
+  /// FIRST_VERIFIED attribution rule pays the earliest verified partner.
+  verifiedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([partnerId, occurredAt])
+  @@index([leadId, touchType])
+  @@map("referrals")
+}
+
+// ---------------------------------------------------------------------------
+// Commercial
+// ---------------------------------------------------------------------------
+
+model Opportunity {
+  id     String @id @default(cuid())
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  ownerUserId String?
+  owner       User?   @relation("OpportunityOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+
+  name   String
+  stage  OpportunityStage @default(DISCOVERY)
+  amount Decimal?         @db.Decimal(12, 2)
+
+  closedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  commissions Commission[]
+
+  @@index([leadId])
+  @@index([ownerUserId, stage])
+  @@map("opportunities")
+}
+
+model Commission {
+  id String @id @default(cuid())
+
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  partnerId String
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  rate   Float
+  amount Decimal @db.Decimal(12, 2)
+
+  /// Which attribution rule produced this partner, recorded at calculation
+  /// time so a later policy change cannot silently rewrite what was owed.
+  basis AttributionRule
+
+  status     CommissionStatus @default(PENDING)
+  approvedAt DateTime?
+  paidAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([partnerId, status])
+  @@map("commissions")
+}
+
+// ---------------------------------------------------------------------------
+// Audit
+// ---------------------------------------------------------------------------
+
+/// Immutable history. Answers "what happened to this lead, and when" without
+/// reconstructing it from mutable rows.
+model ActivityEvent {
+  id String @id @default(cuid())
+
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  actorType ActorType @default(SYSTEM)
+  actorId   String?
+
+  subjectType String
+  subjectId   String
+  verb        String
+  payload     Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([subjectType, subjectId, createdAt])
+  @@map("activity_events")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum Product {
+  TCCSG
+  PLATEHAVEN
+  NAVITAP
+}
+
+enum AttributionRule {
+  FIRST_VERIFIED
+  LAST_TOUCH
+}
+
+enum PartnerStatus {
+  PENDING
+  ACTIVE
+  PAUSED
+  TERMINATED
+}
+
+enum TouchType {
+  FIRST
+  LAST
+}
+
+enum AnalysisStatus {
+  STARTED
+  COMPLETED
+  ABANDONED
+}
+
+enum LeadStatus {
+  NEW
+  ASSIGNED
+  WORKING
+  QUALIFIED
+  DISQUALIFIED
+  CONVERTED
+}
+
+enum OpportunityStage {
+  DISCOVERY
+  PROPOSAL
+  NEGOTIATION
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+enum CommissionStatus {
+  PENDING
+  APPROVED
+  PAID
+  VOID
+}
+
+enum UserRole {
+  ADMIN
+  SALES_MANAGER
+  SALES_REP
+}
+
+enum ActorType {
+  SYSTEM
+  USER
+  PARTNER
+  VISITOR
+}
