@@ -29,6 +29,66 @@ export type ReferralSessionRecord = {
  * A prospect who arrives through Partner A and returns later through Partner B
  * has firstTouch = A and lastTouch = B; A is never erased.
  */
+export type AnalysisStatusValue =
+  | 'STARTED'
+  | 'ANALYZING'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'ABANDONED'
+
+/** Questionnaire answers. Values are strings, or string arrays for multiselect. */
+export type AnalysisAnswers = Record<string, string | string[]>
+
+/** ROI inputs are numbers the visitor typed, or absent. Absent is expected. */
+export type RoiInputs = Record<string, number>
+
+export type AnalysisSessionRecord = {
+  id: string
+  publicId: string
+  status: AnalysisStatusValue
+  questionnaireVersion: number
+  answers: AnalysisAnswers | null
+  roiInputs: RoiInputs | null
+  referralSessionId: string | null
+  cookieId: string | null
+  startedAt: Date
+  completedAt: Date | null
+  analyzingStartedAt: Date | null
+  failureReason: string | null
+}
+
+export type OpportunityRecord = {
+  rank: number
+  title: string
+  category: string
+  problem: string
+  solution: string
+  impact: string
+  complexity: string
+  implementationLow: number
+  implementationHigh: number
+  existingSoftwarePossible: boolean
+  customDevelopmentPotential: boolean
+  confidence: string
+  reasoning: string
+}
+
+export type AnalysisResultRecord = {
+  businessSummary: string
+  technologyEnvironment: string
+  overallAssessment: string
+  recommendedNextStep: string
+  /** Shape of RoiResults, stored as JSON so the report renders what was computed. */
+  roiResults: unknown
+  estimatedAnnualValue: number | null
+  model: string
+  effort: string | null
+  inputTokens: number | null
+  outputTokens: number | null
+  generatedAt: Date
+  opportunities: OpportunityRecord[]
+}
+
 export type TouchSummary = {
   firstTouch: { partnerSlug: string; partnerName: string; at: Date } | null
   lastTouch: { partnerSlug: string; partnerName: string; at: Date } | null

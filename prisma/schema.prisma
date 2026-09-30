@@ -16,7 +16,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
   // Neon's Vercel integration sets DATABASE_URL to the POOLED connection, which
   // is what the app should query through. Migrations cannot run over a pooler,
   // so they use the direct connection Neon provides alongside it.
@@ -29,8 +29,8 @@ datasource db {
 // ---------------------------------------------------------------------------
 
 model Organization {
-  id        String @id @default(cuid())
-  slug      String @unique
+  id        String  @id @default(cuid())
+  slug      String  @unique
   name      String
   legalName String?
 
@@ -59,10 +59,10 @@ model User {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  email String  @unique
-  name  String
-  role  UserRole @default(SALES_REP)
-  active Boolean @default(true)
+  email  String   @unique
+  name   String
+  role   UserRole @default(SALES_REP)
+  active Boolean  @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -110,8 +110,8 @@ model Partner {
   referralSessions ReferralSession[]
   referrals        Referral[]
   commissions      Commission[]
-  firstTouchLeads  Lead[] @relation("LeadFirstTouch")
-  lastTouchLeads   Lead[] @relation("LeadLastTouch")
+  firstTouchLeads  Lead[]            @relation("LeadFirstTouch")
+  lastTouchLeads   Lead[]            @relation("LeadLastTouch")
 
   @@index([organizationId, status])
   @@map("partners")
@@ -165,18 +165,122 @@ model ReferralSession {
 model AnalysisSession {
   id String @id @default(cuid())
 
+  /// The URL token. Deliberately NOT the cuid: this page carries a business's
+  /// own description of where it is weak, and cuids are partly sequential.
+  publicId String @unique
+
   referralSessionId String?
   referralSession   ReferralSession? @relation(fields: [referralSessionId], references: [id], onDelete: SetNull)
 
-  status      AnalysisStatus @default(STARTED)
-  answers     Json?
-  startedAt   DateTime       @default(now())
+  /// Ties the analysis back to the browser, so it can be resumed and so
+  /// attribution resolves the same way referral sessions do.
+  cookieId String?
+
+  /// Which set of questions produced `answers`. Changing the questionnaire must
+  /// not make old sessions unreadable.
+  questionnaireVersion Int @default(1)
+
+  status  AnalysisStatus @default(STARTED)
+  answers Json?
+
+  /// Optional ROI step. Absent means the report says so rather than guessing.
+  roiInputs Json?
+
+  userAgentHash String?
+  ipHash        String?
+
+  /// Set before the model is called, so a serverless function killed mid-call
+  /// leaves a session that can be retried instead of one stuck at ANALYZING.
+  analyzingStartedAt DateTime?
+  failureReason      String?
+
+  startedAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   completedAt DateTime?
 
-  lead Lead?
+  lead   Lead?
+  result AnalysisResult?
 
   @@index([referralSessionId])
+  @@index([cookieId, startedAt])
+  @@index([ipHash, startedAt])
   @@map("analysis_sessions")
+}
+
+/// The generated assessment. One per session — regenerating replaces it, so a
+/// refresh can never trigger a second model call.
+model AnalysisResult {
+  id String @id @default(cuid())
+
+  analysisSessionId String          @unique
+  analysisSession   AnalysisSession @relation(fields: [analysisSessionId], references: [id], onDelete: Cascade)
+
+  businessSummary       String
+  technologyEnvironment String
+  overallAssessment     String
+  recommendedNextStep   String
+
+  /// Computed by application code before the model is called, and passed to it
+  /// as fact. The model explains these numbers; it never produces them.
+  roiResults Json?
+
+  /// The headline figure, denormalised out of roiResults so reporting can sort
+  /// and total on it without parsing JSON.
+  estimatedAnnualValue Decimal? @db.Decimal(12, 2)
+
+  /// Provenance. Which model said this, how hard it thought, what it cost.
+  model        String
+  effort       String?
+  inputTokens  Int?
+  outputTokens Int?
+
+  generatedAt DateTime @default(now())
+
+  opportunities TechnologyOpportunity[]
+
+  @@map("analysis_results")
+}
+
+/// A single identified opportunity. Relational rather than JSON because the
+/// internal dashboard reports across these.
+model TechnologyOpportunity {
+  id String @id @default(cuid())
+
+  analysisResultId String
+  analysisResult   AnalysisResult @relation(fields: [analysisResultId], references: [id], onDelete: Cascade)
+
+  /// Presentation order. Rank 1 is the primary opportunity — an ordering, not
+  /// a score, and never presented as a winner.
+  rank Int
+
+  title    String
+  /// Free-form against a constant list in lib/analysis/config.ts, not a
+  /// Postgres enum: the categories must stay extensible without a migration.
+  category String
+
+  problem  String
+  solution String
+  impact   String
+
+  /// QUICK_WIN | WORKFLOW | CUSTOM. The app maps this to a money range from
+  /// config — the model must not emit prices, or changing them later would
+  /// make old analyses disagree with new ones.
+  complexity         String
+  implementationLow  Decimal @db.Decimal(12, 2)
+  implementationHigh Decimal @db.Decimal(12, 2)
+
+  /// The honest-answer flags. An opportunity that existing software solves is
+  /// a valid, and often correct, outcome.
+  existingSoftwarePossible   Boolean @default(false)
+  customDevelopmentPotential Boolean @default(false)
+
+  confidence String
+  reasoning  String
+
+  createdAt DateTime @default(now())
+
+  @@index([analysisResultId, rank])
+  @@map("technology_opportunities")
 }
 
 /// The identified prospect.
@@ -345,10 +449,10 @@ model PartnerApplication {
   audience     String?
   message      String?
 
-  status      ApplicationStatus @default(NEW)
-  reviewedAt  DateTime?
+  status     ApplicationStatus @default(NEW)
+  reviewedAt DateTime?
   /// Set once an application becomes a real Partner, so the trail is kept.
-  partnerId   String?
+  partnerId  String?
 
   /// How they found the form, for the same reason referral sessions record it.
   sourcePath  String?
@@ -397,7 +501,9 @@ enum TouchType {
 
 enum AnalysisStatus {
   STARTED
+  ANALYZING
   COMPLETED
+  FAILED
   ABANDONED
 }
 

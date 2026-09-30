@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { cookies, headers } from 'next/headers'
 import { notFound } from 'next/navigation'
+import AnalyzeStart from '@/components/AnalyzeStart'
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
 import {
   ATTRIBUTION_COOKIE,
@@ -9,6 +10,7 @@ import {
   recordReferralVisit,
   touchSummary,
 } from '@/lib/attribution'
+import { isAnalysisAvailable } from '@/lib/analysis/availability'
 import { isDemoMode } from '@/lib/db'
 
 export const runtime = 'nodejs'
@@ -96,11 +98,14 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
               asking.
             </p>
             <div className="actions">
-              <a className="btn btn-primary" href={CALENDLY} target="_blank" rel="noreferrer">
-                Book a Technology Strategy Call
-              </a>
-              <a className="btn btn-ghost" href="/#capabilities">
-                See what we do
+              {isAnalysisAvailable() && <AnalyzeStart />}
+              <a
+                className={isAnalysisAvailable() ? 'btn btn-ghost' : 'btn btn-primary'}
+                href={CALENDLY}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {isAnalysisAvailable() ? 'Book a call instead' : 'Book a Technology Strategy Call'}
               </a>
             </div>
           </div>
@@ -136,8 +141,8 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
               </div>
             </div>
             <p className="note" style={{ marginTop: 26 }}>
-              The full analysis is being built now. In the meantime the strategy call covers the
-              same ground, with a person instead of a form.
+              No account and no email needed to see your results. If we think there is nothing
+              worth building, the report will say so.
             </p>
           </div>
         </section>

@@ -1,4 +1,9 @@
-import type { PartnerRecord, ReferralSessionRecord } from '@/lib/types'
+import type {
+  AnalysisResultRecord,
+  AnalysisSessionRecord,
+  PartnerRecord,
+  ReferralSessionRecord,
+} from '@/lib/types'
 
 /**
  * In-memory store used ONLY when DATABASE_URL is unset, so the partner system
@@ -13,6 +18,8 @@ import type { PartnerRecord, ReferralSessionRecord } from '@/lib/types'
 type DemoDb = {
   partners: PartnerRecord[]
   sessions: ReferralSessionRecord[]
+  analyses: (AnalysisSessionRecord & { ipHash: string | null })[]
+  results: Record<string, AnalysisResultRecord>
 }
 
 const g = globalThis as unknown as { __tccsgDemo?: DemoDb }
@@ -44,6 +51,8 @@ function seed(): DemoDb {
       partner('other-partner', 'Other Partner'),
     ],
     sessions: [],
+    analyses: [],
+    results: {},
   }
 }
 
@@ -73,4 +82,51 @@ export function demoSessionsForCookie(cookieId: string): ReferralSessionRecord[]
   return db()
     .sessions.filter((s) => s.cookieId === cookieId)
     .sort((a, b) => a.landedAt.getTime() - b.landedAt.getTime())
+}
+
+/** Most recent referral visit for a browser — the session an analysis hangs off. */
+export function demoLatestSessionForCookie(cookieId: string): ReferralSessionRecord | null {
+  const all = demoSessionsForCookie(cookieId)
+  return all.length > 0 ? all[all.length - 1] : null
+}
+
+// --- analysis sessions -----------------------------------------------------
+
+export function demoCreateAnalysis(
+  record: AnalysisSessionRecord & { ipHash: string | null },
+): AnalysisSessionRecord {
+  db().analyses.push(record)
+  return record
+}
+
+export function demoFindAnalysis(publicId: string): AnalysisSessionRecord | null {
+  return db().analyses.find((a) => a.publicId === publicId) ?? null
+}
+
+export function demoUpdateAnalysis(
+  publicId: string,
+  patch: Partial<AnalysisSessionRecord>,
+): AnalysisSessionRecord | null {
+  const row = db().analyses.find((a) => a.publicId === publicId)
+  if (!row) return null
+  Object.assign(row, patch)
+  return row
+}
+
+/** Completions from one address since a cutoff — the rate limit input. */
+export function demoCountCompletionsSince(ipHash: string, since: Date): number {
+  return db().analyses.filter(
+    (a) =>
+      a.ipHash === ipHash &&
+      a.completedAt !== null &&
+      a.completedAt.getTime() >= since.getTime(),
+  ).length
+}
+
+export function demoSaveResult(publicId: string, result: AnalysisResultRecord): void {
+  db().results[publicId] = result
+}
+
+export function demoFindResult(publicId: string): AnalysisResultRecord | null {
+  return db().results[publicId] ?? null
 }
