@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { ATTRIBUTION_COOKIE } from '@/lib/attribution-cookie'
+import { isAnalysisAvailable } from '@/lib/analysis/availability'
 import { ANALYSIS_LIMITS } from '@/lib/analysis/config'
 import { createAnalysisSession, startsFromIpLastHour } from '@/lib/analysis/sessions'
 
@@ -14,6 +15,16 @@ export const dynamic = 'force-dynamic'
  * the prospect later arriving directly, because it was never carried in the URL.
  */
 export async function POST(request: NextRequest) {
+  // The UI hides the entry points when the analysis cannot run, but the API is
+  // reachable regardless. Handing out a session for a flow that is guaranteed
+  // to fail at the last step helps nobody.
+  if (!isAnalysisAvailable()) {
+    return NextResponse.json(
+      { ok: false, errors: ['The analysis is not available right now.'] },
+      { status: 503 },
+    )
+  }
+
   const ip = request.headers.get('x-forwarded-for')
 
   const starts = await startsFromIpLastHour(ip)

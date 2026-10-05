@@ -61,6 +61,15 @@ function db(): DemoDb {
   return g.__tccsgDemo
 }
 
+/**
+ * Back to the seeded state. Exists for tests: the store is module-global, so
+ * without this one test's referral sessions leak into the next one's
+ * attribution and the suite passes for the wrong reason.
+ */
+export function resetDemoStore(): void {
+  g.__tccsgDemo = seed()
+}
+
 export function demoFindPartner(slug: string): PartnerRecord | null {
   return db().partners.find((p) => p.slug === slug.toLowerCase()) ?? null
 }

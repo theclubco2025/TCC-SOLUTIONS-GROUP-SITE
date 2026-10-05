@@ -52,6 +52,8 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
   const cookieId =
     headerList.get(ATTRIBUTION_HEADER) || cookieStore.get(ATTRIBUTION_COOKIE)?.value || null
 
+  const showAttribution = isDemoMode() && query.attribution === '1'
+
   let touches = null
   if (cookieId) {
     const flat = (k: string) => {
@@ -75,7 +77,10 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
       ip: headerList.get('x-forwarded-for'),
     })
 
-    touches = await touchSummary(cookieId)
+    // Only read the touch history when something will actually render it.
+    // This is a joined query on the hot path of every partner link click, and
+    // in production the panel below never shows.
+    if (showAttribution) touches = await touchSummary(cookieId)
   }
 
   return (
@@ -149,7 +154,7 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
 
         {/* Opt-in only. A prospect arriving on a partner's link should never see
             a debug panel, so this needs ?attribution=1 as well as demo mode. */}
-        {isDemoMode() && touches && query.attribution === '1' && (
+        {showAttribution && touches && (
           <section className="sec">
             <div className="w">
               <p className="eyebrow">Attribution &mdash; demo mode</p>
