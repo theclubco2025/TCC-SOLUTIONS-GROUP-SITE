@@ -534,3 +534,7 @@ h3 {
     max-width: none;
   }
 }
+
+.narrow-form {
+  max-width: 560px;
+}

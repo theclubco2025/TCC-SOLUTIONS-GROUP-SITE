@@ -89,6 +89,34 @@ export type AnalysisResultRecord = {
   opportunities: OpportunityRecord[]
 }
 
+/**
+ * A prospect who has identified themselves. Attribution (the two partner ids)
+ * and ownership (ownerUserId) are separate columns on purpose and must stay so.
+ */
+export type LeadRecord = {
+  id: string
+  businessName: string
+  contactName: string | null
+  email: string
+  phone: string | null
+  website: string | null
+  firstTouchPartnerId: string | null
+  lastTouchPartnerId: string | null
+  ownerUserId: string | null
+  consultationRequestedAt: Date | null
+  analysisSessionId: string | null
+  createdAt: Date
+}
+
+export type OpportunityRow = {
+  id: string
+  leadId: string
+  analysisSessionId: string
+  name: string
+  stage: string
+  createdAt: Date
+}
+
 export type TouchSummary = {
   firstTouch: { partnerSlug: string; partnerName: string; at: Date } | null
   lastTouch: { partnerSlug: string; partnerName: string; at: Date } | null

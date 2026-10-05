@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
+import LeadForm from '@/components/LeadForm'
 import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
 import { IMPLEMENTATION_RANGES, type ComplexityBand } from '@/lib/analysis/config'
 import { findAnalysisResult } from '@/lib/analysis/results'
 import { formatCurrency, formatFigure, type RoiResults } from '@/lib/analysis/roi'
 import { findAnalysisSession } from '@/lib/analysis/sessions'
+import { hasSubmittedLead } from '@/lib/sales/leads'
 import type { OpportunityRecord } from '@/lib/types'
 
 export const runtime = 'nodejs'
@@ -32,6 +34,10 @@ export default async function ResultsPage({ params }: Props) {
 
   const result = await findAnalysisResult(publicId)
   if (!result) return <Failed publicId={publicId} />
+
+  const submitted = await hasSubmittedLead(publicId)
+  const answers = session.answers ?? {}
+  const text = (v: string | string[] | undefined) => (typeof v === 'string' ? v : '')
 
   const roi = result.roiResults as RoiResults | null
   const [primary, ...secondary] = result.opportunities
@@ -138,19 +144,23 @@ export default async function ResultsPage({ params }: Props) {
             <h2>Turn this analysis into a plan.</h2>
             <p className="lead">{result.recommendedNextStep}</p>
             <p className="lead">
-              Bring this report to a 30-minute conversation. We&rsquo;ll have already read it
-              &mdash; you won&rsquo;t be asked these questions again.
+              Leave your details and bring this report to a 30-minute conversation. We&rsquo;ll
+              have already read it &mdash; you won&rsquo;t be asked these questions again.
             </p>
-            <div className="actions">
-              <a className="btn btn-primary" href={CALENDLY} target="_blank" rel="noreferrer">
-                Book a Technology Strategy Call
-              </a>
-              <a className="btn btn-ghost" href="/#capabilities">
-                See what we do
-              </a>
+            <div className="narrow-form">
+              <LeadForm
+                publicId={publicId}
+                initialBusinessName={text(answers.businessName)}
+                initialWebsite={text(answers.website)}
+                alreadySubmitted={submitted}
+              />
             </div>
             <p className="note" style={{ marginTop: 22 }}>
-              No pressure, no jargon, no obligation. Keep this link &mdash; the report stays here.
+              Keep this link &mdash; the report stays here. Prefer to just talk?{' '}
+              <a href={CALENDLY} target="_blank" rel="noreferrer" style={{ color: 'inherit' }}>
+                Book a call directly
+              </a>
+              .
             </p>
           </div>
         </section>

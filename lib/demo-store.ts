@@ -1,6 +1,8 @@
 import type {
   AnalysisResultRecord,
   AnalysisSessionRecord,
+  LeadRecord,
+  OpportunityRow,
   PartnerRecord,
   ReferralSessionRecord,
 } from '@/lib/types'
@@ -20,6 +22,8 @@ type DemoDb = {
   sessions: ReferralSessionRecord[]
   analyses: (AnalysisSessionRecord & { ipHash: string | null })[]
   results: Record<string, AnalysisResultRecord>
+  leads: LeadRecord[]
+  opportunities: OpportunityRow[]
 }
 
 const g = globalThis as unknown as { __tccsgDemo?: DemoDb }
@@ -53,6 +57,8 @@ function seed(): DemoDb {
     sessions: [],
     analyses: [],
     results: {},
+    leads: [],
+    opportunities: [],
   }
 }
 
@@ -138,4 +144,48 @@ export function demoSaveResult(publicId: string, result: AnalysisResultRecord): 
 
 export function demoFindResult(publicId: string): AnalysisResultRecord | null {
   return db().results[publicId] ?? null
+}
+
+// --- leads and opportunities -----------------------------------------------
+
+export function demoFindLeadByEmail(email: string): LeadRecord | null {
+  return db().leads.find((l) => l.email === email) ?? null
+}
+
+export function demoInsertLead(lead: LeadRecord): LeadRecord {
+  db().leads.push(lead)
+  return lead
+}
+
+export function demoUpdateLead(id: string, patch: Partial<LeadRecord>): LeadRecord | null {
+  const row = db().leads.find((l) => l.id === id)
+  if (!row) return null
+  Object.assign(row, patch)
+  return row
+}
+
+export function demoFindOpportunityBySession(analysisSessionId: string): OpportunityRow | null {
+  return db().opportunities.find((o) => o.analysisSessionId === analysisSessionId) ?? null
+}
+
+export function demoInsertOpportunity(row: OpportunityRow): OpportunityRow {
+  db().opportunities.push(row)
+  return row
+}
+
+export function demoAllLeads(): LeadRecord[] {
+  return [...db().leads]
+}
+
+export function demoAllOpportunities(): OpportunityRow[] {
+  return [...db().opportunities]
+}
+
+/** Earliest and latest referral visit for a browser, for first/last touch. */
+export function demoTouchesForCookie(cookieId: string): {
+  first: ReferralSessionRecord | null
+  last: ReferralSessionRecord | null
+} {
+  const all = demoSessionsForCookie(cookieId)
+  return { first: all[0] ?? null, last: all[all.length - 1] ?? null }
 }

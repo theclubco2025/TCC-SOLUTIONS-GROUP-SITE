@@ -198,8 +198,9 @@ model AnalysisSession {
   updatedAt   DateTime  @updatedAt
   completedAt DateTime?
 
-  lead   Lead?
-  result AnalysisResult?
+  lead        Lead?
+  opportunity Opportunity?
+  result      AnalysisResult?
 
   @@index([referralSessionId])
   @@index([cookieId, startedAt])
@@ -312,12 +313,21 @@ model Lead {
 
   status LeadStatus @default(NEW)
 
+  /// When they asked for a conversation. A REQUEST, never a completed
+  /// consultation: the database must not claim something happened because a
+  /// button was clicked. Booking and holding the call are separate facts.
+  consultationRequestedAt DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   referrals     Referral[]
   opportunities Opportunity[]
 
+  /// One lead per person. Emails are stored lowercased, so this is what stops a
+  /// second analysis from the same owner becoming a second lead. Nullable, and
+  /// Postgres allows many NULLs, so a lead with no email yet does not collide.
+  @@unique([organizationId, email])
   @@index([organizationId, status])
   @@index([firstTouchPartnerId])
   @@index([ownerUserId])
@@ -363,6 +373,11 @@ model Opportunity {
 
   ownerUserId String?
   owner       User?   @relation("OpportunityOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+
+  /// The analysis this opportunity came from. Unique, which is what makes
+  /// submitting the same analysis twice impossible to turn into two opportunities.
+  analysisSessionId String?          @unique
+  analysisSession   AnalysisSession? @relation(fields: [analysisSessionId], references: [id], onDelete: SetNull)
 
   name   String
   stage  OpportunityStage @default(DISCOVERY)

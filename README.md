@@ -13,8 +13,8 @@ credentials with any product.
 
 ```
 Visitor → Referral → Analysis → Lead → Opportunity → Customer → Revenue → Commission
-          ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-          built                  models exist, no logic yet (Phase 3+)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          built (Phase 1-3)                                models exist, no logic yet
 ```
 
 ## Layout
@@ -110,6 +110,40 @@ per session enforced by a status guard, validation before the call, rate limits
 per address on both starts and completions, and `ANALYZING` written before the
 call so a killed function can be retried rather than stranding someone.
 
+## From analysis to lead (Phase 3)
+
+The report ends with "Turn this into a plan". Submitting it (`lib/sales/leads.ts`)
+is the moment an anonymous analysis becomes a person:
+
+- **Attribution is read on the server**, from stored referral sessions, never from
+  anything the browser sends. There is no field a visitor or partner could use to
+  claim credit.
+- **First touch is write-once.** A later partner moves last touch and nothing else.
+- **One person is one lead**, matched on lowercased email. A second analysis from
+  the same owner updates the lead and adds an opportunity.
+- **One analysis is one opportunity.** Submitting twice returns what exists.
+- **`consultationRequestedAt` is a request**, not a held consultation. Choosing a
+  time in Calendly is what books the call.
+- **No sales owner is assigned.** Who works a lead is a human decision.
+
+There is deliberately **no internal leads page yet**: an unauthenticated one would
+expose business owners' answers, and auth is a decision of its own. Until then,
+read leads in the Neon SQL editor:
+
+```sql
+select l."createdAt", l."businessName", l."contactName", l.email, l.phone,
+       fp.name as "introducedBy", lp.name as "lastTouch",
+       o.name as opportunity, o.stage, l."consultationRequestedAt"
+from leads l
+left join partners fp on fp.id = l."firstTouchPartnerId"
+left join partners lp on lp.id = l."lastTouchPartnerId"
+left join opportunities o on o."leadId" = l.id
+order by l."createdAt" desc;
+```
+
+Each lead's full report is at `/analyze/<publicId>/results`; the public id is on
+`analysis_sessions` (`publicId`), linked from `opportunities."analysisSessionId"`.
+
 ## Deployment traps
 
 Each of these cost a failed or wrong production deploy:
@@ -134,8 +168,5 @@ Each of these cost a failed or wrong production deploy:
 Shipped: the domain model, partner program and application form, referral
 attribution, and the full analysis — questionnaire, ROI, AI assessment, report.
 
-Next (Phase 3): the bridge from analysis to sales. "Turn this into a plan"
-captures contact details, creates or matches a `Lead` carrying the attribution,
-opens an `Opportunity`, and records a consultation request. Then the internal
-sales view, then the partner dashboard, then commissions on collected revenue.
-The schema already supports all of it.
+Next: an authenticated internal sales view, then the partner dashboard, then
+commissions on collected revenue. The schema already supports all of it.
