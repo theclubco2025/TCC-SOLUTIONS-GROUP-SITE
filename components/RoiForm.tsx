@@ -145,7 +145,7 @@ export default function RoiForm({
             Leave the numbers out
           </button>
         )}
-        {!anyTyped && <span className="flow-hint">No numbers? That&rsquo;s fine &mdash; just build it.</span>}
+        {!anyTyped && <span className="flow-hint">You can leave these blank.</span>}
       </div>
 
       <p className="note" style={{ marginTop: 22 }}>

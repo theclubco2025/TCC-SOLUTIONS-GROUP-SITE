@@ -25,7 +25,7 @@ export default function PartnersPage() {
             <h1>Introduce a business. We&rsquo;ll take it from there.</h1>
             <p className="lead">
               You already know business owners who are being left behind by technology. You
-              probably hear about it. Send them to us and we&rsquo;ll do the rest &mdash; the
+              probably hear about it. Send them to us and we&rsquo;ll do the rest: the
               conversation, the work, and the follow-through. You&rsquo;re credited for the
               introduction for as long as that relationship lasts.
             </p>
@@ -117,7 +117,7 @@ export default function PartnersPage() {
               <span>{exampleLink}</span>
             </p>
             <p className="note" style={{ marginTop: 18 }}>
-              The introduction is recorded the moment someone opens it &mdash; not when they fill
+              The introduction is recorded the moment someone opens it, not when they fill
               something in, and not when they finally sign.
             </p>
           </div>
@@ -160,7 +160,7 @@ export default function PartnersPage() {
             <p className="lead">
               You&rsquo;re lending us your credibility, and that&rsquo;s worth more to us than any
               one project. If there&rsquo;s nothing worth building for the person you send us,
-              we&rsquo;ll tell them so &mdash; and tell you the same thing.
+              we&rsquo;ll tell them so, and tell you the same thing.
             </p>
             <p className="lead">No pressure, no jargon, no obligation. That applies to them and to you.</p>
             <div className="actions">

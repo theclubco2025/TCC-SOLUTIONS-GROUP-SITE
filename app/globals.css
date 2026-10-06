@@ -71,13 +71,14 @@ h3 {
   margin-bottom: 8px;
 }
 
+/* As on the homepage, a shade lighter so it passes contrast. */
 .eyebrow {
-  font-family: var(--mono);
   font-size: 0.7rem;
-  letter-spacing: 0.16em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--dim);
-  margin-bottom: 18px;
+  color: #808080;
+  margin-bottom: 16px;
 }
 
 .lead {
@@ -236,10 +237,8 @@ h3 {
 }
 
 .note {
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.04em;
-  color: var(--dim);
+  font-size: 0.86rem;
+  color: #808080;
   line-height: 1.7;
 }
 

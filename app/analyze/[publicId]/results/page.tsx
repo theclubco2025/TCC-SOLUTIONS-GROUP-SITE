@@ -94,8 +94,8 @@ export default async function ResultsPage({ params }: Props) {
                     </>
                   ) : (
                     <>
-                      <b>&mdash;</b>
-                      <span>no numbers given, so none invented</span>
+                      <b>&ndash;</b>
+                      <span>no figures entered</span>
                     </>
                   )}
                 </div>
@@ -111,7 +111,7 @@ export default async function ResultsPage({ params }: Props) {
             <div className="w">
               <p className="eyebrow">The one we&rsquo;d start with</p>
               <h2>{primary.title}</h2>
-              <OpportunityBadges opportunity={primary} />
+              <OpportunityTags opportunity={primary} />
               <OpportunityDetail opportunity={primary} detailed />
             </div>
           </section>
@@ -126,7 +126,7 @@ export default async function ResultsPage({ params }: Props) {
                   <div className="cell" key={o.rank}>
                     <p className="num">{o.category}</p>
                     <h3>{o.title}</h3>
-                    <OpportunityBadges opportunity={o} />
+                    <OpportunityTags opportunity={o} />
                     <p>{o.problem}</p>
                     <p style={{ marginTop: 10 }}>{o.solution}</p>
                     <p className="note" style={{ marginTop: 14 }}>
@@ -146,8 +146,8 @@ export default async function ResultsPage({ params }: Props) {
             {roi && roi.anyAvailable ? (
               <>
                 <p className="lead">
-                  Worked out from the figures you gave us. Illustrative opportunity, not a
-                  guarantee &mdash; the arithmetic is shown so you can judge it yourself.
+                  Worked out from the figures you gave us. Illustrative, not a guarantee. The
+                  arithmetic is shown so you can judge it yourself.
                 </p>
                 <div className="roi">
                   {roi.figures.map((f) => (
@@ -174,7 +174,7 @@ export default async function ResultsPage({ params }: Props) {
             ) : (
               <p className="lead">
                 We don&rsquo;t have enough information to calculate anything meaningful here yet.
-                That&rsquo;s not a problem &mdash; it&rsquo;s a short conversation. We&rsquo;d
+                That&rsquo;s not a problem; it&rsquo;s a short conversation. We&rsquo;d
                 rather say so than put an invented number in front of you.
               </p>
             )}
@@ -197,7 +197,7 @@ export default async function ResultsPage({ params }: Props) {
             <p className="lead">{result.recommendedNextStep}</p>
             <p className="lead" data-print="hide">
               Leave your details and bring this report to a 30-minute conversation. We&rsquo;ll
-              have already read it &mdash; you won&rsquo;t be asked these questions again.
+              have already read it, so you won&rsquo;t be asked these questions again.
             </p>
             <div className="narrow-form">
               <LeadForm
@@ -208,7 +208,7 @@ export default async function ResultsPage({ params }: Props) {
               />
             </div>
             <p className="note" style={{ marginTop: 22 }} data-print="hide">
-              Keep this link &mdash; the report stays here. Prefer to just talk?{' '}
+              Keep this link. The report stays here. Prefer to just talk?{' '}
               <a href={CALENDLY} target="_blank" rel="noreferrer" style={{ color: 'inherit' }}>
                 Book a call directly
               </a>
@@ -221,22 +221,14 @@ export default async function ResultsPage({ params }: Props) {
   )
 }
 
-const BAND_CLASS: Record<ComplexityBand, string> = {
-  QUICK_WIN: 'badge-quick',
-  WORKFLOW: 'badge-workflow',
-  CUSTOM: 'badge-custom',
-}
-
-/** Effort at a glance: the colour says how big a job it is before the words do. */
-function OpportunityBadges({ opportunity }: { opportunity: OpportunityRecord }) {
+/** How big a job it is, and whether something off the shelf may already do it. */
+function OpportunityTags({ opportunity }: { opportunity: OpportunityRecord }) {
   const band = opportunity.complexity as ComplexityBand
   return (
-    <div className="opp-badges">
-      <span className={`badge ${BAND_CLASS[band] ?? ''}`}>
-        {IMPLEMENTATION_RANGES[band]?.label ?? opportunity.complexity}
-      </span>
+    <div className="tags">
+      <span className="tag tag-size">{IMPLEMENTATION_RANGES[band]?.label ?? opportunity.complexity}</span>
       {opportunity.existingSoftwarePossible && (
-        <span className="badge badge-soft">Existing software may cover this</span>
+        <span className="tag">Existing software may cover this</span>
       )}
     </div>
   )
@@ -288,7 +280,7 @@ function OpportunityDetail({
 
       {detailed && (
         <p className="note" style={{ marginTop: 24 }}>
-          Why we think so &mdash; {opportunity.reasoning} (Confidence:{' '}
+          Why we think so: {opportunity.reasoning} (Confidence:{' '}
           {opportunity.confidence.toLowerCase()}.)
         </p>
       )}
@@ -321,8 +313,8 @@ function Failed({ publicId }: { publicId: string }) {
             <p className="eyebrow">That didn&rsquo;t work</p>
             <h1>We couldn&rsquo;t finish the analysis.</h1>
             <p className="lead">
-              Nothing you entered was lost. You can try again, or skip straight to talking to a
-              person &mdash; which was always the better version of this anyway.
+              Nothing you entered was lost. You can try again, or talk it through with a person
+              instead.
             </p>
             <div className="actions">
               <a className="btn btn-primary" href={`/analyze/${publicId}/roi`}>

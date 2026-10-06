@@ -18,6 +18,8 @@ import type { AnalysisAnswers } from '@/lib/types'
 type SaveState = 'idle' | 'saving' | 'saved' | 'error'
 type Value = string | string[] | undefined
 
+const pad = (n: number) => String(n).padStart(2, '0')
+
 /** Long enough to see the card light up, short enough to feel instant. */
 const AUTO_ADVANCE_MS = 280
 
@@ -297,9 +299,9 @@ export default function QuestionnaireForm({
     <div className="flow" ref={root}>
       <div className="flow-meta">
         <span>
-          Question {step + 1} of {FLOW.length}
+          <b>{pad(step + 1)}</b> / {pad(FLOW.length)}
         </span>
-        <span>{isLast ? 'Last one' : `About ${minutes} min left`}</span>
+        <span>{isLast ? 'last one' : `about ${minutes} min left`}</span>
       </div>
       <div
         className="flow-track"
@@ -313,7 +315,6 @@ export default function QuestionnaireForm({
       </div>
 
       <div className="flow-step" key={current.id}>
-        {current.kicker && <p className="flow-kicker">{current.kicker}</p>}
         <h1 className="flow-q" id="flow-q" ref={heading} tabIndex={-1}>
           {current.title ?? questions[0].label}
         </h1>
@@ -364,8 +365,8 @@ export default function QuestionnaireForm({
 
       <p className="flow-saved" aria-live="polite">
         {saveState === 'saving' && 'Saving…'}
-        {saveState === 'saved' && '✓ Saved. You can close this and pick up where you left off.'}
-        {saveState === 'error' && 'Not saved yet. Check your connection; we will try again.'}
+        {saveState === 'saved' && 'Saved. You can close this and pick up where you left off.'}
+        {saveState === 'error' && 'Not saved yet. Check your connection and we will try again.'}
       </p>
     </div>
   )
@@ -408,9 +409,9 @@ function Control({
               >
                 {/* Past nine there is no key, but the slot stays so the labels line up. */}
                 {solo && (
-                  <kbd aria-hidden="true" className={i < 9 ? undefined : 'kbd-blank'}>
+                  <span className="cc-n" aria-hidden="true">
                     {i < 9 ? i + 1 : ''}
-                  </kbd>
+                  </span>
                 )}
                 <span>{o}</span>
               </button>
@@ -433,9 +434,6 @@ function Control({
                     aria-pressed={on}
                     onClick={() => onToggle(o)}
                   >
-                    <span className="chip-mark" aria-hidden="true">
-                      {on ? '✓' : '+'}
-                    </span>
                     {o}
                   </button>
                 )
@@ -463,9 +461,6 @@ function Control({
                         aria-pressed={on}
                         onClick={() => onSuggest(s)}
                       >
-                        <span className="chip-mark" aria-hidden="true">
-                          {on ? '✓' : '+'}
-                        </span>
                         {s}
                       </button>
                     )

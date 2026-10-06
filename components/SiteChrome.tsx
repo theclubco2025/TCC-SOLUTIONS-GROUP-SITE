@@ -14,11 +14,17 @@ import { isAnalysisAvailable } from '@/lib/analysis/availability'
 const CALENDLY = 'https://calendly.com/tccsolutions2025/30min'
 
 /**
- * Which part of the site a page belongs to. Drives the single accent colour
- * (app/areas.css) so a visitor can tell the analysis, the report and the partner
- * program apart at a glance — and so the admin never looks like the public site.
+ * Which part of the site a page belongs to. Shown beside the logo as a terminal
+ * path, in the style of the homepage's hero box, so a visitor always knows where
+ * they are.
  */
 export type Area = 'analyze' | 'report' | 'partners'
+
+const PATH: Record<Area, string> = {
+  analyze: 'analysis',
+  report: 'report',
+  partners: 'partners',
+}
 
 export function SiteShell({
   area,
@@ -32,23 +38,31 @@ export function SiteShell({
 }) {
   return (
     <div data-area={area}>
-      <SiteHeader cta={cta} />
+      <SiteHeader cta={cta} area={area} />
       {children}
       <SiteFooter />
     </div>
   )
 }
 
-export function SiteHeader({ cta = true }: { cta?: boolean }) {
+export function SiteHeader({ cta = true, area }: { cta?: boolean; area?: Area }) {
   const analysis = isAnalysisAvailable()
 
   return (
     <header className="topbar">
       <div className="w topbar-in">
-        <a href="/" aria-label="TCC Solutions Group — home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/tccsg-logo.png" alt="TCCSG — TCC Solutions Group LLC" />
-        </a>
+        <div className="topbar-brand">
+          <a href="/" aria-label="TCC Solutions Group — home">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/tccsg-logo.png" alt="TCCSG — TCC Solutions Group LLC" />
+          </a>
+          {area && (
+            <span className="area-path" aria-hidden="true">
+              <span className="cb-prompt">&gt;</span>
+              {PATH[area]}
+            </span>
+          )}
+        </div>
         <nav>
           <a className="nav-secondary" href="/#capabilities">
             What We Do

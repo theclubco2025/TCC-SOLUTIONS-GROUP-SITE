@@ -181,13 +181,19 @@ operator and the wrong size for a sales team. When reps need their own logins,
   red ended), leads can be filtered by status, and a lead moves between statuses
   with one click.
 
-## How the site tells its areas apart
+## How the app pages look
 
-The brand is the same everywhere (black, white, Playfair Display, DM Sans). Each
-area adds one accent colour through `data-area` on its wrapper, defined in
-`app/areas.css`: **amber** for the analysis and the report, **green** for the
-partner program, **blue** and a tinted background for the admin. Pages get it
-by rendering inside `<SiteShell area="...">` from `components/SiteChrome.tsx`.
+They are built from the marketing page's own parts, not a separate style: black
+and white only, the plain eyebrow, mono step numbers, 7px tags, the left-rule
+pull quote, 1px-gap grids, and the hero's terminal box (`> AI`). Where a visitor
+is shows as a terminal path beside the logo (`> analysis`, `> partners`,
+`> report`), set by `<SiteShell area="...">` in `components/SiteChrome.tsx`. A
+picked answer inverts to white, like the selected word in the hero box, and the
+wait while a report is written prints its steps in that same box. Styles live in
+`app/areas.css`.
+
+Colour appears only in the admin, which is tinted navy with a blue rule so it is
+never mistaken for the public site, and where a status colour carries meaning.
 
 ## The questionnaire experience
 

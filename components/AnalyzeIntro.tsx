@@ -81,7 +81,7 @@ export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead:
               <p className="num">01</p>
               <h3>We look at how you operate</h3>
               <p>
-                Not your tech stack &mdash; your actual day. Where information gets entered twice,
+                Not your tech stack. Your actual day. Where information gets entered twice,
                 where customers wait, where a person is doing what a system should.
               </p>
             </div>
@@ -110,30 +110,28 @@ export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead:
 
 function SampleReport() {
   return (
-    <aside className="sample" aria-label="An example of part of a report">
-      <span className="sample-tag">Example</span>
-      <p className="report-meta">
-        Prepared for <strong>a sample caf&eacute;</strong>
-      </p>
-      <div className="opp-badges">
-        <span className="badge badge-quick">Quick win</span>
-        <span className="badge badge-soft">Existing software may cover this</span>
-      </div>
-      <h3>Phone orders go straight to the kitchen screen</h3>
-      <p>
-        Orders taken by phone are written on a pad, then typed into the till. An order form that
-        feeds the till removes the second step and the mistakes that come with it.
-      </p>
-      <hr />
-      <p className="sample-label">How the value is worked out</p>
-      <p className="sample-formula">hours a week &times; people &times; cost of an hour &times; 52</p>
-      <p>Your numbers, with the arithmetic shown next to every figure.</p>
-      <hr />
-      <div className="sample-faded" aria-hidden="true">
-        <div className="opp-badges">
-          <span className="badge badge-workflow">Workflow</span>
+    <aside aria-label="An example of part of a report">
+      <p className="eyebrow">Example</p>
+      <div className="sample">
+        <p className="report-meta">
+          Prepared for <strong>a sample caf&eacute;</strong>
+        </p>
+        <div className="tags">
+          <span className="tag tag-size">Quick win</span>
+          <span className="tag">Existing software may cover this</span>
         </div>
-        <h3>Reminders go out before every booking</h3>
+        <h3>Phone orders go straight to the kitchen screen</h3>
+        <p>
+          Orders taken by phone are written on a pad, then typed into the till. An order form that
+          feeds the till removes the second step and the mistakes that come with it.
+        </p>
+        <hr />
+        <p>How the value is worked out, using your numbers:</p>
+        <p className="code-box">
+          <span className="cb-prompt">&gt;</span>
+          hours a week &times; people &times; cost of an hour &times; 52
+        </p>
+        <p>Every figure in the report shows its arithmetic like this.</p>
       </div>
     </aside>
   )

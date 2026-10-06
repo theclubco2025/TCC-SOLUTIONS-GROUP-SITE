@@ -1,95 +1,48 @@
 /* =========================================================================
-   AREA IDENTITY
-   Every page sits in an area. The brand stays black, white, Playfair and DM
-   Sans everywhere; the area adds ONE accent, used sparingly — a rule across the
-   top of the header, the eyebrow, progress, selection and focus — so a visitor
-   always knows which part of the site they are in, and the admin can never be
-   mistaken for the public site. Accents are desaturated for a black background
-   and every one clears 4.5:1 against it.
+   App pages, drawn from the marketing site's own parts (public/index.html):
+   black and white only, the plain eyebrow, mono step numbers, 7px tags, the
+   left-rule pull quote, 1px-gap grids, and the hero's terminal box. Nothing
+   here should look like it came from anywhere else.
+
+   Where you are is said by the terminal path beside the logo (> analysis,
+   > partners, > report). Colour is reserved for the internal admin, where a
+   status colour carries meaning.
    ========================================================================= */
 
 :root {
-  --accent: #ffffff;
-  --accent-soft: rgba(255, 255, 255, 0.07);
-  --accent-line: rgba(255, 255, 255, 0.28);
+  /* --dim from the site is too faint for text that must be read. */
+  --quiet: #808080;
   --ok: #6cc9a3;
   --warn: #e6b860;
   --bad: #e0746b;
-  --violet: #b39dff;
-  /* Small supporting text. --dim (#5c5c5c) is too faint on black for text that
-     has to be read; this clears 4.5:1. */
-  --quiet: #808080;
-}
-
-[data-area='analyze'],
-[data-area='report'] {
-  --accent: #e6b860;
-  --accent-soft: rgba(230, 184, 96, 0.1);
-  --accent-line: rgba(230, 184, 96, 0.38);
-}
-
-[data-area='partners'] {
-  --accent: #6cc9a3;
-  --accent-soft: rgba(108, 201, 163, 0.1);
-  --accent-line: rgba(108, 201, 163, 0.38);
-}
-
-[data-area='admin'] {
-  --accent: #86a8ff;
-  --accent-soft: rgba(134, 168, 255, 0.1);
-  --accent-line: rgba(134, 168, 255, 0.38);
-}
-
-[data-area] .topbar {
-  border-top: 2px solid var(--accent);
-}
-
-[data-area] .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--accent);
-  border: 1px solid var(--accent-line);
-  background: var(--accent-soft);
-  border-radius: 999px;
-  padding: 5px 12px 5px 10px;
-}
-
-[data-area] .eyebrow::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-}
-
-/* One faint glow at the top of an area's first section — the only gradient. */
-[data-area] main > .sec:first-child {
-  position: relative;
-  isolation: isolate;
-}
-[data-area] main > .sec:first-child::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 420px;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(60% 100% at 50% 0%, var(--accent-soft), transparent 70%);
+  --admin: #86a8ff;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid #fff;
   outline-offset: 2px;
 }
 
-.accent {
-  color: var(--accent);
+/* --- header: the path, and the call to action --------------------------- */
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
-
-/* --- header call to action ------------------------------------------------ */
-
+.area-path {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  display: inline-flex;
+  gap: 8px;
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+}
+.area-path .cb-prompt {
+  color: var(--dim);
+}
 .topbar nav {
   align-items: center;
 }
@@ -107,54 +60,38 @@
     width: auto;
   }
 }
+/* A phone has room for the path or the header button, not both. */
+@media (max-width: 420px) {
+  .topbar-in:has(.btn-nav) .area-path {
+    display: none;
+  }
+}
 
-/* --- badges --------------------------------------------------------------- */
+/* --- tags, as on the capabilities cards ---------------------------------- */
 
-.badge {
-  display: inline-flex;
-  align-items: center;
+.tags {
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-radius: 999px;
-  padding: 4px 10px;
+  margin: 2px 0 18px;
+}
+.tag {
+  padding: 5px 11px;
+  border-radius: 7px;
+  background: var(--faint);
   border: 1px solid var(--line);
+  font-size: 0.74rem;
   color: var(--muted);
   white-space: nowrap;
-  vertical-align: middle;
 }
-.badge::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-}
-.badge-quick {
-  color: var(--ok);
-  border-color: rgba(108, 201, 163, 0.38);
-}
-.badge-workflow {
-  color: var(--warn);
-  border-color: rgba(230, 184, 96, 0.38);
-}
-.badge-custom {
-  color: var(--violet);
-  border-color: rgba(179, 157, 255, 0.38);
-}
-.badge-soft {
-  color: #d8d8d8;
+.tag-size {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 /* =========================================================================
-   THE QUESTIONNAIRE — one question at a time
+   The questionnaire, one question at a time
    ========================================================================= */
-
-.flow {
-  margin-top: 8px;
-}
 
 .flow-meta {
   display: flex;
@@ -166,50 +103,34 @@
   color: var(--quiet);
   margin-bottom: 10px;
 }
-
+.flow-meta b {
+  color: #fff;
+  font-weight: 400;
+}
 .flow-track {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 999px;
-  overflow: hidden;
+  height: 2px;
+  background: var(--line);
   margin-bottom: 44px;
 }
 .flow-fill {
   height: 100%;
-  background: var(--accent);
-  border-radius: 999px;
+  background: #fff;
   transition: width 0.35s ease;
 }
 
 .flow-step {
-  animation: flow-in 0.24s ease-out;
+  animation: flow-in 0.2s ease-out;
 }
 @keyframes flow-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.flow-kicker {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
 }
 
 .flow-q {
-  font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(1.55rem, 3.6vw, 2.25rem);
   line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: #fff;
   margin-bottom: 10px;
   outline: none;
 }
@@ -229,110 +150,85 @@
 }
 .flow-sub .opt {
   margin-left: 8px;
-  font-family: var(--mono);
-  font-size: 0.68rem;
   font-weight: 400;
   color: var(--quiet);
 }
 
-/* single choice: big tappable cards */
+/* Single choice. A picked answer inverts, like the selected word in the
+   homepage's terminal box. */
 .choice-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
   margin-top: 18px;
 }
 .choice-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 54px;
+  gap: 14px;
+  min-height: 52px;
   padding: 12px 16px;
   text-align: left;
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
   color: #fff;
   font: inherit;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: border-color 0.16s, background 0.16s, transform 0.12s;
+  transition: border-color 0.16s, background 0.16s, color 0.16s;
 }
 .choice-card:hover {
-  border-color: rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.045);
-}
-.choice-card:active {
-  transform: scale(0.99);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 .choice-card[aria-pressed='true'] {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  background: #fff;
+  border-color: #fff;
+  color: #000;
 }
-.choice-card kbd {
+.cc-n {
   font-family: var(--mono);
-  font-size: 0.68rem;
-  color: var(--quiet);
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  min-width: 22px;
-  height: 22px;
-  display: inline-grid;
-  place-items: center;
+  font-size: 0.72rem;
+  color: var(--dim);
+  width: 1.2em;
   flex-shrink: 0;
 }
-.choice-card kbd.kbd-blank {
-  visibility: hidden;
-}
-.choice-card[aria-pressed='true'] kbd {
-  color: var(--accent);
-  border-color: var(--accent-line);
+.choice-card[aria-pressed='true'] .cc-n {
+  color: #000;
 }
 
-/* multi choice and tap-to-fill suggestions: chips */
+/* Several answers, and tap-to-fill suggestions */
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 16px 0 6px;
+  gap: 6px;
+  margin: 14px 0 6px;
 }
 .chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 40px;
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.025);
+  min-height: 38px;
+  padding: 8px 13px;
+  background: var(--faint);
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 7px;
   color: var(--muted);
   font: inherit;
   font-size: 0.88rem;
   line-height: 1.3;
-  cursor: pointer;
   text-align: left;
+  cursor: pointer;
   transition: border-color 0.16s, background 0.16s, color 0.16s;
 }
 .chip:hover {
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 .chip[aria-pressed='true'] {
-  color: #fff;
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.chip-mark {
-  width: 14px;
-  text-align: center;
-  color: var(--accent);
-  font-weight: 700;
+  background: #fff;
+  border-color: #fff;
+  color: #000;
 }
 .chips-label {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.86rem;
   color: var(--quiet);
   margin-top: 18px;
 }
@@ -342,7 +238,7 @@
   width: 100%;
   background: rgba(255, 255, 255, 0.028);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 14px 16px;
   color: #fff;
   font: inherit;
@@ -353,11 +249,12 @@
 .flow textarea {
   min-height: 110px;
   resize: vertical;
+  margin-top: 10px;
 }
 .flow textarea:focus,
 .flow input[type='text']:focus {
   outline: none;
-  border-color: var(--accent-line);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .flow-nav {
@@ -377,12 +274,13 @@
 .flow-skip {
   background: none;
   border: 0;
-  color: var(--quiet);
+  color: var(--muted);
   font: inherit;
   font-size: 0.86rem;
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.25);
   padding: 10px 4px;
 }
 .flow-skip:hover {
@@ -390,7 +288,7 @@
 }
 .flow-hint {
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: var(--quiet);
 }
 .flow-error {
@@ -399,8 +297,7 @@
   margin-top: 14px;
 }
 .flow-saved {
-  font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   color: var(--quiet);
   margin-top: 26px;
   min-height: 1.4em;
@@ -408,14 +305,14 @@
 
 /* Number keys mean nothing without a keyboard. */
 @media (hover: none) and (pointer: coarse) {
-  .choice-card kbd {
+  .cc-n,
+  .flow-hint {
     display: none;
   }
 }
 @media (max-width: 640px) {
   .choice-cards {
     grid-template-columns: 1fr;
-    gap: 8px;
   }
   .choice-card {
     min-height: 48px;
@@ -439,21 +336,19 @@
   }
 }
 
-/* --- live ROI calculator ---------------------------------------------------- */
+/* --- the numbers step ------------------------------------------------------ */
 
 .roi-groups {
   display: grid;
-  gap: 18px;
+  gap: 16px;
   margin-top: 34px;
 }
 .roi-group {
+  min-width: 0;
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 22px 22px 18px;
-  background: rgba(255, 255, 255, 0.015);
-}
-.roi-group {
-  min-width: 0;
+  padding: 24px 24px 20px;
+  background: rgba(255, 255, 255, 0.02);
 }
 /* Floated so the legend sits inside the box instead of on its border. */
 .roi-legend {
@@ -461,15 +356,20 @@
   width: 100%;
   padding: 0;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.02rem;
   color: #fff;
   margin-bottom: 2px;
 }
 .roi-group > p {
   clear: both;
-  color: var(--quiet);
-  font-size: 0.86rem;
+  color: var(--muted);
+  font-size: 0.88rem;
   margin-bottom: 16px;
+}
+.roi-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
 }
 .roi-field label {
   display: block;
@@ -503,7 +403,7 @@
   margin: 0;
 }
 .roi-input input:focus {
-  border-color: var(--accent-line);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 .roi-input.has-prefix input {
   padding-left: 28px;
@@ -530,28 +430,12 @@
   color: var(--quiet);
   margin-top: 6px;
 }
-.roi-live {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
-}
-.roi-live small {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  color: var(--quiet);
-}
-.roi-fields {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
 .roi-out {
   margin-top: 18px;
   padding-top: 16px;
-  border-top: 1px dashed var(--line);
+  border-top: 1px solid var(--line);
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 .roi-out-row {
   display: flex;
@@ -563,16 +447,27 @@
   color: var(--muted);
   font-size: 0.88rem;
 }
+.roi-live {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
 .roi-big {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.6rem;
-  color: var(--accent);
+  font-weight: 700;
+  color: #fff;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.roi-waiting {
+.roi-live small {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+  color: var(--quiet);
+}
+.roi-waiting {
+  font-size: 0.8rem;
   color: var(--quiet);
   text-align: right;
 }
@@ -582,90 +477,68 @@
   }
 }
 
-/* --- the wait while the analysis runs ---------------------------------------- */
+/* --- the wait: the hero's terminal box, printing what it is doing --------- */
 
-.analyzing {
-  border: 1px solid var(--accent-line);
-  background: var(--accent-soft);
-  border-radius: 14px;
-  padding: 22px 22px 18px;
+.term {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.028);
+  padding: 16px 18px;
   margin-top: 24px;
-}
-.analyzing-bar {
-  height: 3px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: 18px;
-}
-.analyzing-bar span {
-  display: block;
-  width: 35%;
-  height: 100%;
-  background: var(--accent);
-  border-radius: 999px;
-  animation: analyzing-slide 1.4s ease-in-out infinite;
-}
-@keyframes analyzing-slide {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(300%);
-  }
-}
-.analyzing-title {
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 12px;
-}
-.analyzing ol {
-  list-style: none;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
   display: grid;
-  gap: 9px;
+  gap: 8px;
 }
-.analyzing li {
+.term-line {
   display: flex;
-  gap: 10px;
   align-items: center;
-  font-size: 0.92rem;
+  gap: 11px;
   color: var(--quiet);
-  transition: color 0.3s;
 }
-.analyzing li[data-state='done'] {
-  color: var(--muted);
+.term-line .cb-prompt {
+  color: var(--dim);
 }
-.analyzing li[data-state='now'] {
+.term-line[data-state='now'] {
   color: #fff;
 }
-.analyzing li i {
-  width: 16px;
-  font-style: normal;
-  color: var(--accent);
-  text-align: center;
+.term-caret {
+  width: 7px;
+  height: 15px;
+  background: #fff;
+  animation: term-blink 1.05s step-end infinite;
+}
+@keyframes term-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.term-note {
+  font-size: 0.86rem;
+  color: var(--quiet);
+  margin-top: 14px;
 }
 
 /* =========================================================================
-   THE REPORT
+   The report
    ========================================================================= */
 
 .report-head {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 26px 26px 22px;
+  border-radius: 14px;
+  padding: 28px 26px 24px;
   background: rgba(255, 255, 255, 0.02);
   margin-top: 8px;
 }
 .report-meta {
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.04em;
+  font-size: 0.86rem;
   color: var(--quiet);
   margin-bottom: 18px;
 }
 .report-meta strong {
   color: #fff;
-  font-weight: 500;
+  font-weight: 600;
 }
 .report-stats {
   display: grid;
@@ -678,46 +551,40 @@
   margin: 22px 0 6px;
 }
 .report-stat {
-  background: #050505;
-  padding: 16px 18px;
+  background: #000;
+  padding: 18px 20px;
 }
 .report-stat b {
   display: block;
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.7rem;
   font-weight: 700;
-  color: var(--accent);
+  color: #fff;
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
 }
 .report-stat span {
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.84rem;
 }
 .report-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 .report-actions .btn {
   height: 36px;
   font-size: 0.8rem;
   padding: 0 14px;
 }
-.opp-badges {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 4px 0 18px;
-}
+/* The site's pull quote: the honest read is the part to remember. */
 .callout {
-  border-left: 2px solid var(--accent);
-  padding: 4px 0 4px 18px;
-  margin: 8px 0 0;
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 2px 0 2px 24px;
 }
 .callout p {
-  color: #e8e8e8;
+  color: #fff;
 }
 @media (max-width: 640px) {
   .report-stats {
@@ -728,7 +595,7 @@
   }
 }
 
-/* --- the example on the analysis intro --------------------------------------- */
+/* --- the analysis intro ------------------------------------------------------ */
 
 .intro-grid {
   display: grid;
@@ -757,69 +624,34 @@
 .intro-steps li span:last-child {
   font-family: var(--mono);
   font-size: 0.72rem;
-  color: var(--accent);
+  color: var(--quiet);
   white-space: nowrap;
 }
 .sample {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 22px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
-  position: relative;
-}
-.sample-tag {
-  position: absolute;
-  top: -11px;
-  right: 18px;
-  font-family: var(--mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: #000;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 3px 10px;
-  color: var(--quiet);
+  border-radius: 14px;
+  padding: 24px 24px 22px;
+  background: rgba(255, 255, 255, 0.02);
 }
 .sample h3 {
   font-size: 1.05rem;
-  margin: 8px 0 10px;
+  margin: 4px 0 10px;
 }
 .sample p {
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   line-height: 1.6;
-}
-.sample .report-meta {
-  margin-bottom: 12px;
-}
-.sample-label {
-  font-family: var(--mono);
-  font-size: 0.66rem !important;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--quiet) !important;
-  margin-bottom: 6px;
-}
-.sample-formula {
-  font-family: var(--mono);
-  font-size: 0.78rem !important;
-  color: var(--accent) !important;
-  margin-bottom: 6px;
-}
-/* The next opportunity, fading out: there is more where that came from. */
-.sample-faded {
-  opacity: 0.4;
-  -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent);
-  mask-image: linear-gradient(180deg, #000 30%, transparent);
-}
-.sample-faded h3 {
-  margin-top: 0;
 }
 .sample hr {
   border: 0;
   border-top: 1px solid var(--line);
-  margin: 16px 0;
+  margin: 18px 0;
+}
+.sample .code-box {
+  display: flex;
+  margin: 8px 0 10px;
+  font-size: 0.76rem;
+  word-break: normal;
 }
 @media (max-width: 860px) {
   .intro-grid {
@@ -828,52 +660,55 @@
   }
 }
 
-/* --- partners: how a referral moves ------------------------------------------ */
+/* --- partners ---------------------------------------------------------------- */
 
+/* The homepage's process steps: a rule on the left and a mono number. */
 .path {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 20px;
   margin-top: 30px;
-  counter-reset: path;
   padding: 0;
+  counter-reset: path;
 }
 .path li {
   list-style: none;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 16px;
+  border-left: 1px solid var(--line);
+  padding: 2px 0 2px 22px;
   counter-increment: path;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
   color: var(--muted);
 }
 .path li::before {
   content: counter(path, decimal-leading-zero);
   display: block;
   font-family: var(--mono);
-  font-size: 0.7rem;
-  color: var(--accent);
-  margin-bottom: 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  margin-bottom: 12px;
 }
 .path li b {
   display: block;
   color: #fff;
+  font-size: 1.05rem;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 7px;
 }
 .cta-band {
-  border: 1px solid var(--accent-line);
-  background: var(--accent-soft);
+  border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 28px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 36px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
   flex-wrap: wrap;
 }
 .cta-band h2 {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
 }
 .cta-band p {
   color: var(--muted);
@@ -883,10 +718,18 @@
   .path {
     grid-template-columns: 1fr 1fr;
   }
+  .cta-band {
+    padding: 28px 24px;
+  }
+}
+@media (max-width: 560px) {
+  .path {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =========================================================================
-   ADMIN — tinted so it is unmistakably internal
+   Admin: tinted, so it is never mistaken for the public site
    ========================================================================= */
 
 [data-area='admin'] {
@@ -894,21 +737,25 @@
   background: var(--bg);
   min-height: 100vh;
 }
+[data-area='admin'] :focus-visible {
+  outline-color: var(--admin);
+}
 [data-area='admin'] .adm-bar {
   background: #080d18;
-  border-top: 2px solid var(--accent);
+  border-top: 2px solid var(--admin);
   border-bottom-color: rgba(134, 168, 255, 0.2);
 }
+[data-area='admin'] .adm-brand {
+  color: var(--quiet);
+}
 .adm-internal {
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent-line);
-  border-radius: 999px;
-  padding: 2px 8px;
-  margin-left: 8px;
+  color: var(--admin);
+  margin-left: 10px;
+}
+[data-area='admin'] .adm-bar nav a[aria-current='page'] {
+  color: #fff;
+  box-shadow: inset 0 -2px 0 var(--admin);
+  padding-bottom: 3px;
 }
 .adm-search {
   display: flex;
@@ -930,7 +777,18 @@
 }
 .adm-search input:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--admin);
+}
+/* Seven nav items, a search box and log out do not fit one row on a laptop:
+   the search gets a row of its own before the nav starts wrapping. */
+@media (max-width: 1100px) {
+  .adm-search {
+    order: 5;
+    flex-basis: 100%;
+  }
+  .adm-search input {
+    width: 100%;
+  }
 }
 .adm-filters {
   display: flex;
@@ -943,31 +801,35 @@
   text-decoration: none;
   color: var(--muted);
   border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 5px 12px;
+  border-radius: 7px;
+  padding: 5px 11px;
 }
 .adm-main .adm-filters a[aria-current='true'] {
   color: #fff;
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  border-color: var(--admin);
 }
 .adm-filters a span {
   color: var(--quiet);
-  margin-left: 4px;
+  margin-left: 5px;
 }
+/* A status is its colour plus its word, never colour alone. */
 .st {
-  font-family: var(--mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-radius: 999px;
-  padding: 3px 9px;
-  border: 1px solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
   white-space: nowrap;
+}
+.st::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: currentColor;
 }
 .st-NEW,
 .st-PENDING {
-  color: #86a8ff;
+  color: var(--admin);
 }
 .st-ASSIGNED,
 .st-WORKING,
@@ -998,6 +860,7 @@
 }
 .adm-quick {
   display: flex;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   margin: 4px 0 18px;
@@ -1013,31 +876,12 @@
 .adm-search-group {
   margin-bottom: 26px;
 }
-[data-area='admin'] .adm-brand {
-  color: var(--quiet);
-}
-[data-area='admin'] .adm-bar nav a[aria-current='page'] {
-  color: #fff;
-  box-shadow: inset 0 -2px 0 var(--accent);
-  padding-bottom: 3px;
-}
-/* Seven nav items, a search box and log out do not fit one row on a laptop:
-   the search gets a row of its own before the nav starts wrapping. */
-@media (max-width: 1100px) {
-  .adm-search {
-    order: 5;
-    flex-basis: 100%;
-  }
-  .adm-search input {
-    width: 100%;
-  }
-}
 
-/* --- motion is decoration; honour the setting that turns it off ------------- */
+/* --- reduced motion ----------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .flow-step,
-  .analyzing-bar span {
+  .term-caret {
     animation: none;
   }
   .flow-fill,
@@ -1050,7 +894,7 @@
   }
 }
 
-/* --- print: "Save as PDF" on the report gives a clean document -------------- */
+/* --- print: "Save as PDF" on the report --------------------------------------- */
 
 @media print {
   :root,
@@ -1067,9 +911,6 @@
   form,
   [data-print='hide'] {
     display: none !important;
-  }
-  [data-area] main > .sec:first-child::before {
-    display: none;
   }
   .sec {
     padding: 18px 0;
@@ -1093,13 +934,18 @@
   .cell,
   .grid,
   .roi,
-  .roi-row {
+  .roi-row,
+  .tag {
     background: #fff !important;
     border-color: #ccc !important;
   }
+  .callout {
+    border-color: #999;
+  }
   .note,
   .report-meta,
-  .report-stat span {
+  .report-stat span,
+  .tag {
     color: #444 !important;
   }
 }

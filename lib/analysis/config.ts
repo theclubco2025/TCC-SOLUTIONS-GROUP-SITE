@@ -252,27 +252,24 @@ export const ALL_QUESTIONS: Question[] = QUESTIONNAIRE.flatMap((s) => s.question
 export type FlowStep = {
   id: string
   questions: string[]
-  /** A line above the question that lowers the stakes. */
-  kicker?: string
   /** The heading for a step with more than one question; otherwise the question is the heading. */
   title?: string
 }
 
 export const FLOW: FlowStep[] = [
-  { id: 'industry', questions: ['industry'], kicker: 'Let’s start easy' },
+  { id: 'industry', questions: ['industry'] },
   { id: 'employees', questions: ['employees'] },
-  { id: 'goals', questions: ['improvementGoals'], kicker: 'No wrong answers' },
-  { id: 'repetitive', questions: ['repetitiveWork'], kicker: 'This is the one that matters most' },
+  { id: 'goals', questions: ['improvementGoals'] },
+  { id: 'repetitive', questions: ['repetitiveWork'] },
   { id: 'tools', questions: ['manualTools'] },
   { id: 'transfer', questions: ['manualTransfer'] },
   { id: 'friction', questions: ['customerFriction'] },
   { id: 'software', questions: ['currentSoftware'] },
   { id: 'connected', questions: ['systemsConnected'] },
-  { id: 'eliminate', questions: ['oneThingToEliminate'], kicker: 'Last real question' },
+  { id: 'eliminate', questions: ['oneThingToEliminate'] },
   {
     id: 'business',
     questions: ['businessName', 'website'],
-    kicker: 'So we can put your name on the report',
     title: 'Who is this report for?',
   },
 ]

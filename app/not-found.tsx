@@ -11,7 +11,7 @@ export default function NotFound() {
             <h1>That link isn&rsquo;t active.</h1>
             <p className="lead">
               Referral links look like <code>tccsolutionsgroup.com/their-name/analyze</code>. If
-              someone sent you here, ask them to check the link &mdash; or come straight to us.
+              someone sent you here, ask them to check the link, or come straight to us.
             </p>
             {/* Most people who hit a dead referral link came for the analysis, so
                 offer it rather than only the way out. */}

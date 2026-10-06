@@ -26,7 +26,7 @@ export default function ReportActions() {
         Turn this into a plan
       </a>
       <button type="button" className="btn btn-ghost" onClick={copy}>
-        {copied === 'done' ? 'Link copied ✓' : copied === 'failed' ? 'Copy from the address bar' : 'Copy link'}
+        {copied === 'done' ? 'Link copied' : copied === 'failed' ? 'Copy from the address bar' : 'Copy link'}
       </button>
       <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
         Save as PDF
