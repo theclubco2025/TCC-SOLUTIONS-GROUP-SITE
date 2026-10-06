@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import AdminShell, { Empty, SectionError, flashFrom } from '@/components/admin/AdminShell'
+import AdminShell, { Empty, SectionError, Status, flashFrom } from '@/components/admin/AdminShell'
 import { requireAdmin } from '@/lib/admin/auth'
 import { fmtDate } from '@/lib/admin/format'
 import { loadOverview } from '@/lib/admin/queries'
@@ -63,7 +63,9 @@ export default async function AdminOverview({ searchParams }: Props) {
                         </td>
                         <td>{l.contactName ?? '—'}</td>
                         <td>{l.firstTouchPartner?.name ?? 'Direct'}</td>
-                        <td>{l.status}</td>
+                        <td>
+                          <Status value={l.status} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -81,7 +83,9 @@ export default async function AdminOverview({ searchParams }: Props) {
                         <td>{fmtDate(a.createdAt)}</td>
                         <td>{a.name}</td>
                         <td>{a.organization ?? '—'}</td>
-                        <td>{a.status}</td>
+                        <td>
+                          <Status value={a.status} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>

@@ -16,24 +16,31 @@ const NAV = [
   { href: '/masteradmin/activity', label: 'Activity', key: 'activity' },
 ] as const
 
-export type NavKey = (typeof NAV)[number]['key']
+export type NavKey = (typeof NAV)[number]['key'] | 'search'
 
 export default function AdminShell({
   active,
   title,
   children,
   flash,
+  query = '',
 }: {
   active: NavKey
   title: string
   children: ReactNode
   flash?: { ok?: string; error?: string }
+  /** Prefills the search box on the results page. */
+  query?: string
 }) {
+  // data-area="admin" tints the whole console (app/areas.css) so it can never
+  // be mistaken for the public site, in a screenshot or in a busy tab bar.
   return (
-    <div className="adm">
+    <div className="adm" data-area="admin">
       <header className="adm-bar">
         <div className="w adm-bar-in">
-          <span className="adm-brand">TCCSG &middot; admin</span>
+          <span className="adm-brand">
+            TCCSG &middot; admin<span className="adm-internal">Internal</span>
+          </span>
           <nav aria-label="Admin">
             {NAV.map((n) => (
               <a key={n.key} href={n.href} aria-current={n.key === active ? 'page' : undefined}>
@@ -41,6 +48,18 @@ export default function AdminShell({
               </a>
             ))}
           </nav>
+          {/* A plain GET form: the query lands in the URL, so a search can be
+              bookmarked or reloaded, and the page re-checks auth like any other. */}
+          <form className="adm-search" action="/masteradmin/search" method="get" role="search">
+            <input
+              type="search"
+              name="q"
+              defaultValue={query}
+              placeholder="Search names, emails, businesses"
+              aria-label="Search the admin"
+              maxLength={100}
+            />
+          </form>
           <form action={logoutAction}>
             <button className="adm-link" type="submit">
               Log out
@@ -76,6 +95,11 @@ export function SectionError({ message }: { message: string }) {
       <code>{message}</code>
     </div>
   )
+}
+
+/** A status, coloured by what it means (app/areas.css): blue new, amber in progress, green good, red ended. */
+export function Status({ value }: { value: string }) {
+  return <span className={`st st-${value}`}>{value.toLowerCase()}</span>
 }
 
 export function Empty({ children }: { children: ReactNode }) {

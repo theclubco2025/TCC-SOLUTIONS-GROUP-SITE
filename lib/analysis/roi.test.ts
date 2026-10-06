@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { calculateRoi, formatFigure } from '@/lib/analysis/roi'
+import { calculateRoi, formatFigure, normaliseRoiInputs } from '@/lib/analysis/roi'
 import { ROI_ASSUMPTIONS } from '@/lib/analysis/config'
 
 const figure = (inputs: Parameters<typeof calculateRoi>[0], id: string) =>
@@ -99,5 +99,19 @@ describe('formatting', () => {
 
   it('formats money without stray decimals', () => {
     expect(formatFigure(figure({ hoursPerWeek: 10, hourlyValue: 25 }, 'labour'))).toBe('$13,000')
+  })
+})
+
+describe('the live calculator and the report agree', () => {
+  it('reads the text a number box produces the same way the server does', () => {
+    // The numbers step runs normaliseRoiInputs on what is typed, so the figure
+    // shown while typing is the figure the report will show.
+    const typed = normaliseRoiInputs({ hoursPerWeek: '10', hourlyValue: '35', peopleInvolved: '' })
+    expect(typed).toEqual({ hoursPerWeek: 10, hourlyValue: 35 })
+    expect(calculateRoi(typed).headline?.value).toBe(10 * 35 * 52)
+  })
+
+  it('drops an out-of-range number while typing, as the server will', () => {
+    expect(normaliseRoiInputs({ conversionRate: '140' })).toEqual({})
   })
 })

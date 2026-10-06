@@ -1,12 +1,47 @@
+import type { ReactNode } from 'react'
+import { isAnalysisAvailable } from '@/lib/analysis/availability'
+
 /**
  * Header and footer for app routes. Mirrors the marketing site's chrome so
  * /partners and /{slug}/analyze read as the same site, and repeats the same
  * legal identity block — TCCSG's Twilio compliance profile depends on the
  * registered name, entity number and contact details being consistent on every
  * page a reviewer can reach, not just the homepage.
+ *
+ * Server-only: the header reads the environment to decide its call to action.
  */
 
-export function SiteHeader() {
+const CALENDLY = 'https://calendly.com/tccsolutions2025/30min'
+
+/**
+ * Which part of the site a page belongs to. Drives the single accent colour
+ * (app/areas.css) so a visitor can tell the analysis, the report and the partner
+ * program apart at a glance — and so the admin never looks like the public site.
+ */
+export type Area = 'analyze' | 'report' | 'partners'
+
+export function SiteShell({
+  area,
+  cta = true,
+  children,
+}: {
+  area: Area
+  /** Hide the header button where it would only point back at the same page. */
+  cta?: boolean
+  children: ReactNode
+}) {
+  return (
+    <div data-area={area}>
+      <SiteHeader cta={cta} />
+      {children}
+      <SiteFooter />
+    </div>
+  )
+}
+
+export function SiteHeader({ cta = true }: { cta?: boolean }) {
+  const analysis = isAnalysisAvailable()
+
   return (
     <header className="topbar">
       <div className="w topbar-in">
@@ -15,9 +50,23 @@ export function SiteHeader() {
           <img src="/assets/tccsg-logo.png" alt="TCCSG — TCC Solutions Group LLC" />
         </a>
         <nav>
-          <a href="/#capabilities">What We Do</a>
+          <a className="nav-secondary" href="/#capabilities">
+            What We Do
+          </a>
           <a href="/partners">Partners</a>
-          <a href="/#contact">Contact</a>
+          <a className="nav-secondary" href="/#contact">
+            Contact
+          </a>
+          {cta &&
+            (analysis ? (
+              <a className="btn btn-primary btn-nav" href="/analyze">
+                Analyze my business
+              </a>
+            ) : (
+              <a className="btn btn-primary btn-nav" href={CALENDLY} target="_blank" rel="noreferrer">
+                Book a call
+              </a>
+            ))}
         </nav>
       </div>
     </header>

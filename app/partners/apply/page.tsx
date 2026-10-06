@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import ApplyForm from '@/components/ApplyForm'
-import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
+import { SiteShell } from '@/components/SiteChrome'
 
 export const metadata: Metadata = {
   title: 'Apply — TCCSG Partner Program',
@@ -10,9 +10,7 @@ export const metadata: Metadata = {
 
 export default function ApplyPage() {
   return (
-    <>
-      <SiteHeader />
-
+    <SiteShell area="partners">
       <main>
         <section className="sec">
           <div className="w narrow">
@@ -26,8 +24,6 @@ export default function ApplyPage() {
           </div>
         </section>
       </main>
-
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }

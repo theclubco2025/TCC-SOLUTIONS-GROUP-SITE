@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { createPartner, setPartnerStatus } from '@/app/masteradmin/actions'
-import AdminShell, { Empty, SectionError, flashFrom } from '@/components/admin/AdminShell'
+import AdminShell, { Empty, SectionError, Status, flashFrom } from '@/components/admin/AdminShell'
 import { requireAdmin } from '@/lib/admin/auth'
 import { fmtDate } from '@/lib/admin/format'
 import { loadPartners } from '@/lib/admin/queries'
@@ -66,7 +66,7 @@ export default async function AdminPartners({ searchParams }: Props) {
             </thead>
             <tbody>
               {r.data.map((p) => (
-                <tr key={p.id}>
+                <tr key={p.id} id={p.slug}>
                   <td>
                     {p.name}
                     <br />
@@ -81,7 +81,9 @@ export default async function AdminPartners({ searchParams }: Props) {
                   <td>
                     {p._count.firstTouchLeads} / {p._count.lastTouchLeads}
                   </td>
-                  <td>{p.status}</td>
+                  <td>
+                    <Status value={p.status} />
+                  </td>
                   <td>
                     <form action={setPartnerStatus} className="adm-inline">
                       <input type="hidden" name="id" value={p.id} />

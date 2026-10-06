@@ -1,18 +1,16 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { setLeadStatus } from '@/app/masteradmin/actions'
-import AdminShell, { Empty, SectionError, flashFrom } from '@/components/admin/AdminShell'
+import AdminShell, { Empty, SectionError, Status, flashFrom } from '@/components/admin/AdminShell'
 import { requireAdmin } from '@/lib/admin/auth'
 import { fmtDate, leadReplyLink } from '@/lib/admin/format'
-import { loadLead } from '@/lib/admin/queries'
+import { LEAD_STATUSES, loadLead } from '@/lib/admin/queries'
 import { QUESTIONNAIRE } from '@/lib/analysis/config'
 import { formatCurrency, formatFigure, type RoiResults } from '@/lib/analysis/roi'
 import { siteUrl } from '@/lib/attribution'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Lead', robots: { index: false, follow: false, nocache: true } }
-
-const STATUSES = ['NEW', 'ASSIGNED', 'WORKING', 'QUALIFIED', 'DISQUALIFIED', 'CONVERTED']
 
 type Props = {
   params: Promise<{ id: string }>
@@ -46,7 +44,9 @@ export default async function AdminLeadDetail({ params, searchParams }: Props) {
           return (
             <>
               <section className="adm-card">
-                <h2 className="adm-h2">{lead.businessName}</h2>
+                <h2 className="adm-h2">
+                  {lead.businessName} <Status value={lead.status} />
+                </h2>
                 <dl className="adm-dl">
                   <dt>Contact</dt>
                   <dd>{lead.contactName ?? '—'}</dd>
@@ -91,20 +91,20 @@ export default async function AdminLeadDetail({ params, searchParams }: Props) {
                   )}
                 </div>
 
-                <form action={setLeadStatus} className="adm-inline">
-                  <input type="hidden" name="id" value={lead.id} />
-                  <label htmlFor="status">Status</label>
-                  <select id="status" name="status" defaultValue={lead.status}>
-                    {STATUSES.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                  <button className="btn btn-ghost" type="submit">
-                    Save
-                  </button>
-                </form>
+                {/* One click per move. Each button is its own form so the status it
+                    sets is fixed in the page, and the action still validates it. */}
+                <div className="adm-quick" aria-label="Change status">
+                  <span className="adm-dim">Move to</span>
+                  {LEAD_STATUSES.filter((s) => s !== lead.status).map((s) => (
+                    <form action={setLeadStatus} key={s}>
+                      <input type="hidden" name="id" value={lead.id} />
+                      <input type="hidden" name="status" value={s} />
+                      <button className="btn btn-ghost" type="submit">
+                        {s.toLowerCase()}
+                      </button>
+                    </form>
+                  ))}
+                </div>
               </section>
 
               <section className="adm-card">
@@ -160,7 +160,7 @@ export default async function AdminLeadDetail({ params, searchParams }: Props) {
                     <section className="adm-card" key={opp.id}>
                       <h2 className="adm-h2">
                         Opportunity: {opp.name}
-                        <span className="adm-tag">{opp.stage}</span>
+                        <span className="adm-tag">{opp.stage.toLowerCase()}</span>
                       </h2>
 
                       {!session || !result ? (

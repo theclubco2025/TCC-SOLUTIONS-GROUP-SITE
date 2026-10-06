@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`the flow covers the questionnaire > did not change the stored data, so the version did not need bumping 1`] = `
+[
+  "businessName:text",
+  "industry:select",
+  "employees:select",
+  "website:text",
+  "repetitiveWork:textarea",
+  "manualTransfer:textarea",
+  "customerFriction:textarea",
+  "manualTools:multiselect",
+  "currentSoftware:textarea",
+  "systemsConnected:select",
+  "improvementGoals:multiselect",
+  "oneThingToEliminate:textarea",
+]
+`;

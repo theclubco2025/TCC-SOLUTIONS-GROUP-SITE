@@ -1,4 +1,4 @@
-import { ROI_ASSUMPTIONS } from '@/lib/analysis/config'
+import { ROI_ASSUMPTIONS, ROI_FIELDS } from '@/lib/analysis/config'
 import type { RoiInputs } from '@/lib/types'
 
 /**
@@ -222,4 +222,22 @@ export function formatFigure(figure: RoiFigure): string {
     return `${Math.round(figure.value).toLocaleString('en-US')} hours`
   }
   return formatCurrency(figure.value)
+}
+
+/** ROI inputs are optional in full. A number out of range is dropped, not clamped. */
+export function normaliseRoiInputs(raw: unknown): RoiInputs {
+  const out: RoiInputs = {}
+  if (!raw || typeof raw !== 'object') return out
+  const input = raw as Record<string, unknown>
+
+  for (const field of ROI_FIELDS) {
+    const value = input[field.id]
+    const num = typeof value === 'number' ? value : Number(value)
+    if (value === undefined || value === null || value === '' || !Number.isFinite(num)) continue
+    if (field.min !== undefined && num < field.min) continue
+    if (field.max !== undefined && num > field.max) continue
+    out[field.id] = num
+  }
+
+  return out
 }

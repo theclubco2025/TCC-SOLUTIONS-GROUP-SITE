@@ -13,6 +13,7 @@ import {
   tokenMatches,
 } from '@/lib/admin/auth'
 import { clientIp, recordLogin, tooManyFailures } from '@/lib/admin/throttle'
+import { LEAD_STATUSES } from '@/lib/admin/queries'
 import { dbOrNull } from '@/lib/db'
 import {
   SLUG_PATTERN,
@@ -34,7 +35,6 @@ import {
 
 const ORG_SLUG = 'tccsg'
 
-const LEAD_STATUSES = ['NEW', 'ASSIGNED', 'WORKING', 'QUALIFIED', 'DISQUALIFIED', 'CONVERTED'] as const
 const APPLICATION_STATUSES = ['NEW', 'CONTACTED', 'APPROVED', 'DECLINED'] as const
 const PARTNER_STATUSES = ['PENDING', 'ACTIVE', 'PAUSED', 'TERMINATED'] as const
 

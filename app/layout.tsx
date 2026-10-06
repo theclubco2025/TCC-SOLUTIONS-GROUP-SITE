@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+// After globals: area accents, the questionnaire flow, the report and the admin.
+import './areas.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tccsolutionsgroup.com'),

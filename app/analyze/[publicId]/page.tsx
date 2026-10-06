@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import QuestionnaireForm from '@/components/QuestionnaireForm'
-import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
+import { SiteShell } from '@/components/SiteChrome'
 import { findAnalysisSession } from '@/lib/analysis/sessions'
 
 export const runtime = 'nodejs'
@@ -27,26 +27,18 @@ export default async function QuestionnairePage({ params }: Props) {
     redirect(`/analyze/${publicId}/results`)
   }
 
+  // No big heading or paragraph above the questions: each question is the
+  // heading. The less there is to read before the first tap, the more people tap.
   return (
-    <>
-      <SiteHeader />
-
+    <SiteShell area="analyze" cta={false}>
       <main>
         <section className="sec">
           <div className="w narrow">
             <p className="eyebrow">Technology Opportunity Analysis</p>
-            <h1>Tell us how the business actually runs.</h1>
-            <p className="lead">
-              Plain answers beat tidy ones. Four questions are required and the rest help us see
-              the picture &mdash; your answers save as you type, so you can leave this and come
-              back to it.
-            </p>
             <QuestionnaireForm publicId={publicId} initialAnswers={session.answers ?? {}} />
           </div>
         </section>
       </main>
-
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }

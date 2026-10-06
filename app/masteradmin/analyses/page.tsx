@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import AdminShell, { Empty, SectionError, flashFrom } from '@/components/admin/AdminShell'
+import AdminShell, { Empty, SectionError, Status, flashFrom } from '@/components/admin/AdminShell'
 import { requireAdmin } from '@/lib/admin/auth'
 import { fmtDate } from '@/lib/admin/format'
 import { loadAnalyses } from '@/lib/admin/queries'
@@ -54,7 +54,7 @@ export default async function AdminAnalyses({ searchParams }: Props) {
                       )}
                     </td>
                     <td>
-                      {s.status}
+                      <Status value={s.status} />
                       {s.failureReason && (
                         <>
                           <br />

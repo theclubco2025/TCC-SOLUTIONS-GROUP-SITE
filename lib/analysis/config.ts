@@ -23,6 +23,14 @@ export type Question = {
   placeholder?: string
   options?: string[]
   maxLength?: number
+  /**
+   * Tap-to-fill answers for free-text questions. They only ever write into the
+   * text box, which the visitor can still edit, so the stored answer stays plain
+   * text and nothing about validation or the model prompt changes.
+   */
+  suggestions?: string[]
+  /** Joins suggestions in the text box. Lists of tools read better with commas. */
+  suggestionSeparator?: string
 }
 
 export type QuestionSection = {
@@ -79,7 +87,7 @@ export const QUESTIONNAIRE: QuestionSection[] = [
         id: 'website',
         label: 'Website',
         type: 'text',
-        placeholder: 'optional',
+        placeholder: 'yourbusiness.com',
         maxLength: 200,
       },
     ],
@@ -96,18 +104,42 @@ export const QUESTIONNAIRE: QuestionSection[] = [
         type: 'textarea',
         required: true,
         maxLength: 1500,
+        suggestions: [
+          'Answering the same customer questions',
+          'Taking orders or bookings by phone',
+          'Typing the same details into more than one place',
+          'Chasing invoices, deposits or payments',
+          'Scheduling staff, jobs or appointments',
+          'Following up with enquiries',
+          'Putting quotes together',
+          'Keeping spreadsheets up to date',
+        ],
       },
       {
         id: 'manualTransfer',
         label: 'Where does information get typed in twice, or moved by hand?',
         type: 'textarea',
         maxLength: 1500,
+        suggestions: [
+          'From emails into a spreadsheet',
+          'From phone calls into the order system',
+          'Between the till and the accounts',
+          'From forms into the calendar',
+          'Onto a whiteboard or printed sheet',
+        ],
       },
       {
         id: 'customerFriction',
         label: 'Where do customers most often wait, or get stuck?',
         type: 'textarea',
         maxLength: 1500,
+        suggestions: [
+          'Waiting for a reply or a quote',
+          'Booking or ordering is awkward',
+          'Paying is clunky',
+          'Nobody follows up after the first contact',
+          'Asking the same question twice',
+        ],
       },
       {
         id: 'manualTools',
@@ -135,6 +167,19 @@ export const QUESTIONNAIRE: QuestionSection[] = [
         help: 'Rough names are fine. Booking, POS, accounting, scheduling, whatever comes to mind.',
         type: 'textarea',
         maxLength: 1500,
+        suggestions: [
+          'Square',
+          'QuickBooks',
+          'Google Sheets or Excel',
+          'Gmail or Outlook',
+          'Mailchimp',
+          'Shopify',
+          'Toast',
+          'Calendly',
+          'Xero',
+          'Jobber',
+        ],
+        suggestionSeparator: ', ',
       },
       {
         id: 'systemsConnected',
@@ -175,12 +220,62 @@ export const QUESTIONNAIRE: QuestionSection[] = [
         type: 'textarea',
         required: true,
         maxLength: 1500,
+        suggestions: [
+          'Chasing payments',
+          'Repeating myself to customers',
+          'Paperwork and admin',
+          'No-shows and last-minute changes',
+          'Not knowing my real numbers',
+          'Doing the same job twice',
+        ],
       },
     ],
   },
 ]
 
 export const ALL_QUESTIONS: Question[] = QUESTIONNAIRE.flatMap((s) => s.questions)
+
+/**
+ * The order the questionnaire is SHOWN in, one screen at a time. Separate from
+ * QUESTIONNAIRE (which is how answers are stored, sent to the model and shown in
+ * the admin) so the experience can be tuned without touching the data.
+ *
+ * The order is deliberate. It opens with taps, not typing — a first answer that
+ * costs one click makes the second one easier. The two questions that need real
+ * thought sit in the middle once there is momentum. The business name comes LAST,
+ * framed as "who is this report for": asked first it feels like a form; asked last
+ * it feels like the report is being made for you.
+ *
+ * Every question must appear here exactly once — flow.test.ts enforces it, because
+ * a required question missing from the flow could never be answered.
+ */
+export type FlowStep = {
+  id: string
+  questions: string[]
+  /** A line above the question that lowers the stakes. */
+  kicker?: string
+  /** The heading for a step with more than one question; otherwise the question is the heading. */
+  title?: string
+}
+
+export const FLOW: FlowStep[] = [
+  { id: 'industry', questions: ['industry'], kicker: 'Let’s start easy' },
+  { id: 'employees', questions: ['employees'] },
+  { id: 'goals', questions: ['improvementGoals'], kicker: 'No wrong answers' },
+  { id: 'repetitive', questions: ['repetitiveWork'], kicker: 'This is the one that matters most' },
+  { id: 'tools', questions: ['manualTools'] },
+  { id: 'transfer', questions: ['manualTransfer'] },
+  { id: 'friction', questions: ['customerFriction'] },
+  { id: 'software', questions: ['currentSoftware'] },
+  { id: 'connected', questions: ['systemsConnected'] },
+  { id: 'eliminate', questions: ['oneThingToEliminate'], kicker: 'Last real question' },
+  {
+    id: 'business',
+    questions: ['businessName', 'website'],
+    kicker: 'So we can put your name on the report',
+    title: 'Who is this report for?',
+  },
+]
 
 export const REQUIRED_QUESTION_IDS = ALL_QUESTIONS.filter((q) => q.required).map((q) => q.id)
 
@@ -191,6 +286,10 @@ export const REQUIRED_QUESTION_IDS = ALL_QUESTIONS.filter((q) => q.required).map
 export type RoiField = {
   id: string
   label: string
+  /** The label beside the box on the live calculator, where space is tight. */
+  short: string
+  /** Which half of the calculator it belongs to. */
+  group: 'time' | 'customers'
   help?: string
   unit?: string
   min?: number
@@ -201,23 +300,43 @@ export const ROI_FIELDS: RoiField[] = [
   {
     id: 'hoursPerWeek',
     label: 'Hours per week spent on that repetitive work',
+    short: 'Hours a week',
+    group: 'time',
     unit: 'hours',
     min: 0,
     max: 400,
   },
-  { id: 'peopleInvolved', label: 'How many people are involved in it', min: 0, max: 500 },
+  {
+    id: 'peopleInvolved',
+    label: 'How many people are involved in it',
+    short: 'People doing it',
+    group: 'time',
+    min: 0,
+    max: 500,
+  },
   {
     id: 'hourlyValue',
     label: 'Roughly what an hour of that time costs you',
+    short: 'Cost of an hour',
+    group: 'time',
     help: 'Wage plus overhead is closer than wage alone.',
     unit: '$',
     min: 0,
     max: 1000,
   },
-  { id: 'monthlyLeads', label: 'New enquiries or leads in a typical month', min: 0, max: 100000 },
+  {
+    id: 'monthlyLeads',
+    label: 'New enquiries or leads in a typical month',
+    short: 'Enquiries a month',
+    group: 'customers',
+    min: 0,
+    max: 100000,
+  },
   {
     id: 'conversionRate',
     label: 'Roughly what percentage of those become customers',
+    short: 'Become customers',
+    group: 'customers',
     unit: '%',
     min: 0,
     max: 100,
@@ -225,6 +344,8 @@ export const ROI_FIELDS: RoiField[] = [
   {
     id: 'averageCustomerValue',
     label: 'What an average customer is worth to you',
+    short: 'Worth of a customer',
+    group: 'customers',
     unit: '$',
     min: 0,
     max: 1000000,

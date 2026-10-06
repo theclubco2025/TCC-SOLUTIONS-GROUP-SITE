@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { cookies, headers } from 'next/headers'
 import { notFound } from 'next/navigation'
-import AnalyzeStart from '@/components/AnalyzeStart'
-import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
+import AnalyzeIntro from '@/components/AnalyzeIntro'
+import { SiteShell } from '@/components/SiteChrome'
 import {
   ATTRIBUTION_COOKIE,
   ATTRIBUTION_HEADER,
@@ -10,13 +10,10 @@ import {
   recordReferralVisit,
   touchSummary,
 } from '@/lib/attribution'
-import { isAnalysisAvailable } from '@/lib/analysis/availability'
 import { isDemoMode } from '@/lib/db'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-
-const CALENDLY = 'https://calendly.com/tccsolutions2025/30min'
 
 type Props = {
   params: Promise<{ partnerSlug: string }>
@@ -84,73 +81,19 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
   }
 
   return (
-    <>
-      <SiteHeader />
-
+    <SiteShell area="analyze" cta={false}>
       <main>
-        <section className="sec">
-          <div className="w">
-            <p className="eyebrow">Introduced by {partner.name}</p>
-            <h1>Let&rsquo;s find out what your business could be doing differently.</h1>
-            <p className="lead">
-              {partner.name} thought this was worth your time. It takes a few minutes: some
-              questions about how your business actually runs day to day &mdash; where work gets
-              stuck, what you&rsquo;re still doing by hand, what you&rsquo;ve simply gotten used
-              to.
-            </p>
-            <p className="lead">
-              You don&rsquo;t need to know what technology you need. That&rsquo;s the point of
-              asking.
-            </p>
-            <div className="actions">
-              {isAnalysisAvailable() && <AnalyzeStart />}
-              <a
-                className={isAnalysisAvailable() ? 'btn btn-ghost' : 'btn btn-primary'}
-                href={CALENDLY}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {isAnalysisAvailable() ? 'Book a call instead' : 'Book a Technology Strategy Call'}
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section className="sec">
-          <div className="w">
-            <h2>What happens next</h2>
-            <div className="grid three">
-              <div className="cell">
-                <p className="num">01</p>
-                <h3>We look at how you operate</h3>
-                <p>
-                  Not your tech stack &mdash; your actual day. Where information gets entered
-                  twice, where customers wait, where a person is doing what a system should.
-                </p>
-              </div>
-              <div className="cell">
-                <p className="num">02</p>
-                <h3>We tell you what we see</h3>
-                <p>
-                  Including when the answer is that nothing needs building. If there&rsquo;s
-                  nothing worth doing, we&rsquo;ll say so.
-                </p>
-              </div>
-              <div className="cell">
-                <p className="num">03</p>
-                <h3>You decide</h3>
-                <p>
-                  No pressure, no technology jargon, no obligation. If it&rsquo;s worth building,
-                  we&rsquo;ll show you what it could look like.
-                </p>
-              </div>
-            </div>
-            <p className="note" style={{ marginTop: 26 }}>
-              No account and no email needed to see your results. If we think there is nothing
-              worth building, the report will say so.
-            </p>
-          </div>
-        </section>
+        <AnalyzeIntro
+          eyebrow={`Introduced by ${partner.name}`}
+          lead={
+            <>
+              {partner.name} thought this was worth your time. A few minutes on how your business
+              actually runs: where work gets stuck, what&rsquo;s still done by hand, what
+              you&rsquo;ve simply gotten used to. You don&rsquo;t need to know what technology you
+              need. That&rsquo;s the point of asking.
+            </>
+          }
+        />
 
         {/* Opt-in only. A prospect arriving on a partner's link should never see
             a debug panel, so this needs ?attribution=1 as well as demo mode. */}
@@ -181,8 +124,6 @@ export default async function AnalyzePage({ params, searchParams }: Props) {
           </section>
         )}
       </main>
-
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }

@@ -173,6 +173,35 @@ operator and the wrong size for a sales team. When reps need their own logins,
   started, which is also what the recipient expects from a person.
 - Each section loads independently and shows its own error in place, so one bad
   query cannot blank the console.
+- **Search** (the box in the admin bar) looks across leads, applications, partners
+  and analyses: names, emails, phones, partner slugs, the business name inside an
+  analysis, or a report id pasted from a link. Every term goes through a Prisma
+  filter as a bound parameter; no SQL is built from it.
+- Statuses are colour-coded everywhere (blue new, amber in progress, green good,
+  red ended), leads can be filtered by status, and a lead moves between statuses
+  with one click.
+
+## How the site tells its areas apart
+
+The brand is the same everywhere (black, white, Playfair Display, DM Sans). Each
+area adds one accent colour through `data-area` on its wrapper, defined in
+`app/areas.css`: **amber** for the analysis and the report, **green** for the
+partner program, **blue** and a tinted background for the admin. Pages get it
+by rendering inside `<SiteShell area="...">` from `components/SiteChrome.tsx`.
+
+## The questionnaire experience
+
+The questions themselves, and how answers are stored, are in `QUESTIONNAIRE` in
+`lib/analysis/config.ts`. The order they are *shown* in, one per screen, is
+`FLOW` in the same file, so the experience can be reworked without touching the
+stored data or the model prompt. `lib/analysis/flow.test.ts` fails if a question
+is left out of the flow, or if a question's id or type changes without
+`QUESTIONNAIRE_VERSION` being bumped. Tap-to-fill `suggestions` only ever write
+plain text into the answer box.
+
+Answers save as the visitor types, and again with a `keepalive` request when the
+page is hidden or closed. The numbers step recalculates as they type using the
+same arithmetic as the report (`lib/analysis/roi.ts`).
 
 ## Deployment traps
 

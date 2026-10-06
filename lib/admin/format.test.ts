@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { applicationReplyLink, firstName, fmtDate, leadReplyLink, mailto } from '@/lib/admin/format'
+import {
+  applicationReplyLink,
+  firstName,
+  fmtDate,
+  leadReplyLink,
+  mailto,
+  searchTerm,
+} from '@/lib/admin/format'
 
 function parse(link: string) {
   const [head, query] = link.replace('mailto:', '').split('?')
@@ -72,5 +79,25 @@ describe('helpers', () => {
     expect(fmtDate(null)).toBe('—')
     expect(fmtDate(undefined)).toBe('—')
     expect(fmtDate(new Date('2026-10-05T21:00:00Z'))).toContain('2026')
+  })
+})
+
+describe('searchTerm', () => {
+  it('trims what was typed', () => {
+    expect(searchTerm('  maple  ')).toBe('maple')
+  })
+
+  it('treats one character or nothing as no search, so a stray key does not list everything', () => {
+    expect(searchTerm('a')).toBe('')
+    expect(searchTerm('   ')).toBe('')
+    expect(searchTerm(undefined)).toBe('')
+  })
+
+  it('caps a pasted paragraph', () => {
+    expect(searchTerm('x'.repeat(500))).toHaveLength(100)
+  })
+
+  it('uses the first value when the parameter is repeated', () => {
+    expect(searchTerm(['maple', 'other'])).toBe('maple')
   })
 })

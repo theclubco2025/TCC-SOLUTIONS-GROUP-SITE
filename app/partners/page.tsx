@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
+import { SiteShell } from '@/components/SiteChrome'
+import { isAnalysisAvailable } from '@/lib/analysis/availability'
 import { siteUrl } from '@/lib/attribution'
 
 export const metadata: Metadata = {
@@ -16,9 +17,7 @@ export default function PartnersPage() {
   const exampleLink = `${siteUrl().replace(/^https?:\/\//, '')}/your-network/analyze`
 
   return (
-    <>
-      <SiteHeader />
-
+    <SiteShell area="partners">
       <main>
         <section className="sec">
           <div className="w">
@@ -61,42 +60,50 @@ export default function PartnersPage() {
             <p className="eyebrow">How it works</p>
             <h2>Four steps, and only one of them is yours.</h2>
 
-            <div className="grid four">
-              <div className="cell">
-                <p className="num">01</p>
-                <h3>You get a link</h3>
-                <p>
-                  Your own referral link and a QR code. Copy it, share it, print it. Nothing to
-                  install and no tracking codes to paste anywhere.
-                </p>
-              </div>
-              <div className="cell">
-                <p className="num">02</p>
-                <h3>They run the analysis</h3>
-                <p>
-                  The business owner answers some questions about how their business actually
-                  runs. They get something useful out of it whether or not they ever hire us.
-                </p>
-              </div>
-              <div className="cell">
-                <p className="num">03</p>
-                <h3>We take the conversation</h3>
-                <p>
-                  Someone from TCCSG works the introduction from there. You don&rsquo;t quote,
-                  scope, chase or explain anything technical.
-                </p>
-              </div>
-              <div className="cell">
-                <p className="num">04</p>
-                <h3>You&rsquo;re paid on closed work</h3>
-                <p>
-                  Commission when the business becomes a customer. Your rate is agreed with you
-                  up front and written down before you refer anyone.
-                </p>
-              </div>
-            </div>
+            <ol className="path">
+              <li>
+                <b>You get a link</b>
+                Your own referral link and a QR code. Copy it, share it, print it. Nothing to
+                install and no tracking codes to paste anywhere.
+              </li>
+              <li>
+                <b>They run the analysis</b>
+                The business owner answers some questions about how their business actually runs.
+                They get something useful out of it whether or not they ever hire us.
+              </li>
+              <li>
+                <b>We take the conversation</b>
+                Someone from TCCSG works the introduction from there. You don&rsquo;t quote, scope,
+                chase or explain anything technical.
+              </li>
+              <li>
+                <b>You&rsquo;re paid on closed work</b>
+                Commission when the business becomes a customer. Your rate is agreed with you up
+                front and written down before you refer anyone.
+              </li>
+            </ol>
           </div>
         </section>
+
+        {/* The best pitch for sending people to the analysis is having done it. */}
+        {isAnalysisAvailable() && (
+          <section className="sec">
+            <div className="w">
+              <div className="cta-band">
+                <div>
+                  <h2>See what the people you send will see.</h2>
+                  <p>
+                    Run the analysis on your own business first. It takes a few minutes, needs no
+                    email, and you&rsquo;ll know exactly what you&rsquo;re recommending.
+                  </p>
+                </div>
+                <a className="btn btn-primary" href="/analyze">
+                  Try the analysis yourself
+                </a>
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="sec">
           <div className="w">
@@ -167,8 +174,6 @@ export default function PartnersPage() {
           </div>
         </section>
       </main>
-
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }

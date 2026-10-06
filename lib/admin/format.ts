@@ -66,3 +66,10 @@ export function applicationReplyLink(opts: { email: string; name: string; organi
   ].join('\n')
   return mailto(opts.email, 'Your TCCSG partner application', body)
 }
+
+/** Trimmed and capped, so a pasted paragraph is not sent to four queries. Too short to mean anything is empty. */
+export function searchTerm(raw: string | string[] | undefined): string {
+  const one = Array.isArray(raw) ? raw[0] : raw
+  const q = (one ?? '').trim().slice(0, 100)
+  return q.length >= 2 ? q : ''
+}

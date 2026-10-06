@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
+import Analyzing from '@/components/Analyzing'
 import LeadForm from '@/components/LeadForm'
-import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
+import ReportActions from '@/components/ReportActions'
+import { SiteShell } from '@/components/SiteChrome'
 import { IMPLEMENTATION_RANGES, type ComplexityBand } from '@/lib/analysis/config'
 import { findAnalysisResult } from '@/lib/analysis/results'
 import { formatCurrency, formatFigure, type RoiResults } from '@/lib/analysis/roi'
@@ -41,18 +43,66 @@ export default async function ResultsPage({ params }: Props) {
 
   const roi = result.roiResults as RoiResults | null
   const [primary, ...secondary] = result.opportunities
+  const quickWins = result.opportunities.filter((o) => o.complexity === 'QUICK_WIN').length
+  const hours = roi?.figures.find((f) => f.id === 'time' && f.available)
+  const businessName = text(answers.businessName) || 'your business'
+  const prepared = (session.completedAt ?? result.generatedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 
   return (
-    <>
-      <SiteHeader />
-
+    <SiteShell area="report">
       <main>
         <section className="sec">
           <div className="w">
             <p className="eyebrow">Technology Opportunity Analysis</p>
             <h1>What we found.</h1>
-            <p className="lead">{result.businessSummary}</p>
-            <p className="lead">{result.technologyEnvironment}</p>
+
+            <div className="report-head">
+              <p className="report-meta">
+                Prepared for <strong>{businessName}</strong> by TCC Solutions Group &middot;{' '}
+                {prepared}
+              </p>
+              <p className="lead">{result.businessSummary}</p>
+              <p className="lead">{result.technologyEnvironment}</p>
+
+              {/* Every figure here is a count of the report itself or a number the
+                  visitor's own inputs produced. Nothing is estimated for them. */}
+              <div className="report-stats">
+                <div className="report-stat">
+                  <b>{result.opportunities.length}</b>
+                  <span>
+                    {result.opportunities.length === 1 ? 'opportunity' : 'opportunities'} found
+                  </span>
+                </div>
+                <div className="report-stat">
+                  <b>{quickWins}</b>
+                  <span>{quickWins === 1 ? 'quick win' : 'quick wins'}</span>
+                </div>
+                <div className="report-stat">
+                  {roi?.headline ? (
+                    <>
+                      <b>{formatCurrency(roi.headline.value)}</b>
+                      <span>{roi.headline.label.toLowerCase()}, from your numbers</span>
+                    </>
+                  ) : hours ? (
+                    <>
+                      <b>{formatFigure(hours)}</b>
+                      <span>a year that could come back, from your numbers</span>
+                    </>
+                  ) : (
+                    <>
+                      <b>&mdash;</b>
+                      <span>no numbers given, so none invented</span>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <ReportActions />
+            </div>
           </div>
         </section>
 
@@ -61,6 +111,7 @@ export default async function ResultsPage({ params }: Props) {
             <div className="w">
               <p className="eyebrow">The one we&rsquo;d start with</p>
               <h2>{primary.title}</h2>
+              <OpportunityBadges opportunity={primary} />
               <OpportunityDetail opportunity={primary} detailed />
             </div>
           </section>
@@ -75,13 +126,12 @@ export default async function ResultsPage({ params }: Props) {
                   <div className="cell" key={o.rank}>
                     <p className="num">{o.category}</p>
                     <h3>{o.title}</h3>
+                    <OpportunityBadges opportunity={o} />
                     <p>{o.problem}</p>
                     <p style={{ marginTop: 10 }}>{o.solution}</p>
                     <p className="note" style={{ marginTop: 14 }}>
-                      {IMPLEMENTATION_RANGES[o.complexity as ComplexityBand]?.label ?? o.complexity}
-                      &nbsp;&middot;&nbsp;
                       {formatCurrency(o.implementationLow)}&ndash;
-                      {formatCurrency(o.implementationHigh)}
+                      {formatCurrency(o.implementationHigh)} &middot; a planning range, not a quote
                     </p>
                   </div>
                 ))}
@@ -134,16 +184,18 @@ export default async function ResultsPage({ params }: Props) {
         <section className="sec">
           <div className="w">
             <h2>Our honest read</h2>
-            <p className="lead">{result.overallAssessment}</p>
+            <div className="callout">
+              <p className="lead">{result.overallAssessment}</p>
+            </div>
           </div>
         </section>
 
-        <section className="sec">
+        <section className="sec" id="plan">
           <div className="w">
             <p className="eyebrow">Recommended next step</p>
             <h2>Turn this analysis into a plan.</h2>
             <p className="lead">{result.recommendedNextStep}</p>
-            <p className="lead">
+            <p className="lead" data-print="hide">
               Leave your details and bring this report to a 30-minute conversation. We&rsquo;ll
               have already read it &mdash; you won&rsquo;t be asked these questions again.
             </p>
@@ -155,7 +207,7 @@ export default async function ResultsPage({ params }: Props) {
                 alreadySubmitted={submitted}
               />
             </div>
-            <p className="note" style={{ marginTop: 22 }}>
+            <p className="note" style={{ marginTop: 22 }} data-print="hide">
               Keep this link &mdash; the report stays here. Prefer to just talk?{' '}
               <a href={CALENDLY} target="_blank" rel="noreferrer" style={{ color: 'inherit' }}>
                 Book a call directly
@@ -165,9 +217,28 @@ export default async function ResultsPage({ params }: Props) {
           </div>
         </section>
       </main>
+    </SiteShell>
+  )
+}
 
-      <SiteFooter />
-    </>
+const BAND_CLASS: Record<ComplexityBand, string> = {
+  QUICK_WIN: 'badge-quick',
+  WORKFLOW: 'badge-workflow',
+  CUSTOM: 'badge-custom',
+}
+
+/** Effort at a glance: the colour says how big a job it is before the words do. */
+function OpportunityBadges({ opportunity }: { opportunity: OpportunityRecord }) {
+  const band = opportunity.complexity as ComplexityBand
+  return (
+    <div className="opp-badges">
+      <span className={`badge ${BAND_CLASS[band] ?? ''}`}>
+        {IMPLEMENTATION_RANGES[band]?.label ?? opportunity.complexity}
+      </span>
+      {opportunity.existingSoftwarePossible && (
+        <span className="badge badge-soft">Existing software may cover this</span>
+      )}
+    </div>
   )
 }
 
@@ -227,28 +298,23 @@ function OpportunityDetail({
 
 function Working() {
   return (
-    <>
-      <SiteHeader />
+    <SiteShell area="report" cta={false}>
       <main>
         <section className="sec">
           <div className="w narrow">
             <p className="eyebrow">Working on it</p>
-            <h1>Reading through your answers.</h1>
-            <p className="lead">
-              This takes a few seconds. Refresh the page in a moment and your report will be here.
-            </p>
+            <h1 className="flow-q">Reading through your answers.</h1>
+            <Analyzing poll />
           </div>
         </section>
       </main>
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }
 
 function Failed({ publicId }: { publicId: string }) {
   return (
-    <>
-      <SiteHeader />
+    <SiteShell area="report">
       <main>
         <section className="sec">
           <div className="w narrow">
@@ -269,7 +335,6 @@ function Failed({ publicId }: { publicId: string }) {
           </div>
         </section>
       </main>
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }

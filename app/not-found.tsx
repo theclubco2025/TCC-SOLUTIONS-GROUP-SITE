@@ -1,9 +1,9 @@
-import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
+import { SiteShell } from '@/components/SiteChrome'
+import { isAnalysisAvailable } from '@/lib/analysis/availability'
 
 export default function NotFound() {
   return (
-    <>
-      <SiteHeader />
+    <SiteShell area="analyze" cta={false}>
       <main>
         <section className="sec">
           <div className="w">
@@ -13,8 +13,15 @@ export default function NotFound() {
               Referral links look like <code>tccsolutionsgroup.com/their-name/analyze</code>. If
               someone sent you here, ask them to check the link &mdash; or come straight to us.
             </p>
+            {/* Most people who hit a dead referral link came for the analysis, so
+                offer it rather than only the way out. */}
             <div className="actions">
-              <a className="btn btn-primary" href="/">
+              {isAnalysisAvailable() && (
+                <a className="btn btn-primary" href="/analyze">
+                  Start the analysis anyway
+                </a>
+              )}
+              <a className={isAnalysisAvailable() ? 'btn btn-ghost' : 'btn btn-primary'} href="/">
                 Go to the homepage
               </a>
               <a className="btn btn-ghost" href="/partners">
@@ -24,7 +31,6 @@ export default function NotFound() {
           </div>
         </section>
       </main>
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }

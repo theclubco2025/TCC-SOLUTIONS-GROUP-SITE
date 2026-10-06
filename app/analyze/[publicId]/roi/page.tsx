@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import RoiForm from '@/components/RoiForm'
-import { SiteFooter, SiteHeader } from '@/components/SiteChrome'
+import { SiteShell } from '@/components/SiteChrome'
+import { FLOW } from '@/lib/analysis/config'
 import { findAnalysisSession } from '@/lib/analysis/sessions'
 
 export const runtime = 'nodejs'
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
 
 type Props = { params: Promise<{ publicId: string }> }
 
+const NEARLY_DONE = (FLOW.length / (FLOW.length + 1)) * 100
+
 export default async function RoiPage({ params }: Props) {
   const { publicId } = await params
 
@@ -25,29 +28,30 @@ export default async function RoiPage({ params }: Props) {
   }
 
   return (
-    <>
-      <SiteHeader />
-
+    <SiteShell area="analyze" cta={false}>
       <main>
         <section className="sec">
           <div className="w narrow">
-            <p className="eyebrow">Optional</p>
-            <h1>Want us to put numbers on it?</h1>
-            <p className="lead">
-              If you have rough figures to hand, we can work out what the time and the missed
-              opportunities are actually costing. Estimates are fine &mdash; we show the
-              arithmetic so you can judge it.
-            </p>
-            <p className="lead">
-              Skip it and you&rsquo;ll still get the full analysis. It will just say plainly which
-              numbers it couldn&rsquo;t work out.
+            {/* The questionnaire's progress bar, carried over nearly full: this is
+                the last step, and it is optional. */}
+            <div className="flow-meta">
+              <span>Questions done &#10003;</span>
+              <span>Optional last step</span>
+            </div>
+            <div className="flow-track" aria-hidden="true">
+              <div className="flow-fill" style={{ width: `${NEARLY_DONE}%` }} />
+            </div>
+
+            <h1 className="flow-q">Want to put a number on it?</h1>
+            <p className="flow-help">
+              Rough numbers are fine. The cost works itself out as you type, using the same
+              arithmetic as your report. Or skip it &mdash; you&rsquo;ll still get the full
+              analysis.
             </p>
             <RoiForm publicId={publicId} initialInputs={session.roiInputs ?? {}} />
           </div>
         </section>
       </main>
-
-      <SiteFooter />
-    </>
+    </SiteShell>
   )
 }

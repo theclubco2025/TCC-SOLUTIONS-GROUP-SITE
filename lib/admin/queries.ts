@@ -83,18 +83,29 @@ export function loadOverview() {
 // Leads
 // ---------------------------------------------------------------------------
 
-export function loadLeads() {
-  return load((db) =>
-    db.lead.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: LIMIT,
-      include: {
-        firstTouchPartner: { select: { name: true, slug: true } },
-        lastTouchPartner: { select: { name: true, slug: true } },
-        opportunities: { orderBy: { createdAt: 'desc' }, take: 1, select: { name: true, stage: true } },
-      },
-    }),
-  )
+export const LEAD_STATUSES = ['NEW', 'ASSIGNED', 'WORKING', 'QUALIFIED', 'DISQUALIFIED', 'CONVERTED'] as const
+export type LeadStatusValue = (typeof LEAD_STATUSES)[number]
+
+/** Leads, optionally narrowed to one status, plus a count for every status so the filters can show them. */
+export function loadLeads(status?: LeadStatusValue) {
+  return load(async (db) => {
+    const [rows, grouped] = await Promise.all([
+      db.lead.findMany({
+        where: status ? { status } : undefined,
+        orderBy: { createdAt: 'desc' },
+        take: LIMIT,
+        include: {
+          firstTouchPartner: { select: { name: true, slug: true } },
+          lastTouchPartner: { select: { name: true, slug: true } },
+          opportunities: { orderBy: { createdAt: 'desc' }, take: 1, select: { name: true, stage: true } },
+        },
+      }),
+      db.lead.groupBy({ by: ['status'], _count: { _all: true } }),
+    ])
+    const counts: Record<string, number> = {}
+    for (const row of grouped) counts[row.status] = row._count._all
+    return { rows, counts }
+  })
 }
 
 export function loadLead(id: string) {
@@ -172,4 +183,70 @@ export function loadAnalyses() {
 
 export function loadActivity() {
   return load((db) => db.activityEvent.findMany({ orderBy: { createdAt: 'desc' }, take: 200 }))
+}
+
+// ---------------------------------------------------------------------------
+// Search
+// ---------------------------------------------------------------------------
+
+const SEARCH_LIMIT = 25
+
+/**
+ * One box across everything a person can be found by. Every query is a Prisma
+ * filter with the term bound as a parameter — no SQL is assembled from it.
+ * An analysis has no name column, so it is matched on the business name inside
+ * its answers, or exactly on its public id when one is pasted from a URL.
+ */
+export function searchAll(q: string) {
+  return load(async (db) => {
+    const text = { contains: q, mode: 'insensitive' as const }
+    const [leads, applications, partners, analyses] = await Promise.all([
+      db.lead.findMany({
+        where: {
+          OR: [
+            { businessName: text },
+            { contactName: text },
+            { email: text },
+            { phone: text },
+            { website: text },
+          ],
+        },
+        orderBy: { createdAt: 'desc' },
+        take: SEARCH_LIMIT,
+        include: { firstTouchPartner: { select: { name: true } } },
+      }),
+      db.partnerApplication.findMany({
+        where: {
+          OR: [{ name: text }, { organization: text }, { email: text }, { phone: text }],
+        },
+        orderBy: { createdAt: 'desc' },
+        take: SEARCH_LIMIT,
+      }),
+      db.partner.findMany({
+        where: {
+          OR: [{ name: text }, { slug: text }, { contactName: text }, { contactEmail: text }],
+        },
+        orderBy: { createdAt: 'desc' },
+        take: SEARCH_LIMIT,
+      }),
+      db.analysisSession.findMany({
+        where: {
+          OR: [
+            { publicId: q },
+            { answers: { path: ['businessName'], string_contains: q, mode: 'insensitive' } },
+          ],
+        },
+        orderBy: { startedAt: 'desc' },
+        take: SEARCH_LIMIT,
+        select: {
+          publicId: true,
+          status: true,
+          startedAt: true,
+          answers: true,
+          opportunity: { select: { leadId: true } },
+        },
+      }),
+    ])
+    return { leads, applications, partners, analyses }
+  })
 }

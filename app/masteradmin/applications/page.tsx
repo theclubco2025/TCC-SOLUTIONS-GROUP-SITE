@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { approveApplication, setApplicationStatus } from '@/app/masteradmin/actions'
-import AdminShell, { Empty, SectionError, flashFrom } from '@/components/admin/AdminShell'
+import AdminShell, { Empty, SectionError, Status, flashFrom } from '@/components/admin/AdminShell'
 import { requireAdmin } from '@/lib/admin/auth'
 import { applicationReplyLink, fmtDate } from '@/lib/admin/format'
 import { loadApplications } from '@/lib/admin/queries'
@@ -23,11 +23,11 @@ export default async function AdminApplications({ searchParams }: Props) {
         <Empty>No applications yet.</Empty>
       ) : (
         r.data.map((a) => (
-          <section className="adm-card" key={a.id}>
+          <section className="adm-card" key={a.id} id={a.id}>
             <h2 className="adm-h2">
               {a.name}
               {a.organization && <span className="adm-dim"> — {a.organization}</span>}
-              <span className="adm-tag">{a.status}</span>
+              <Status value={a.status} />
             </h2>
             <dl className="adm-dl">
               <dt>Email</dt>
