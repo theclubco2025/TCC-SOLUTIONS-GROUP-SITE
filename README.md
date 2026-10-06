@@ -53,6 +53,7 @@ npm run build        # prisma generate && migrate && next build
 | `DATABASE_URL` | To leave demo mode | TCCSG's **own** Neon Postgres. Never PlateHaven's. |
 | `DATABASE_URL_UNPOOLED` | With the above | Neon's direct connection. Migrations cannot run over a pooler. |
 | `ANTHROPIC_API_KEY` | To run the analysis | TCCSG's **own** Anthropic account. Never PlateHaven's or NaviTap's. |
+| `ADMIN_TOKEN` | For `/masteradmin` | A random secret, 32+ characters. Unset or short = nobody can log in (fails closed). Production only, marked sensitive. |
 | `NEXT_PUBLIC_SITE_URL` | No | Defaults to `https://tccsolutionsgroup.com`. Builds referral links and QR codes. |
 
 **Vercel injects environment variables at build time.** Adding one does not
@@ -126,9 +127,8 @@ is the moment an anonymous analysis becomes a person:
   time in Calendly is what books the call.
 - **No sales owner is assigned.** Who works a lead is a human decision.
 
-There is deliberately **no internal leads page yet**: an unauthenticated one would
-expose business owners' answers, and auth is a decision of its own. Until then,
-read leads in the Neon SQL editor:
+Read leads in the admin console (`/masteradmin/leads`). To check the raw rows
+directly, in the Neon SQL editor:
 
 ```sql
 select l."createdAt", l."businessName", l."contactName", l.email, l.phone,
@@ -143,6 +143,36 @@ order by l."createdAt" desc;
 
 Each lead's full report is at `/analyze/<publicId>/results`; the public id is on
 `analysis_sessions` (`publicId`), linked from `opportunities."analysisSessionId"`.
+
+## The admin console: `/masteradmin`
+
+Everything in the database, in one place, behind a login: an overview funnel,
+leads (with the full analysis, the answers, who introduced them and the history),
+partner applications, partners, every analysis including failed ones, and an
+activity log. It can reply, change statuses, approve an application into a
+partner, and create or pause partners.
+
+**It is a single shared secret, not user accounts** — the right size for one
+operator and the wrong size for a sales team. When reps need their own logins,
+`lib/admin/auth.ts` is the only file that has to change.
+
+- Log in with `ADMIN_TOKEN`. The browser then holds a signed 12-hour session in an
+  httpOnly, SameSite=Strict, Secure cookie scoped to `/masteradmin`, never the
+  token itself.
+- **Every page and every server action calls `requireAdmin()`.** A layout is not
+  enough (it does not re-run on client navigation) and a server action is a public
+  POST endpoint that never renders a page. Do not add an admin action without it.
+- Login is throttled to 5 failures per address per 15 minutes, held in the activity
+  table so it survives serverless instances. Every attempt shows on the Activity page.
+- **Rotating the token** (do this if it is ever exposed): set a new `ADMIN_TOKEN` in
+  Vercel and redeploy. Every outstanding session dies at once, because sessions are
+  signed with a key derived from it.
+- Responses under `/masteradmin` are `no-store`, `noindex`, `no-referrer` and
+  `X-Frame-Options: DENY`, set in `next.config.ts`.
+- **There is no email sending.** "Reply" opens your own mail client with the message
+  started, which is also what the recipient expects from a person.
+- Each section loads independently and shows its own error in place, so one bad
+  query cannot blank the console.
 
 ## Deployment traps
 
@@ -168,5 +198,5 @@ Each of these cost a failed or wrong production deploy:
 Shipped: the domain model, partner program and application form, referral
 attribution, and the full analysis — questionnaire, ROI, AI assessment, report.
 
-Next: an authenticated internal sales view, then the partner dashboard, then
+Next: per-person logins for sales reps, then the partner dashboard, then
 commissions on collected revenue. The schema already supports all of it.

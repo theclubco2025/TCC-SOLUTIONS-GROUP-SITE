@@ -19,7 +19,7 @@ export const RESERVED_SLUGS: ReadonlySet<string> = new Set([
   // routes this system owns or will own
   'partners', 'partner', 'analyze', 'admin', 'auth', 'login', 'logout',
   'signup', 'register', 'dashboard', 'leads', 'opportunities', 'commissions',
-  'referrals', 'sales', 'reports',
+  'referrals', 'sales', 'reports', 'masteradmin', 'internal',
   // brand / company terms
   'tccsg', 'tcc', 'tccsolutionsgroup', 'platehaven', 'navitap', 'www', 'mail',
   'email', 'support', 'help', 'about', 'contact', 'pricing', 'blog', 'status',

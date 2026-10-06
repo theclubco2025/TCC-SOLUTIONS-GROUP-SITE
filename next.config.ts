@@ -14,6 +14,24 @@ const nextConfig: NextConfig = {
   // machine makes Next infer the wrong workspace root and warn on every build.
   outputFileTracingRoot: path.join(__dirname),
 
+  // The admin is never cached, never indexed, never framed and never leaks its
+  // URL in a Referer header. These apply to every response under it, including
+  // ones a page forgets to annotate.
+  async headers() {
+    return [
+      {
+        source: '/masteradmin/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+        ],
+      },
+    ]
+  },
+
   async rewrites() {
     return [{ source: '/', destination: '/index.html' }]
   },
