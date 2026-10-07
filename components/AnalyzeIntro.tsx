@@ -1,18 +1,20 @@
 import type { ReactNode } from 'react'
 import AnalyzeStart from '@/components/AnalyzeStart'
+import IndustryPeek from '@/components/IndustryPeek'
 import { isAnalysisAvailable } from '@/lib/analysis/availability'
+import { ALL_QUESTIONS } from '@/lib/analysis/config'
 import { minutesLeft } from '@/lib/analysis/flow'
 
 const CALENDLY = 'https://calendly.com/tccsolutions2025/30min'
+const INDUSTRIES = ALL_QUESTIONS.find((q) => q.id === 'industry')?.options ?? []
 
 /**
  * The page before the questionnaire, shared by /analyze and /{partner}/analyze.
- * Its job is to make starting feel small: how long each part takes, what you
- * get at the end, and an example of it, so the first click is not a leap.
+ * Someone who reads only this page should still leave with something: where
+ * businesses like theirs usually lose time, and what a proposal looks like.
  *
- * The example deliberately carries no dollar figures. It shows how a figure is
- * worked out instead — an invented number on a public page reads as a claim,
- * and the site makes no claims it cannot source.
+ * Nothing here carries a figure. Patterns are described, not counted, and the
+ * example shows a process rather than inventing a number.
  */
 export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead: ReactNode }) {
   const available = isAnalysisAvailable()
@@ -36,7 +38,7 @@ export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead:
                 <span>optional</span>
               </li>
               <li>
-                <span>Your report, written for your business</span>
+                <span>Your proposals, built from your answers</span>
                 <span>about 30 sec</span>
               </li>
             </ol>
@@ -69,7 +71,19 @@ export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead:
             )}
           </div>
 
-          <SampleReport />
+          <IndustryPeek industries={INDUSTRIES} canStart={available} />
+        </div>
+      </section>
+
+      <section className="sec">
+        <div className="w">
+          <p className="eyebrow">What you get</p>
+          <h2>Proposals, not a sales pitch.</h2>
+          <p className="lead">
+            Two or three ways to fix what slows you down, each showing your process today and with
+            the fix in place. Here is part of one.
+          </p>
+          <SampleProposal />
         </div>
       </section>
 
@@ -79,26 +93,26 @@ export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead:
           <div className="grid three">
             <div className="cell">
               <p className="num">01</p>
-              <h3>We look at how you operate</h3>
+              <h3>You see it as you answer</h3>
               <p>
-                Not your tech stack. Your actual day. Where information gets entered twice,
-                where customers wait, where a person is doing what a system should.
+                As you go, we show you what we&rsquo;re noticing about how your business runs, and
+                what usually fixes it.
               </p>
             </div>
             <div className="cell">
               <p className="num">02</p>
-              <h3>We show you the fix</h3>
+              <h3>You get your proposals</h3>
               <p>
-                What we&rsquo;d build around how you work, or connect between the tools you
-                already pay for, and what your day looks like once it&rsquo;s done.
+                Starting points for what we&rsquo;d build around how you work, or connect between
+                the tools you already pay for. Plus something you can do yourself this week.
               </p>
             </div>
             <div className="cell">
               <p className="num">03</p>
-              <h3>You decide</h3>
+              <h3>We make it yours</h3>
               <p>
-                No pressure, no jargon, no obligation. When you&rsquo;re ready, we build it and
-                stay with you after.
+                In a conversation we shape the one you choose into exactly what you need. No
+                pressure, no jargon, no obligation.
               </p>
             </div>
           </div>
@@ -108,32 +122,44 @@ export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead:
   )
 }
 
-function SampleReport() {
+/** Uses the report's own proposal markup, so the example is the real thing. */
+function SampleProposal() {
   return (
-    <aside aria-label="An example of part of a report">
-      <p className="eyebrow">Example</p>
-      <div className="sample">
-        <p className="report-meta">
-          Prepared for <strong>a sample caf&eacute;</strong>
-        </p>
+    <article className="proposal sample-proposal" aria-label="An example proposal">
+      <div className="proposal-top">
+        <span className="proposal-n">Example &middot; a caf&eacute;</span>
         <div className="tags">
           <span className="tag tag-size">Quick win</span>
           <span className="tag">Works with what you already use</span>
         </div>
-        <h3>Your phone orders go straight to the kitchen screen</h3>
-        <p>
-          Right now you write phone orders on a pad, then type them into the till. We connect an
-          order form to the till you already have, so the second step and the mistakes that come
-          with it are gone.
-        </p>
-        <hr />
-        <p>How the value is worked out, using your numbers:</p>
-        <p className="code-box">
-          <span className="cb-prompt">&gt;</span>
-          hours a week &times; people &times; cost of an hour &times; 52
-        </p>
-        <p>Every figure in the report shows its arithmetic like this.</p>
       </div>
-    </aside>
+      <h3 className="proposal-title">Your phone orders go straight to the kitchen</h3>
+      <div className="proc" aria-label="The process today, and with this in place">
+        <div className="proc-row">
+          <span className="proc-label">Today</span>
+          <ol>
+            <li>Customer calls</li>
+            <li>Order written on a pad</li>
+            <li>Typed into the till</li>
+            <li>Ticket walked to the kitchen</li>
+          </ol>
+          <span className="proc-count">4 steps</span>
+        </div>
+        <div className="proc-row" data-bright>
+          <span className="proc-label">With it</span>
+          <ol>
+            <li>Customer orders online</li>
+            <li>Kitchen screen shows it</li>
+          </ol>
+          <span className="proc-count">2 steps</span>
+        </div>
+      </div>
+      <div className="proposal-questions">
+        <p className="eyebrow">What we&rsquo;d work out together</p>
+        <ul>
+          <li>Do catering orders follow the same path as walk-in orders?</li>
+        </ul>
+      </div>
+    </article>
   )
 }

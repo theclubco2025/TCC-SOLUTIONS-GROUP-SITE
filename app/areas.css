@@ -336,6 +336,71 @@
   }
 }
 
+/* --- beside the questions: what we are noticing ----------------------------- */
+
+.flow-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 620px) 300px;
+  justify-content: center;
+  gap: 56px;
+  align-items: start;
+}
+.noticing {
+  position: sticky;
+  top: 24px;
+  margin-top: 64px;
+  border-left: 1px solid var(--line);
+  padding: 4px 0 4px 24px;
+}
+.noticing ul {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+.noticing li {
+  display: grid;
+  gap: 2px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #fff;
+  animation: flow-in 0.3s ease-out;
+}
+.noticing-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--quiet);
+}
+.noticing-empty {
+  font-size: 0.86rem;
+  color: var(--quiet);
+  margin-top: 14px;
+}
+.noticing ul + .noticing-empty {
+  margin-top: 18px;
+}
+/* A line of help after an answer: the homepage's pull-quote rule, small. */
+.flow-note {
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 2px 0 2px 16px;
+  margin-top: 22px;
+  color: #e8e8e8;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 560px;
+  animation: flow-in 0.3s ease-out;
+}
+@media (max-width: 1000px) {
+  .flow-layout {
+    grid-template-columns: minmax(0, 620px);
+    gap: 36px;
+  }
+  .noticing {
+    position: static;
+    margin-top: 0;
+  }
+}
+
 /* --- the numbers step ------------------------------------------------------ */
 
 .roi-groups {
@@ -677,36 +742,231 @@
   color: var(--quiet);
   white-space: nowrap;
 }
-.sample {
+@media (max-width: 860px) {
+  .intro-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+}
+
+/* --- the industry preview on the intro ---------------------------------------- */
+
+.peek {
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 24px 24px 22px;
   background: rgba(255, 255, 255, 0.02);
 }
-.sample h3 {
-  font-size: 1.05rem;
-  margin: 4px 0 10px;
+.peek-q {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.02rem;
 }
-.sample p {
+.peek .chips {
+  margin-top: 12px;
+}
+.peek .chip {
+  min-height: 34px;
+  padding: 6px 11px;
+  font-size: 0.82rem;
+}
+.peek-out {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  animation: flow-in 0.25s ease-out;
+}
+.peek-leaks {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+.peek-leaks li {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.peek-problem {
   color: var(--muted);
-  font-size: 0.88rem;
+}
+.peek-fix {
+  color: #fff;
+  display: flex;
+  gap: 9px;
+}
+.peek-fix .cb-prompt {
+  font-family: var(--mono);
+  color: var(--dim);
+}
+.peek-start {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+.peek-start .btn {
+  justify-self: start;
+}
+
+/* --- proposals ------------------------------------------------------------------ */
+
+.proposals {
+  display: grid;
+  gap: 16px;
+  margin-top: 30px;
+}
+.proposal {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 26px 26px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.sample-proposal {
+  margin-top: 26px;
+}
+.proposal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.proposal-top .tags {
+  margin: 0;
+}
+.proposal-n {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--quiet);
+}
+.proposal-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 16px 0 10px;
+}
+.proposal-problem {
+  color: var(--muted);
+  max-width: 680px;
+}
+.proposal-fix {
+  color: #fff;
+  max-width: 680px;
+  margin: 18px 0 22px;
+}
+.proposal .grid {
+  margin-top: 4px;
+}
+
+/* Their process, today and with the fix: steps in a row, like the hero box. */
+.proc {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 22px;
+}
+.proc-row {
+  display: grid;
+  grid-template-columns: 76px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  background: #000;
+  padding: 13px 16px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+}
+.proc-label {
+  color: var(--quiet);
+}
+.proc-row ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 0;
+  color: var(--muted);
+}
+.proc-row li + li::before {
+  content: '\2192';
+  color: var(--dim);
+  margin: 0 10px;
+}
+.proc-row[data-bright] ol,
+.proc-row[data-bright] .proc-label {
+  color: #fff;
+}
+.proc-count {
+  color: var(--quiet);
+  white-space: nowrap;
+}
+.proposal-questions {
+  margin-top: 22px;
+}
+.proposal-questions .eyebrow {
+  margin-bottom: 10px;
+}
+.proposal-questions ul,
+.start-today,
+.next-steps {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  max-width: 680px;
+}
+.proposal-questions li,
+.start-today li,
+.next-steps li {
+  display: flex;
+  gap: 12px;
+  color: #fff;
+  font-size: 0.95rem;
   line-height: 1.6;
 }
-.sample hr {
-  border: 0;
-  border-top: 1px solid var(--line);
-  margin: 18px 0;
+.proposal-questions li::before {
+  content: '?';
+  font-family: var(--mono);
+  color: var(--quiet);
+  flex-shrink: 0;
 }
-.sample .code-box {
-  display: flex;
-  margin: 8px 0 10px;
-  font-size: 0.76rem;
-  word-break: normal;
+.start-today {
+  counter-reset: today;
 }
-@media (max-width: 860px) {
-  .intro-grid {
+.start-today li,
+.next-steps li {
+  counter-increment: today;
+}
+.start-today li::before,
+.next-steps li::before {
+  content: counter(today, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  padding-top: 0.3em;
+  flex-shrink: 0;
+}
+.next-steps {
+  counter-reset: today;
+  margin: 4px 0 30px;
+}
+.next-steps li {
+  color: var(--muted);
+}
+.next-steps b {
+  color: #fff;
+  font-weight: 600;
+}
+@media (max-width: 640px) {
+  .proposal {
+    padding: 22px 18px;
+  }
+  .proc-row {
     grid-template-columns: 1fr;
-    gap: 34px;
+    gap: 6px;
   }
 }
 
@@ -933,7 +1193,10 @@
   .flow-step,
   .term-caret,
   .term-ready,
-  .report > .sec {
+  .report > .sec,
+  .noticing li,
+  .flow-note,
+  .peek-out {
     animation: none;
   }
   .flow-fill,

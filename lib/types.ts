@@ -71,6 +71,15 @@ export type OpportunityRecord = {
   customDevelopmentPotential: boolean
   confidence: string
   reasoning: string
+  /** Absent on reports generated before proposals existed. */
+  detail?: ProposalDetail | null
+}
+
+/** A proposal's process today and with the fix, and what a call would settle. */
+export type ProposalDetail = {
+  today: string[]
+  withIt: string[]
+  questions: string[]
 }
 
 export type AnalysisResultRecord = {
@@ -86,6 +95,8 @@ export type AnalysisResultRecord = {
   inputTokens: number | null
   outputTokens: number | null
   generatedAt: Date
+  /** Absent on reports generated before proposals existed. */
+  startToday?: string[] | null
   opportunities: OpportunityRecord[]
 }
 

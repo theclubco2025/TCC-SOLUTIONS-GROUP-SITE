@@ -43,6 +43,11 @@ const OpportunitySchema = z.object({
   customDevelopmentPotential: z.boolean(),
   confidence: z.enum(CONFIDENCE_LEVELS),
   reasoning: z.string().max(600),
+  // The prompt asks for short steps and few of them; these limits only catch
+  // nonsense. See ANALYSIS_LIMITS.acceptOpportunities for why they are loose.
+  today: z.array(z.string().max(160)).min(1).max(8),
+  withIt: z.array(z.string().max(160)).min(1).max(8),
+  questionsForCall: z.array(z.string().max(400)).min(1).max(5),
 })
 
 const AnalysisSchema = z.object({
@@ -50,7 +55,8 @@ const AnalysisSchema = z.object({
   technologyEnvironment: z.string().max(900),
   overallAssessment: z.string().max(1200),
   recommendedNextStep: z.string().max(600),
-  opportunities: z.array(OpportunitySchema).min(1).max(ANALYSIS_LIMITS.maxOpportunities),
+  startToday: z.array(z.string().max(700)).min(1).max(4),
+  opportunities: z.array(OpportunitySchema).min(1).max(ANALYSIS_LIMITS.acceptOpportunities),
 })
 
 export type AnalysisPayload = z.infer<typeof AnalysisSchema>
@@ -86,9 +92,18 @@ THE FIELDS
 - technologyEnvironment: what they are working with today, and where it is letting them down. Second person.
 - overallAssessment: the bottom line. The single biggest thing holding them back, and what changes when it is fixed. Bold and direct. This is the line they will remember.
 - recommendedNextStep: one concrete next step, addressed to them, that leads to a conversation with TCCSG about building or connecting it.
-- opportunities: problem (in their terms), solution (what TCCSG would build or connect, and what it does for them), impact (what their day looks like after), reasoning (why this, briefly).
+- startToday: one or two things they can do themselves this week, free, with what they already have or a change in habit. Genuinely useful, concrete, addressed to them. This is help with no strings attached. Do not claim a specific product has a specific feature unless it is widely known; when unsure, phrase it as something to check ("see whether your booking tool can send reminders").
+- opportunities: these are PROPOSALS, starting points that TCCSG will shape with them in a conversation. Each one:
+  - title: what we would build or connect, in their terms.
+  - problem: the problem in their own terms.
+  - solution: what TCCSG would build or connect, and what it does for them.
+  - impact: a day with it. What their Monday looks like once it is running.
+  - reasoning: why this one, in a sentence.
+  - today: their current process for this problem as two to five short steps, in their words ("Customer calls", "Order written on a pad", "Typed into the till"). Six words or fewer each.
+  - withIt: the same process once it is fixed, two to five short steps, six words or fewer each. It should visibly have fewer manual steps.
+  - questionsForCall: one to three specific questions TCCSG would need answered to shape this into exactly what they need. Show you are already thinking about their business ("Do catering orders follow the same path as walk-in orders?"). Never generic ("What is your budget?").
 
-Identify between ${ANALYSIS_LIMITS.minOpportunities} and ${ANALYSIS_LIMITS.maxOpportunities} opportunities, the biggest win first. Fewer, sharper opportunities beat a long list. Do not pad.
+Give ${ANALYSIS_LIMITS.minOpportunities} or ${ANALYSIS_LIMITS.maxOpportunities} proposals, the biggest win first. Where their answers support it, make them different routes rather than three versions of one idea: for example one that connects what they already have, one built around how they work, and one quick win they could have running soon. Do not pad; two strong proposals beat three thin ones.
 
 COMPLEXITY BANDS
 

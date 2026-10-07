@@ -3,8 +3,9 @@
 import { useMemo, useState } from 'react'
 import Analyzing from '@/components/Analyzing'
 import { ROI_FIELDS, type RoiField } from '@/lib/analysis/config'
+import { terminalLines } from '@/lib/analysis/insights'
 import { calculateRoi, formatFigure, normaliseRoiInputs, type RoiFigure } from '@/lib/analysis/roi'
-import type { RoiInputs } from '@/lib/types'
+import type { AnalysisAnswers, RoiInputs } from '@/lib/types'
 
 const GROUPS: { id: RoiField['group']; title: string; blurb: string; figures: string[] }[] = [
   {
@@ -40,9 +41,12 @@ const SHORT = Object.fromEntries(ROI_FIELDS.map((f) => [f.id, f.short.toLowerCas
 export default function RoiForm({
   publicId,
   initialInputs,
+  answers,
 }: {
   publicId: string
   initialInputs: RoiInputs
+  /** Only to print their specifics on the waiting screen. */
+  answers: AnalysisAnswers
 }) {
   const [values, setValues] = useState<Record<string, string>>(() => {
     const out: Record<string, string> = {}
@@ -92,7 +96,13 @@ export default function RoiForm({
   }
 
   if (state === 'working' || state === 'ready') {
-    return <Analyzing publicId={publicId} ready={state === 'ready'} />
+    return (
+      <Analyzing
+        publicId={publicId}
+        ready={state === 'ready'}
+        lines={terminalLines(answers, calculateRoi(inputs))}
+      />
+    )
   }
 
   return (

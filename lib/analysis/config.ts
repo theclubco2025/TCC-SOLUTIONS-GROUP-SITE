@@ -423,9 +423,16 @@ export const ANALYSIS_LIMITS = {
   completionsPerIpPerHour: 5,
   /** Started analyses allowed from one IP per hour. Cheap, but not free to store. */
   startsPerIpPerHour: 20,
-  /** Opportunities the report will show. */
-  maxOpportunities: 6,
+  /** Proposals the report will show: a few real options, not a long list. */
+  maxOpportunities: 3,
   minOpportunities: 2,
+  /**
+   * What the response is allowed to contain before it counts as malformed. Looser
+   * than what the prompt asks for on purpose: the SDK checks these limits after
+   * the call, and one proposal too many must not throw away a whole analysis.
+   * Anything past maxOpportunities is dropped when saving.
+   */
+  acceptOpportunities: 6,
   /** A stale ANALYZING session can be retried after this many seconds. */
   retryAfterSeconds: 120,
 } as const

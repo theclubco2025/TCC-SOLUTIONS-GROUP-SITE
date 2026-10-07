@@ -33,8 +33,7 @@ export default async function QuestionnairePage({ params }: Props) {
     <SiteShell area="analyze" cta={false}>
       <main>
         <section className="sec">
-          <div className="w narrow">
-            <p className="eyebrow">Technology Opportunity Analysis</p>
+          <div className="w">
             <QuestionnaireForm publicId={publicId} initialAnswers={session.answers ?? {}} />
           </div>
         </section>

@@ -13,6 +13,7 @@ import {
   stepQuestions,
   toggleSuggestion,
 } from '@/lib/analysis/flow'
+import { noteFor, noticings, suggestionsFor } from '@/lib/analysis/insights'
 import type { AnalysisAnswers } from '@/lib/types'
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error'
@@ -170,8 +171,10 @@ export default function QuestionnaireForm({
     change(q.id, () => option)
     setError(null)
     // A single tap answers a single-choice question; moving on for them is the
-    // whole trick. Steps with more than one question wait for Continue.
-    if (solo) {
+    // whole trick. Steps with more than one question wait for Continue, and so
+    // does an answer that earns a note: the note is the point of the pause.
+    const earnsNote = noteFor(q.id, { ...latest.current, [q.id]: option }) !== null
+    if (solo && !earnsNote) {
       cancelAdvance()
       advanceTimer.current = setTimeout(() => nextRef.current(), AUTO_ADVANCE_MS)
     }
@@ -272,7 +275,8 @@ export default function QuestionnaireForm({
       next()
       return
     }
-    if (e.ctrlKey || e.metaKey || target.closest('input, textarea, select, [contenteditable]')) return
+    if (e.ctrlKey || e.metaKey || target.closest('input, textarea, select, [contenteditable]'))
+      return
     if (!solo || !/^[1-9]$/.test(e.key)) return
     const q = questions[0]
     const option = q.options?.[Number(e.key) - 1]
@@ -296,85 +300,128 @@ export default function QuestionnaireForm({
   const hint = typing ? `${mac ? '⌘' : 'Ctrl'} + Enter to continue` : 'Enter ↵ to continue'
 
   return (
-    <div className="flow" ref={root}>
-      <div className="flow-meta">
-        <span>
-          <b>{pad(step + 1)}</b> / {pad(FLOW.length)}
-        </span>
-        <span>{isLast ? 'last one' : `about ${minutes} min left`}</span>
-      </div>
-      <div
-        className="flow-track"
-        role="progressbar"
-        aria-label="Progress through the questions"
-        aria-valuemin={1}
-        aria-valuemax={FLOW.length}
-        aria-valuenow={step + 1}
-      >
-        <div className="flow-fill" style={{ width: `${progress}%` }} />
-      </div>
-
-      <div className="flow-step" key={current.id}>
-        <h1 className="flow-q" id="flow-q" ref={heading} tabIndex={-1}>
-          {current.title ?? questions[0].label}
-        </h1>
-        {solo && questions[0].help && <p className="flow-help">{questions[0].help}</p>}
-
-        {questions.map((q) => (
-          <Control
-            key={q.id}
-            question={q}
-            solo={solo}
-            value={answers[q.id]}
-            onChoose={(o) => choose(q, o)}
-            onToggle={(o) => toggleOption(q, o)}
-            onSuggest={(s) => tapSuggestion(q, s)}
-            onText={(text) => {
-              change(q.id, () => text)
-              if (error) setError(null)
-            }}
-          />
-        ))}
-
-        {error && (
-          <p className="flow-error" role="alert">
-            {error}
-          </p>
-        )}
-
-        <div className="flow-nav">
-          {step > 0 && (
-            <button type="button" className="btn btn-ghost" onClick={back} disabled={finishing}>
-              Back
-            </button>
-          )}
-          <span className="spacer" />
-          {optional && unanswered && !isLast && (
-            <button type="button" className="flow-skip" onClick={next}>
-              Skip this one
-            </button>
-          )}
-          <span className="flow-hint" aria-hidden="true">
-            {hint}
+    <div className="flow-layout">
+      <div className="flow" ref={root}>
+        <p className="eyebrow">Technology Opportunity Analysis</p>
+        <div className="flow-meta">
+          <span>
+            <b>{pad(step + 1)}</b> / {pad(FLOW.length)}
           </span>
-          <button type="button" className="btn btn-primary" onClick={next} disabled={finishing}>
-            {finishing ? 'Saving…' : isLast ? 'Finish' : 'Continue'}
-          </button>
+          <span>{isLast ? 'last one' : `about ${minutes} min left`}</span>
         </div>
-      </div>
+        <div
+          className="flow-track"
+          role="progressbar"
+          aria-label="Progress through the questions"
+          aria-valuemin={1}
+          aria-valuemax={FLOW.length}
+          aria-valuenow={step + 1}
+        >
+          <div className="flow-fill" style={{ width: `${progress}%` }} />
+        </div>
 
-      <p className="flow-saved" aria-live="polite">
-        {saveState === 'saving' && 'Saving…'}
-        {saveState === 'saved' && 'Saved. You can close this and pick up where you left off.'}
-        {saveState === 'error' && 'Not saved yet. Check your connection and we will try again.'}
-      </p>
+        <div className="flow-step" key={current.id}>
+          <h1 className="flow-q" id="flow-q" ref={heading} tabIndex={-1}>
+            {current.title ?? questions[0].label}
+          </h1>
+          {solo && questions[0].help && <p className="flow-help">{questions[0].help}</p>}
+
+          {questions.map((q) => (
+            <Control
+              key={q.id}
+              question={q}
+              solo={solo}
+              suggestions={suggestionsFor(q, answers)}
+              value={answers[q.id]}
+              onChoose={(o) => choose(q, o)}
+              onToggle={(o) => toggleOption(q, o)}
+              onSuggest={(s) => tapSuggestion(q, s)}
+              onText={(text) => {
+                change(q.id, () => text)
+                if (error) setError(null)
+              }}
+            />
+          ))}
+
+          {questions.map((q) => {
+            const note = noteFor(q.id, answers)
+            return note ? (
+              <p className="flow-note" key={`${q.id}:${note}`}>
+                {note}
+              </p>
+            ) : null
+          })}
+
+          {error && (
+            <p className="flow-error" role="alert">
+              {error}
+            </p>
+          )}
+
+          <div className="flow-nav">
+            {step > 0 && (
+              <button type="button" className="btn btn-ghost" onClick={back} disabled={finishing}>
+                Back
+              </button>
+            )}
+            <span className="spacer" />
+            {optional && unanswered && !isLast && (
+              <button type="button" className="flow-skip" onClick={next}>
+                Skip this one
+              </button>
+            )}
+            <span className="flow-hint" aria-hidden="true">
+              {hint}
+            </span>
+            <button type="button" className="btn btn-primary" onClick={next} disabled={finishing}>
+              {finishing ? 'Saving…' : isLast ? 'Finish' : 'Continue'}
+            </button>
+          </div>
+        </div>
+
+        <p className="flow-saved" aria-live="polite">
+          {saveState === 'saving' && 'Saving…'}
+          {saveState === 'saved' && 'Saved. You can close this and pick up where you left off.'}
+          {saveState === 'error' && 'Not saved yet. Check your connection and we will try again.'}
+        </p>
+      </div>
+      <Noticing answers={answers} />
     </div>
+  )
+}
+
+/**
+ * The picture forming as they answer, in their own words. It is what their
+ * report will start from, and seeing it build is the reason to keep going.
+ */
+function Noticing({ answers }: { answers: AnalysisAnswers }) {
+  const items = noticings(answers)
+  return (
+    <aside className="noticing" aria-label="What we are noticing">
+      <p className="eyebrow">What we&rsquo;re noticing</p>
+      {items.length === 0 ? (
+        <p className="noticing-empty">Your answers build a picture here as you go.</p>
+      ) : (
+        <>
+          <ul>
+            {items.map((n) => (
+              <li key={`${n.label}:${n.text}`}>
+                <span className="noticing-label">{n.label}</span>
+                <span>{n.text}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="noticing-empty">Your report starts from this.</p>
+        </>
+      )}
+    </aside>
   )
 }
 
 function Control({
   question: q,
   solo,
+  suggestions,
   value,
   onChoose,
   onToggle,
@@ -383,6 +430,8 @@ function Control({
 }: {
   question: Question
   solo: boolean
+  /** The question's suggestions, tailored to their industry. */
+  suggestions?: string[]
   value: Value
   onChoose: (option: string) => void
   onToggle: (option: string) => void
@@ -445,13 +494,13 @@ function Control({
       case 'textarea':
         return (
           <>
-            {q.suggestions && (
+            {suggestions && (
               <>
                 <p className="chips-label" id={`${q.id}-suggest`}>
                   Tap any that fit, then add your own words
                 </p>
                 <div className="chips" role="group" aria-labelledby={`${q.id}-suggest`}>
-                  {q.suggestions.map((s) => {
+                  {suggestions.map((s) => {
                     const on = hasSuggestion(text, s, q.suggestionSeparator)
                     return (
                       <button
@@ -474,7 +523,7 @@ function Control({
               value={text}
               maxLength={q.maxLength}
               aria-labelledby={labelledBy}
-              placeholder={q.suggestions ? 'Or say it in your own words…' : 'In your own words…'}
+              placeholder={suggestions ? 'Or say it in your own words…' : 'In your own words…'}
               onChange={(e) => onText(e.target.value)}
             />
           </>
@@ -489,7 +538,9 @@ function Control({
             maxLength={q.maxLength}
             placeholder={q.placeholder}
             inputMode={q.id === 'website' ? 'url' : undefined}
-            autoComplete={q.id === 'businessName' ? 'organization' : q.id === 'website' ? 'url' : 'off'}
+            autoComplete={
+              q.id === 'businessName' ? 'organization' : q.id === 'website' ? 'url' : 'off'
+            }
             aria-labelledby={solo ? labelledBy : undefined}
             onChange={(e) => onText(e.target.value)}
           />

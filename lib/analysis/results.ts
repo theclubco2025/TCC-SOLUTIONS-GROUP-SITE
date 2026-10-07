@@ -1,8 +1,9 @@
 import { dbOrNull } from '@/lib/db'
 import { demoFindResult, demoSaveResult, demoUpdateAnalysis } from '@/lib/demo-store'
 import { rangeFor, type AnalysisPayload } from '@/lib/analysis/ai'
+import { ANALYSIS_LIMITS } from '@/lib/analysis/config'
 import type { RoiResults } from '@/lib/analysis/roi'
-import type { AnalysisResultRecord, OpportunityRecord } from '@/lib/types'
+import type { AnalysisResultRecord, OpportunityRecord, ProposalDetail } from '@/lib/types'
 
 /**
  * Storing and reading a finished assessment.
@@ -24,7 +25,7 @@ export type SaveInput = {
 
 /** Money comes from config via the complexity band, never from the model. */
 function toOpportunities(payload: AnalysisPayload): OpportunityRecord[] {
-  return payload.opportunities.map((o, i) => {
+  return payload.opportunities.slice(0, ANALYSIS_LIMITS.maxOpportunities).map((o, i) => {
     const range = rangeFor(o.complexity)
     return {
       rank: i + 1,
@@ -40,8 +41,24 @@ function toOpportunities(payload: AnalysisPayload): OpportunityRecord[] {
       customDevelopmentPotential: o.customDevelopmentPotential,
       confidence: o.confidence,
       reasoning: o.reasoning,
+      detail: { today: o.today, withIt: o.withIt, questions: o.questionsForCall },
     }
   })
+}
+
+/** Stored JSON from before proposals existed, or from a bad row, reads as absent. */
+function asDetail(v: unknown): ProposalDetail | null {
+  if (!v || typeof v !== 'object') return null
+  const d = v as Record<string, unknown>
+  const strings = (x: unknown) => (Array.isArray(x) ? x.filter((s): s is string => typeof s === 'string') : [])
+  const detail = { today: strings(d.today), withIt: strings(d.withIt), questions: strings(d.questions) }
+  return detail.today.length || detail.withIt.length || detail.questions.length ? detail : null
+}
+
+function asStrings(v: unknown): string[] | null {
+  if (!Array.isArray(v)) return null
+  const out = v.filter((s): s is string => typeof s === 'string')
+  return out.length > 0 ? out : null
 }
 
 export async function saveAnalysisResult(input: SaveInput): Promise<void> {
@@ -65,6 +82,7 @@ export async function saveAnalysisResult(input: SaveInput): Promise<void> {
       inputTokens: input.inputTokens,
       outputTokens: input.outputTokens,
       generatedAt: now,
+      startToday: payload.startToday.slice(0, 2),
       opportunities,
     })
     demoUpdateAnalysis(input.publicId, { status: 'COMPLETED', completedAt: now })
@@ -88,7 +106,10 @@ export async function saveAnalysisResult(input: SaveInput): Promise<void> {
         effort: input.effort,
         inputTokens: input.inputTokens,
         outputTokens: input.outputTokens,
-        opportunities: { create: opportunities },
+        startToday: payload.startToday.slice(0, 2),
+        opportunities: {
+          create: opportunities.map((o) => ({ ...o, detail: o.detail ?? undefined })),
+        },
       },
     }),
     db.analysisSession.update({
@@ -133,6 +154,7 @@ export async function findAnalysisResult(publicId: string): Promise<AnalysisResu
     inputTokens: row.inputTokens,
     outputTokens: row.outputTokens,
     generatedAt: row.generatedAt,
+    startToday: asStrings(row.startToday),
     opportunities: row.opportunities.map((o) => ({
       rank: o.rank,
       title: o.title,
@@ -147,6 +169,7 @@ export async function findAnalysisResult(publicId: string): Promise<AnalysisResu
       customDevelopmentPotential: o.customDevelopmentPotential,
       confidence: o.confidence,
       reasoning: o.reasoning,
+      detail: asDetail(o.detail),
     })),
   }
 }

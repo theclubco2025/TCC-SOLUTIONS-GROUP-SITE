@@ -50,7 +50,11 @@ export default async function RoiPage({ params }: Props) {
               Rough numbers are fine. The figures update as you type, using the same arithmetic as
               your report. You can also leave this out and still get the full analysis.
             </p>
-            <RoiForm publicId={publicId} initialInputs={session.roiInputs ?? {}} />
+            <RoiForm
+              publicId={publicId}
+              initialInputs={session.roiInputs ?? {}}
+              answers={session.answers ?? {}}
+            />
           </div>
         </section>
       </main>

@@ -4,18 +4,19 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * What the analysis does, in the order it does it. The first two happen in
- * our code and the rest in one model call, so these are paced on a timer
- * rather than reported live, but each one is genuinely part of the work.
+ * Used only if no personal lines are passed. Normally the lines come from
+ * terminalLines() in lib/analysis/insights.ts, built from the visitor's own
+ * answers and numbers. They are paced on a timer rather than reported live,
+ * but each one is genuinely part of the work.
  */
-const STAGES = [
+const FALLBACK = [
   'reading your answers',
   'working out the numbers',
   'checking the software you already have',
-  'weighing each opportunity by effort and payoff',
-  'writing up your report',
+  'matching each problem to a fix',
+  'shaping your proposals',
 ]
-const READY = 'your report is ready'
+const READY = 'your proposals are ready'
 
 const STAGE_MS = 4500
 /** Once the report exists, the remaining lines finish quickly rather than make anyone wait. */
@@ -35,7 +36,16 @@ const SLOW_MS = 75000
  * Without it (someone who lands on the results page mid-analysis) this polls
  * the status itself.
  */
-export default function Analyzing({ publicId, ready = false }: { publicId: string; ready?: boolean }) {
+export default function Analyzing({
+  publicId,
+  ready = false,
+  lines: personal,
+}: {
+  publicId: string
+  ready?: boolean
+  lines?: string[]
+}) {
+  const STAGES = personal && personal.length > 0 ? personal : FALLBACK
   const router = useRouter()
   const reportUrl = `/analyze/${publicId}/results`
   const [stage, setStage] = useState(0)

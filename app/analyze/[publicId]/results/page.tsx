@@ -5,11 +5,12 @@ import LeadForm from '@/components/LeadForm'
 import ReportActions from '@/components/ReportActions'
 import { SiteShell } from '@/components/SiteChrome'
 import type { ComplexityBand } from '@/lib/analysis/config'
+import { terminalLines } from '@/lib/analysis/insights'
 import { findAnalysisResult } from '@/lib/analysis/results'
-import { formatCurrency, formatFigure, type RoiResults } from '@/lib/analysis/roi'
+import { calculateRoi, formatCurrency, formatFigure, type RoiResults } from '@/lib/analysis/roi'
 import { findAnalysisSession } from '@/lib/analysis/sessions'
 import { hasSubmittedLead } from '@/lib/sales/leads'
-import type { OpportunityRecord } from '@/lib/types'
+import type { AnalysisAnswers, OpportunityRecord } from '@/lib/types'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -23,6 +24,9 @@ const CALENDLY = 'https://calendly.com/tccsolutions2025/30min'
 
 type Props = { params: Promise<{ publicId: string }> }
 
+const COUNT_WORD = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six']
+const pad = (n: number) => String(n).padStart(2, '0')
+
 export default async function ResultsPage({ params }: Props) {
   const { publicId } = await params
 
@@ -31,21 +35,25 @@ export default async function ResultsPage({ params }: Props) {
 
   if (session.status === 'STARTED') redirect(`/analyze/${publicId}`)
 
-  if (session.status === 'ANALYZING') return <Working publicId={publicId} />
+  if (session.status === 'ANALYZING') {
+    const answers = session.answers ?? {}
+    return <Working publicId={publicId} lines={terminalLines(answers, calculateRoi(session.roiInputs))} />
+  }
   if (session.status === 'FAILED') return <Failed publicId={publicId} />
 
   const result = await findAnalysisResult(publicId)
   if (!result) return <Failed publicId={publicId} />
 
   const submitted = await hasSubmittedLead(publicId)
-  const answers = session.answers ?? {}
+  const answers: AnalysisAnswers = session.answers ?? {}
   const text = (v: string | string[] | undefined) => (typeof v === 'string' ? v : '')
 
   const roi = result.roiResults as RoiResults | null
-  const [primary, ...secondary] = result.opportunities
-  const quickWins = result.opportunities.filter((o) => o.complexity === 'QUICK_WIN').length
+  const proposals = result.opportunities
+  const quickWins = proposals.filter((o) => o.complexity === 'QUICK_WIN').length
   const hours = roi?.figures.find((f) => f.id === 'time' && f.available)
   const businessName = text(answers.businessName)
+  const startToday = (result.startToday ?? []).slice(0, 2)
   const prepared = (session.completedAt ?? result.generatedAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -76,8 +84,8 @@ export default async function ResultsPage({ params }: Props) {
                   visitor's own inputs produced. Nothing is estimated for them. */}
               <div className="report-stats">
                 <div className="report-stat">
-                  <b>{result.opportunities.length}</b>
-                  <span>{result.opportunities.length === 1 ? 'thing' : 'things'} we&rsquo;d fix</span>
+                  <b>{proposals.length}</b>
+                  <span>{proposals.length === 1 ? 'proposal' : 'proposals'} for you</span>
                 </div>
                 <div className="report-stat">
                   <b>{quickWins}</b>
@@ -116,32 +124,40 @@ export default async function ResultsPage({ params }: Props) {
           </div>
         </section>
 
-        {primary && (
-          <section className="sec">
-            <div className="w">
-              <p className="eyebrow">Where we&rsquo;d start</p>
-              <h2>{primary.title}</h2>
-              <OpportunityTags opportunity={primary} />
-              <OpportunityDetail opportunity={primary} />
+        <section className="sec">
+          <div className="w">
+            <p className="eyebrow">Your proposals</p>
+            <h2>
+              {COUNT_WORD[proposals.length] ?? proposals.length}{' '}
+              {proposals.length === 1 ? 'way' : 'ways'} we could fix this.
+            </h2>
+            <p className="lead">
+              Starting points, built from your answers. Each one becomes exactly what you need in
+              a conversation with us.
+            </p>
+            <div className="proposals">
+              {proposals.map((o, i) => (
+                <Proposal key={o.rank} opportunity={o} index={i} />
+              ))}
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
-        {secondary.length > 0 && (
+        {startToday.length > 0 && (
           <section className="sec">
             <div className="w">
-              <h2>What else we&rsquo;d fix</h2>
-              <div className="grid three">
-                {secondary.map((o) => (
-                  <div className="cell" key={o.rank}>
-                    <p className="num">{o.category}</p>
-                    <h3>{o.title}</h3>
-                    <OpportunityTags opportunity={o} />
-                    <p>{o.problem}</p>
-                    <p className="cell-fix">{o.solution}</p>
-                  </div>
+              <p className="eyebrow">Free, this week</p>
+              <h2>
+                {startToday.length === 1
+                  ? 'One thing you can do today.'
+                  : 'Two things you can do today.'}
+              </h2>
+              <p className="lead">No need to wait for us. These are yours either way.</p>
+              <ol className="start-today">
+                {startToday.map((s) => (
+                  <li key={s}>{s}</li>
                 ))}
-              </div>
+              </ol>
             </div>
           </section>
         )}
@@ -188,13 +204,21 @@ export default async function ResultsPage({ params }: Props) {
 
         <section className="sec" id="plan">
           <div className="w">
-            <p className="eyebrow">Your next step</p>
-            <h2>Let&rsquo;s build it.</h2>
+            <p className="eyebrow">Where this goes next</p>
+            <h2>These are starting points. Let&rsquo;s make yours.</h2>
             <p className="lead">{result.recommendedNextStep}</p>
-            <p className="lead" data-print="hide">
-              Leave your details and we&rsquo;ll come to a 30-minute call having already read
-              this, so you won&rsquo;t be asked these questions again.
-            </p>
+            <ol className="next-steps" data-print="hide">
+              <li>
+                <b>We read this before we talk.</b> You won&rsquo;t be asked these questions again.
+              </li>
+              <li>
+                <b>We walk through your actual day</b> and answer the questions under each proposal.
+              </li>
+              <li>
+                <b>You leave with the one that fits,</b> shaped around how you work. Then we build
+                it.
+              </li>
+            </ol>
             <div className="narrow-form">
               <LeadForm
                 publicId={publicId}
@@ -227,19 +251,6 @@ const SIZE: Record<ComplexityBand, string> = {
   CUSTOM: 'Built for you',
 }
 
-function OpportunityTags({ opportunity }: { opportunity: OpportunityRecord }) {
-  return (
-    <div className="tags">
-      <span className="tag tag-size">
-        {SIZE[opportunity.complexity as ComplexityBand] ?? opportunity.complexity}
-      </span>
-      {opportunity.existingSoftwarePossible && (
-        <span className="tag">Works with what you already use</span>
-      )}
-    </div>
-  )
-}
-
 /** How TCCSG would do it, in the company's own terms. */
 function approach(o: OpportunityRecord): string {
   if (o.customDevelopmentPotential) {
@@ -251,31 +262,77 @@ function approach(o: OpportunityRecord): string {
   return 'Set up and connected for you, so you are not the one figuring it out.'
 }
 
-function OpportunityDetail({ opportunity }: { opportunity: OpportunityRecord }) {
+function Proposal({ opportunity: o, index }: { opportunity: OpportunityRecord; index: number }) {
+  const d = o.detail
   return (
-    <>
-      <p className="lead">{opportunity.problem}</p>
-      <p className="lead lead-fix">{opportunity.solution}</p>
+    <article className="proposal">
+      <div className="proposal-top">
+        <span className="proposal-n">Proposal {pad(index + 1)}</span>
+        <div className="tags">
+          <span className="tag tag-size">
+            {SIZE[o.complexity as ComplexityBand] ?? o.complexity}
+          </span>
+          {o.existingSoftwarePossible && <span className="tag">Works with what you already use</span>}
+        </div>
+      </div>
+      <h3 className="proposal-title">{o.title}</h3>
+      <p className="proposal-problem">{o.problem}</p>
+
+      {d && d.today.length > 0 && d.withIt.length > 0 && (
+        <div className="proc" aria-label="Your process today, and with this in place">
+          <Process label="Today" steps={d.today} />
+          <Process label="With it" steps={d.withIt} bright />
+        </div>
+      )}
+
+      <p className="proposal-fix">{o.solution}</p>
 
       <div className="grid three">
         <div className="cell">
-          <p className="num">What changes for you</p>
-          <p>{opportunity.impact}</p>
+          <p className="num">A day with it</p>
+          <p>{o.impact}</p>
         </div>
         <div className="cell">
           <p className="num">How we&rsquo;d do it</p>
-          <p>{approach(opportunity)}</p>
+          <p>{approach(o)}</p>
         </div>
         <div className="cell">
-          <p className="num">Why start here</p>
-          <p>{opportunity.reasoning}</p>
+          <p className="num">Why this one</p>
+          <p>{o.reasoning}</p>
         </div>
       </div>
-    </>
+
+      {d && d.questions.length > 0 && (
+        <div className="proposal-questions">
+          <p className="eyebrow">What we&rsquo;d work out together</p>
+          <ul>
+            {d.questions.map((q) => (
+              <li key={q}>{q}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </article>
   )
 }
 
-function Working({ publicId }: { publicId: string }) {
+function Process({ label, steps, bright }: { label: string; steps: string[]; bright?: boolean }) {
+  return (
+    <div className="proc-row" data-bright={bright || undefined}>
+      <span className="proc-label">{label}</span>
+      <ol>
+        {steps.map((s, i) => (
+          <li key={`${i}:${s}`}>{s}</li>
+        ))}
+      </ol>
+      <span className="proc-count">
+        {steps.length} {steps.length === 1 ? 'step' : 'steps'}
+      </span>
+    </div>
+  )
+}
+
+function Working({ publicId, lines }: { publicId: string; lines: string[] }) {
   return (
     <SiteShell area="report" cta={false}>
       <main>
@@ -283,7 +340,7 @@ function Working({ publicId }: { publicId: string }) {
           <div className="w narrow">
             <p className="eyebrow">Working on it</p>
             <h1 className="flow-q">Reading through your answers.</h1>
-            <Analyzing publicId={publicId} />
+            <Analyzing publicId={publicId} lines={lines} />
           </div>
         </section>
       </main>

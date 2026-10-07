@@ -237,6 +237,10 @@ model AnalysisResult {
 
   generatedAt DateTime @default(now())
 
+  /// One or two things the owner can do themselves this week, free. NULL on
+  /// reports generated before proposals existed.
+  startToday Json?
+
   opportunities TechnologyOpportunity[]
 
   @@map("analysis_results")
@@ -277,6 +281,11 @@ model TechnologyOpportunity {
 
   confidence String
   reasoning  String
+
+  /// The proposal shape: { today: string[], withIt: string[], questions: string[] }
+  /// - their process now, the same process after, and what a conversation would
+  /// settle. NULL on reports generated before proposals existed.
+  detail Json?
 
   createdAt DateTime @default(now())
 

@@ -7,7 +7,14 @@ import { useState } from 'react'
  * Starts an analysis on an explicit click rather than on page load. A GET that
  * creates a row would mean every crawler and link preview opens a session.
  */
-export default function AnalyzeStart({ label = 'Start the analysis' }: { label?: string }) {
+export default function AnalyzeStart({
+  label = 'Start the analysis',
+  industry,
+}: {
+  label?: string
+  /** Picked before starting, on the intro. Saved as the first answer. */
+  industry?: string
+}) {
   const router = useRouter()
   const [state, setState] = useState<'idle' | 'starting' | 'error'>('idle')
   const [message, setMessage] = useState<string | null>(null)
@@ -22,6 +29,14 @@ export default function AnalyzeStart({ label = 'Start the analysis' }: { label?:
         setMessage(json.errors?.[0] ?? 'Something went wrong.')
         setState('error')
         return
+      }
+      if (industry) {
+        // Best effort: if this save fails they simply answer question one again.
+        await fetch(`/api/analysis/${json.publicId}`, {
+          method: 'PATCH',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ answers: { industry } }),
+        }).catch(() => undefined)
       }
       router.push(`/analyze/${json.publicId}`)
     } catch {
