@@ -96,7 +96,7 @@ export function SiteFooter() {
           <br />
           A California limited liability company &middot; CA Entity No. B20260395844
           <br />
-          2929 Alder Drive, Camino, CA 95709, United States
+          Placerville, California, United States
           <br />
           tccsolutions2025@gmail.com &middot; +1 530 334 6503
         </p>

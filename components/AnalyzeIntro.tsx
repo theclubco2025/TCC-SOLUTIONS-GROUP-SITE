@@ -87,18 +87,18 @@ export default function AnalyzeIntro({ eyebrow, lead }: { eyebrow: string; lead:
             </div>
             <div className="cell">
               <p className="num">02</p>
-              <h3>We tell you what we see</h3>
+              <h3>We show you the fix</h3>
               <p>
-                Including when the answer is that nothing needs building. If there&rsquo;s nothing
-                worth doing, the report will say so.
+                What we&rsquo;d build around how you work, or connect between the tools you
+                already pay for, and what your day looks like once it&rsquo;s done.
               </p>
             </div>
             <div className="cell">
               <p className="num">03</p>
               <h3>You decide</h3>
               <p>
-                No pressure, no jargon, no obligation. If it&rsquo;s worth building, we&rsquo;ll show
-                you what it could look like.
+                No pressure, no jargon, no obligation. When you&rsquo;re ready, we build it and
+                stay with you after.
               </p>
             </div>
           </div>
@@ -118,12 +118,13 @@ function SampleReport() {
         </p>
         <div className="tags">
           <span className="tag tag-size">Quick win</span>
-          <span className="tag">Existing software may cover this</span>
+          <span className="tag">Works with what you already use</span>
         </div>
-        <h3>Phone orders go straight to the kitchen screen</h3>
+        <h3>Your phone orders go straight to the kitchen screen</h3>
         <p>
-          Orders taken by phone are written on a pad, then typed into the till. An order form that
-          feeds the till removes the second step and the mistakes that come with it.
+          Right now you write phone orders on a pad, then type them into the till. We connect an
+          order form to the till you already have, so the second step and the mistakes that come
+          with it are gone.
         </p>
         <hr />
         <p>How the value is worked out, using your numbers:</p>

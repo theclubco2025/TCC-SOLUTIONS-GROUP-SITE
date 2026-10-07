@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import Analyzing from '@/components/Analyzing'
 import { ROI_FIELDS, type RoiField } from '@/lib/analysis/config'
@@ -45,13 +44,12 @@ export default function RoiForm({
   publicId: string
   initialInputs: RoiInputs
 }) {
-  const router = useRouter()
   const [values, setValues] = useState<Record<string, string>>(() => {
     const out: Record<string, string> = {}
     for (const [k, v] of Object.entries(initialInputs)) out[k] = String(v)
     return out
   })
-  const [state, setState] = useState<'idle' | 'working' | 'error'>('idle')
+  const [state, setState] = useState<'idle' | 'working' | 'ready' | 'error'>('idle')
   const [message, setMessage] = useState<string | null>(null)
 
   // The same normalisation the server applies, so an out-of-range number is
@@ -85,14 +83,17 @@ export default function RoiForm({
         return
       }
 
-      router.push(`/analyze/${publicId}/results`)
+      // The terminal finishes its lines and offers the report; it is not swapped in.
+      setState('ready')
     } catch {
       setMessage('We could not reach the server. Please try again.')
       setState('error')
     }
   }
 
-  if (state === 'working') return <Analyzing />
+  if (state === 'working' || state === 'ready') {
+    return <Analyzing publicId={publicId} ready={state === 'ready'} />
+  }
 
   return (
     <form

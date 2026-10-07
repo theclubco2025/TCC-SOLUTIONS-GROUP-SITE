@@ -13,6 +13,24 @@ export const dynamic = 'force-dynamic'
 type Params = { params: Promise<{ publicId: string }> }
 
 /**
+ * Where the analysis is. The waiting screen polls this so it can offer
+ * "View my analysis" when the report is ready, rather than swapping the page
+ * under the reader. Status only: the public id is the visitor's own token, and
+ * nothing here is more than they can already see.
+ */
+export async function GET(_request: NextRequest, { params }: Params) {
+  const { publicId } = await params
+  const session = await findAnalysisSession(publicId)
+  if (!session) {
+    return NextResponse.json({ ok: false, errors: ['Not found.'] }, { status: 404 })
+  }
+  return NextResponse.json(
+    { ok: true, status: session.status },
+    { headers: { 'cache-control': 'no-store' } },
+  )
+}
+
+/**
  * Autosave. Called as the visitor types, so it must be cheap and must never
  * reject a partial answer set — validation belongs at completion, not here.
  * A half-finished questionnaire is a normal state worth keeping.

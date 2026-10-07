@@ -23,7 +23,7 @@ export default function ReportActions() {
   return (
     <div className="report-actions" data-print="hide">
       <a className="btn btn-primary" href="#plan">
-        Turn this into a plan
+        Let&rsquo;s build it
       </a>
       <button type="button" className="btn btn-ghost" onClick={copy}>
         {copied === 'done' ? 'Link copied' : copied === 'failed' ? 'Copy from the address bar' : 'Copy link'}

@@ -514,6 +514,13 @@
     opacity: 0;
   }
 }
+.term-line[data-ready] {
+  color: #fff;
+}
+.term-ready {
+  margin-top: 18px;
+  animation: flow-in 0.3s ease-out;
+}
 .term-note {
   font-size: 0.86rem;
   color: var(--quiet);
@@ -578,7 +585,50 @@
   font-size: 0.8rem;
   padding: 0 14px;
 }
-/* The site's pull quote: the honest read is the part to remember. */
+/* The bottom line, in the homepage's pull-quote type. */
+.bottom-line {
+  margin: 0 0 8px;
+}
+.bottom-line p {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.2rem, 2.3vw, 1.6rem);
+  line-height: 1.32;
+  letter-spacing: -0.022em;
+  max-width: 760px;
+}
+.report-head .eyebrow {
+  margin-top: 6px;
+}
+/* What we'd do reads brighter than the problem it answers. */
+.lead-fix,
+.cell .cell-fix {
+  color: #fff;
+}
+.cell .cell-fix {
+  margin-top: 10px;
+}
+
+/* The report rises in section by section, with the homepage's reveal easing. */
+.report > .sec {
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.report > .sec:nth-child(2) {
+  animation-delay: 0.14s;
+}
+.report > .sec:nth-child(3) {
+  animation-delay: 0.26s;
+}
+.report > .sec:nth-child(n + 4) {
+  animation-delay: 0.36s;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* The site's pull quote. */
 .callout {
   border-left: 2px solid rgba(255, 255, 255, 0.3);
   padding: 2px 0 2px 24px;
@@ -881,7 +931,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .flow-step,
-  .term-caret {
+  .term-caret,
+  .term-ready,
+  .report > .sec {
     animation: none;
   }
   .flow-fill,
@@ -916,6 +968,14 @@
     padding: 18px 0;
     border-color: #ddd;
     break-inside: avoid;
+  }
+  .report > .sec {
+    animation: none !important;
+  }
+  .lead-fix,
+  .cell .cell-fix,
+  .bottom-line p {
+    color: #000 !important;
   }
   h1,
   h2,

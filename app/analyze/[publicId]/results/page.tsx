@@ -4,7 +4,7 @@ import Analyzing from '@/components/Analyzing'
 import LeadForm from '@/components/LeadForm'
 import ReportActions from '@/components/ReportActions'
 import { SiteShell } from '@/components/SiteChrome'
-import { IMPLEMENTATION_RANGES, type ComplexityBand } from '@/lib/analysis/config'
+import type { ComplexityBand } from '@/lib/analysis/config'
 import { findAnalysisResult } from '@/lib/analysis/results'
 import { formatCurrency, formatFigure, type RoiResults } from '@/lib/analysis/roi'
 import { findAnalysisSession } from '@/lib/analysis/sessions'
@@ -31,7 +31,7 @@ export default async function ResultsPage({ params }: Props) {
 
   if (session.status === 'STARTED') redirect(`/analyze/${publicId}`)
 
-  if (session.status === 'ANALYZING') return <Working />
+  if (session.status === 'ANALYZING') return <Working publicId={publicId} />
   if (session.status === 'FAILED') return <Failed publicId={publicId} />
 
   const result = await findAnalysisResult(publicId)
@@ -45,7 +45,7 @@ export default async function ResultsPage({ params }: Props) {
   const [primary, ...secondary] = result.opportunities
   const quickWins = result.opportunities.filter((o) => o.complexity === 'QUICK_WIN').length
   const hours = roi?.figures.find((f) => f.id === 'time' && f.available)
-  const businessName = text(answers.businessName) || 'your business'
+  const businessName = text(answers.businessName)
   const prepared = (session.completedAt ?? result.generatedAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -54,32 +54,34 @@ export default async function ResultsPage({ params }: Props) {
 
   return (
     <SiteShell area="report">
-      <main>
+      {/* Sections rise in one after another, as the homepage reveals its own. */}
+      <main className="report">
         <section className="sec">
           <div className="w">
-            <p className="eyebrow">Technology Opportunity Analysis</p>
-            <h1>What we found.</h1>
+            <p className="eyebrow">Your Technology Opportunity Analysis</p>
+            <h1>Here&rsquo;s what we&rsquo;d build for {businessName || 'you'}.</h1>
 
             <div className="report-head">
               <p className="report-meta">
-                Prepared for <strong>{businessName}</strong> by TCC Solutions Group &middot;{' '}
-                {prepared}
+                Prepared for <strong>{businessName || 'you'}</strong> by TCC Solutions Group
+                &middot; {prepared}
               </p>
-              <p className="lead">{result.businessSummary}</p>
-              <p className="lead">{result.technologyEnvironment}</p>
+
+              <p className="eyebrow">The bottom line</p>
+              <div className="callout bottom-line">
+                <p>{result.overallAssessment}</p>
+              </div>
 
               {/* Every figure here is a count of the report itself or a number the
                   visitor's own inputs produced. Nothing is estimated for them. */}
               <div className="report-stats">
                 <div className="report-stat">
                   <b>{result.opportunities.length}</b>
-                  <span>
-                    {result.opportunities.length === 1 ? 'opportunity' : 'opportunities'} found
-                  </span>
+                  <span>{result.opportunities.length === 1 ? 'thing' : 'things'} we&rsquo;d fix</span>
                 </div>
                 <div className="report-stat">
                   <b>{quickWins}</b>
-                  <span>{quickWins === 1 ? 'quick win' : 'quick wins'}</span>
+                  <span>{quickWins === 1 ? 'quick win' : 'quick wins'} to start with</span>
                 </div>
                 <div className="report-stat">
                   {roi?.headline ? (
@@ -90,7 +92,7 @@ export default async function ResultsPage({ params }: Props) {
                   ) : hours ? (
                     <>
                       <b>{formatFigure(hours)}</b>
-                      <span>a year that could come back, from your numbers</span>
+                      <span>a year you could get back, from your numbers</span>
                     </>
                   ) : (
                     <>
@@ -106,13 +108,21 @@ export default async function ResultsPage({ params }: Props) {
           </div>
         </section>
 
+        <section className="sec">
+          <div className="w">
+            <p className="eyebrow">Where you are today</p>
+            <p className="lead">{result.businessSummary}</p>
+            <p className="lead">{result.technologyEnvironment}</p>
+          </div>
+        </section>
+
         {primary && (
           <section className="sec">
             <div className="w">
-              <p className="eyebrow">The one we&rsquo;d start with</p>
+              <p className="eyebrow">Where we&rsquo;d start</p>
               <h2>{primary.title}</h2>
               <OpportunityTags opportunity={primary} />
-              <OpportunityDetail opportunity={primary} detailed />
+              <OpportunityDetail opportunity={primary} />
             </div>
           </section>
         )}
@@ -120,7 +130,7 @@ export default async function ResultsPage({ params }: Props) {
         {secondary.length > 0 && (
           <section className="sec">
             <div className="w">
-              <h2>Also worth looking at</h2>
+              <h2>What else we&rsquo;d fix</h2>
               <div className="grid three">
                 {secondary.map((o) => (
                   <div className="cell" key={o.rank}>
@@ -128,11 +138,7 @@ export default async function ResultsPage({ params }: Props) {
                     <h3>{o.title}</h3>
                     <OpportunityTags opportunity={o} />
                     <p>{o.problem}</p>
-                    <p style={{ marginTop: 10 }}>{o.solution}</p>
-                    <p className="note" style={{ marginTop: 14 }}>
-                      {formatCurrency(o.implementationLow)}&ndash;
-                      {formatCurrency(o.implementationHigh)} &middot; a planning range, not a quote
-                    </p>
+                    <p className="cell-fix">{o.solution}</p>
                   </div>
                 ))}
               </div>
@@ -146,8 +152,8 @@ export default async function ResultsPage({ params }: Props) {
             {roi && roi.anyAvailable ? (
               <>
                 <p className="lead">
-                  Worked out from the figures you gave us. Illustrative, not a guarantee. The
-                  arithmetic is shown so you can judge it yourself.
+                  Worked out from your own figures, with the arithmetic shown. Illustrative, not a
+                  guarantee.
                 </p>
                 <div className="roi">
                   {roi.figures.map((f) => (
@@ -173,36 +179,26 @@ export default async function ResultsPage({ params }: Props) {
               </>
             ) : (
               <p className="lead">
-                We don&rsquo;t have enough information to calculate anything meaningful here yet.
-                That&rsquo;s not a problem; it&rsquo;s a short conversation. We&rsquo;d
-                rather say so than put an invented number in front of you.
+                You didn&rsquo;t enter figures, so we haven&rsquo;t put numbers on it. We&rsquo;d
+                rather work them out with you on a call than guess.
               </p>
             )}
           </div>
         </section>
 
-        <section className="sec">
-          <div className="w">
-            <h2>Our honest read</h2>
-            <div className="callout">
-              <p className="lead">{result.overallAssessment}</p>
-            </div>
-          </div>
-        </section>
-
         <section className="sec" id="plan">
           <div className="w">
-            <p className="eyebrow">Recommended next step</p>
-            <h2>Turn this analysis into a plan.</h2>
+            <p className="eyebrow">Your next step</p>
+            <h2>Let&rsquo;s build it.</h2>
             <p className="lead">{result.recommendedNextStep}</p>
             <p className="lead" data-print="hide">
-              Leave your details and bring this report to a 30-minute conversation. We&rsquo;ll
-              have already read it, so you won&rsquo;t be asked these questions again.
+              Leave your details and we&rsquo;ll come to a 30-minute call having already read
+              this, so you won&rsquo;t be asked these questions again.
             </p>
             <div className="narrow-form">
               <LeadForm
                 publicId={publicId}
-                initialBusinessName={text(answers.businessName)}
+                initialBusinessName={businessName}
                 initialWebsite={text(answers.website)}
                 alreadySubmitted={submitted}
               />
@@ -221,74 +217,65 @@ export default async function ResultsPage({ params }: Props) {
   )
 }
 
-/** How big a job it is, and whether something off the shelf may already do it. */
+/**
+ * Named for what it is to the owner. The money range behind each band stays
+ * in the admin: on the public report it read as a bill before a conversation.
+ */
+const SIZE: Record<ComplexityBand, string> = {
+  QUICK_WIN: 'Quick win',
+  WORKFLOW: 'Connected system',
+  CUSTOM: 'Built for you',
+}
+
 function OpportunityTags({ opportunity }: { opportunity: OpportunityRecord }) {
-  const band = opportunity.complexity as ComplexityBand
   return (
     <div className="tags">
-      <span className="tag tag-size">{IMPLEMENTATION_RANGES[band]?.label ?? opportunity.complexity}</span>
+      <span className="tag tag-size">
+        {SIZE[opportunity.complexity as ComplexityBand] ?? opportunity.complexity}
+      </span>
       {opportunity.existingSoftwarePossible && (
-        <span className="tag">Existing software may cover this</span>
+        <span className="tag">Works with what you already use</span>
       )}
     </div>
   )
 }
 
-function OpportunityDetail({
-  opportunity,
-  detailed,
-}: {
-  opportunity: OpportunityRecord
-  detailed?: boolean
-}) {
-  const band = IMPLEMENTATION_RANGES[opportunity.complexity as ComplexityBand]
+/** How TCCSG would do it, in the company's own terms. */
+function approach(o: OpportunityRecord): string {
+  if (o.customDevelopmentPotential) {
+    return 'Built around how you work. A system made for your business can cost less over time than stacking subscriptions that each do part of the job, and it does exactly what you need.'
+  }
+  if (o.existingSoftwarePossible) {
+    return 'Connected to the tools you already use, so information moves on its own instead of being typed in twice.'
+  }
+  return 'Set up and connected for you, so you are not the one figuring it out.'
+}
 
+function OpportunityDetail({ opportunity }: { opportunity: OpportunityRecord }) {
   return (
     <>
       <p className="lead">{opportunity.problem}</p>
-      <p className="lead">{opportunity.solution}</p>
+      <p className="lead lead-fix">{opportunity.solution}</p>
 
       <div className="grid three">
         <div className="cell">
-          <p className="num">Impact</p>
+          <p className="num">What changes for you</p>
           <p>{opportunity.impact}</p>
         </div>
         <div className="cell">
-          <p className="num">Effort</p>
-          <p>
-            {band?.label ?? opportunity.complexity}
-            <br />
-            {formatCurrency(opportunity.implementationLow)}&ndash;
-            {formatCurrency(opportunity.implementationHigh)}
-          </p>
-          <p className="note" style={{ marginTop: 8 }}>
-            A planning range, not a quote.
-          </p>
+          <p className="num">How we&rsquo;d do it</p>
+          <p>{approach(opportunity)}</p>
         </div>
         <div className="cell">
-          <p className="num">What it would take</p>
-          <p>
-            {opportunity.existingSoftwarePossible
-              ? 'Software that already exists may cover this.'
-              : 'No off-the-shelf tool fits this cleanly.'}
-          </p>
-          {opportunity.customDevelopmentPotential && (
-            <p style={{ marginTop: 8 }}>Something built around your business would fit better.</p>
-          )}
+          <p className="num">Why start here</p>
+          <p>{opportunity.reasoning}</p>
         </div>
       </div>
-
-      {detailed && (
-        <p className="note" style={{ marginTop: 24 }}>
-          Why we think so: {opportunity.reasoning} (Confidence:{' '}
-          {opportunity.confidence.toLowerCase()}.)
-        </p>
-      )}
     </>
   )
 }
 
-function Working() {
+function Working({ publicId }: { publicId: string }) {
   return (
     <SiteShell area="report" cta={false}>
       <main>
@@ -296,7 +283,7 @@ function Working() {
           <div className="w narrow">
             <p className="eyebrow">Working on it</p>
             <h1 className="flow-q">Reading through your answers.</h1>
-            <Analyzing poll />
+            <Analyzing publicId={publicId} />
           </div>
         </section>
       </main>
