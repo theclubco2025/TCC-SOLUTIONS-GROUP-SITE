@@ -41,23 +41,25 @@ function toOpportunities(payload: AnalysisPayload): OpportunityRecord[] {
       customDevelopmentPotential: o.customDevelopmentPotential,
       confidence: o.confidence,
       reasoning: o.reasoning,
-      detail: { today: o.today, withIt: o.withIt, questions: o.questionsForCall },
+      detail: asDetail({ today: o.today, withIt: o.withIt, questions: o.questionsForCall }),
     }
   })
 }
 
 /** Stored JSON from before proposals existed, or from a bad row, reads as absent. */
-function asDetail(v: unknown): ProposalDetail | null {
+export function asDetail(v: unknown): ProposalDetail | null {
   if (!v || typeof v !== 'object') return null
   const d = v as Record<string, unknown>
-  const strings = (x: unknown) => (Array.isArray(x) ? x.filter((s): s is string => typeof s === 'string') : [])
+  // Blank entries are dropped: the model has been seen returning an empty question.
+  const strings = (x: unknown) =>
+    Array.isArray(x) ? x.filter((s): s is string => typeof s === 'string' && s.trim() !== '') : []
   const detail = { today: strings(d.today), withIt: strings(d.withIt), questions: strings(d.questions) }
   return detail.today.length || detail.withIt.length || detail.questions.length ? detail : null
 }
 
 function asStrings(v: unknown): string[] | null {
   if (!Array.isArray(v)) return null
-  const out = v.filter((s): s is string => typeof s === 'string')
+  const out = v.filter((s): s is string => typeof s === 'string' && s.trim() !== '')
   return out.length > 0 ? out : null
 }
 
@@ -82,7 +84,7 @@ export async function saveAnalysisResult(input: SaveInput): Promise<void> {
       inputTokens: input.inputTokens,
       outputTokens: input.outputTokens,
       generatedAt: now,
-      startToday: payload.startToday.slice(0, 2),
+      startToday: asStrings(payload.startToday)?.slice(0, 2) ?? null,
       opportunities,
     })
     demoUpdateAnalysis(input.publicId, { status: 'COMPLETED', completedAt: now })
@@ -106,7 +108,7 @@ export async function saveAnalysisResult(input: SaveInput): Promise<void> {
         effort: input.effort,
         inputTokens: input.inputTokens,
         outputTokens: input.outputTokens,
-        startToday: payload.startToday.slice(0, 2),
+        startToday: asStrings(payload.startToday)?.slice(0, 2) ?? undefined,
         opportunities: {
           create: opportunities.map((o) => ({ ...o, detail: o.detail ?? undefined })),
         },
