@@ -205,6 +205,19 @@ is left out of the flow, or if a question's id or type changes without
 `QUESTIONNAIRE_VERSION` being bumped. Tap-to-fill `suggestions` only ever write
 plain text into the answer box.
 
+While they answer, `lib/analysis/insights.ts` reflects their answers back ("What
+we're noticing"), adds a short note after the answers that say the most, tailors
+suggestions to their industry, and writes the lines the waiting screen prints. It
+is rules only: instant, no model call. Industry content (also shown on /analyze
+before anyone starts) is in `lib/analysis/industries.ts`. Both are tested to
+contain no digits or percent signs, because the site makes no statistical claims.
+
+The report is two or three proposals: their process today and with the fix,
+questions to settle on a call, and one or two things they can do themselves this
+week. Output limits in `lib/analysis/ai.ts` are looser than the prompt asks for on
+purpose: the SDK validates after the call, and an extra item must not fail an
+analysis.
+
 Answers save as the visitor types, and again with a `keepalive` request when the
 page is hidden or closed. The numbers step recalculates as they type using the
 same arithmetic as the report (`lib/analysis/roi.ts`).
